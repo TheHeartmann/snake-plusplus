@@ -34,7 +34,6 @@ TEST_F(Node_tests, OverLoadedEqualOperator_test) {
     EXPECT_EQ(node1, node2);
     EXPECT_NE(node1, node3);
     EXPECT_NE(node1, node4);
-
 }
 
 TEST_F(Node_tests, NodeIsOfNodeType_test) {
@@ -53,7 +52,7 @@ TEST_F(Node_tests, copyConstructor_Tests) {
 }
 
 TEST_F(Node_tests, vectorArithmetics_Tests){
-    auto downVector = Vector2D{0,1};
-    auto newNode = node1+downVector;
-    EXPECT_TRUE(node3 == newNode);
+    auto rightVector = Vector2D{1,0};
+    auto newNode = node2+rightVector;
+    EXPECT_TRUE(newNode.hasSamePosition(node3));
 }
