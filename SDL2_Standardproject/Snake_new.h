@@ -12,19 +12,24 @@
 
 using namespace std;
 
-class Snake_new{
+class Snake_new {
 public:
-    Snake_new(const list<unique_ptr<Node>> _body): body{_body}{}
+    Snake_new(initializer_list<unique_ptr<Node>> _body);
+
+    ~Snake_new();
 
     unique_ptr<Node> getHead() const;
+
     unique_ptr<Node> getTail() const;
-    inline ulong getLength() const { return body.size();}
+
+    inline ulong getLength() const { return body->size(); }
 
     void move(const unique_ptr<Node> newHeadPosition);
+
     void grow(const unique_ptr<Node> newHeadPosition);
 
 private:
-    list<unique_ptr<Node>> body;
+    list <unique_ptr<Node>> *body;
 };
 
 #endif //SNAKE_PLUSPLUS_SNAKE_NEW_H
