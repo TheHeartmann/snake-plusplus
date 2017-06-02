@@ -220,7 +220,7 @@ contains the time spent on each test, and its `gtest_list_tests` and
 methods into multiple processes.  These functionalities can help the
 test runner run the tests in parallel.
 
-## Why don't Google Test run the tests in different threads to speed things up? ##
+## Why don't Google Test run the tests in different threads to velocity things up? ##
 
 It's difficult to write thread-safe code.  Most tests are not written
 with thread-safety in mind, and thus may not work correctly in a

@@ -3,7 +3,7 @@
 Now that you have read [Primer](V1_6_Primer.md) and learned how to write tests
 using Google Test, it's time to learn some new tricks. This document
 will show you more assertions as well as how to construct complex
-failure messages, propagate fatal failures, reuse and speed up your
+failure messages, propagate fatal failures, reuse and velocity up your
 test fixtures, and use various flags with your tests.
 
 # More Assertions #
