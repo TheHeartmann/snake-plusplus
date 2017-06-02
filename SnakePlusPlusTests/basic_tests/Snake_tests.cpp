@@ -17,13 +17,6 @@ protected:
 public:
     Snake_tests() : Test() {
         NodeType type = NodeType::snake;
-//        unique_ptr<Node> tail = make_unique<Node>(0,0,type);
-//        unique_ptr<Node> body1 = make_unique<Node>(0,1,type);
-//        unique_ptr<Node> head = make_unique<Node>(0,2,type);
-//
-//
-//
-//        auto bodyList = { tail, body1, head};
 
         Node tailNode{0,0,type};
         Node bodyNode1{0,1, type};
@@ -32,7 +25,6 @@ public:
 
         auto bodyListTwo = {headNode, bodyNode1, bodyNode2, tailNode};
 
-//        testSnake = new Snake_new(bodyList);
         testSnake = new Snake_new(bodyListTwo);
     }
 

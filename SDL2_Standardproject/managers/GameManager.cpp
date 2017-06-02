@@ -18,33 +18,42 @@ GameManager::GameManager() {
     Timer::Instance().init();
 }
 
+void GameManager::init() {
+    // Load bitmaps
+
+
+}
+
+void GameManager::loadAssets() {
+    background =  std::make_unique<SDLBmp>("SDL2_Standardproject/Assets/gfx/sdl2.bmp");
+    playerHeadImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeHead_v1.bmp");
+    playerBodyImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeBody_v1.bmp");
+    appleImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/Apple_v1.bmp");
+}
+
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
-    int startingLength = 3;
+    /*int startingLength = 3;
     float speed = 150.0f;
-    int speedIncreaseRate = 10;
-    Direction direction = Direction::RIGHT;
+    int speedIncreaseRate = 10;*/
+    loadAssets();
+
+    Direction direction = Specs.SNAKE_HEAD_STARTDIR;
     int score = 0;
 
     srand(time(nullptr));
-
-    // Load bitmaps
-    SDLBmp background("SDL2_Standardproject/Assets/gfx/sdl2.bmp");
-    SDLBmp playerHeadImage("SDL2_Standardproject/Assets/gfx/SnakeHead_v1.bmp");
-    SDLBmp playerBodyImage("SDL2_Standardproject/Assets/gfx/SnakeBody_v1.bmp");
-    SDLBmp appleImage("SDL2_Standardproject/Assets/gfx/Apple_v1.bmp");
 
 
     Point2D playerStartingPosition((board_width / 2 - node_radius),
                                    (board_height / 2 - node_radius));
     Point2D applePosition = getRandomPoint();
 
-    GameObject playerHead(playerStartingPosition, &playerHeadImage, Direction::UP);
-    GameObject playerBody(playerStartingPosition, &playerBodyImage, Direction::UP);
-    GameObject apple(applePosition, &appleImage, Direction::UP);
+    GameObject playerHead(playerStartingPosition, playerHeadImage, Direction::UP);
+    GameObject playerBody(playerStartingPosition, playerBodyImage, Direction::UP);
+    GameObject apple(applePosition, appleImage, Direction::UP);
 
-    Snake snake(&playerHead, &playerBody, startingLength);
+    Snake snake(&playerHead, &playerBody, Specs.SNAKE_INITIAL_LENGTH);
 
 
 
@@ -53,18 +62,24 @@ void GameManager::play() {
     m_lastRender = render_fps; // set it to render immediately
 
     // Gameloop
-    while (isSlithering) {
+    while (running) {
 
         //Input
         // Update input and deltatime
         InputManager::Instance().Update();
+
+        // Exit on [Esc], or window close (user X-ed out the window)
+        if (InputManager::Instance().hasExit() || InputManager::Instance().KeyDown(SDL_SCANCODE_ESCAPE))
+            break;
+        else
+            // Input Management
+            updateDirection(direction);
+
+
         Timer::Instance().update();
 
         // Calculate displacement based on deltatime
         auto displacement = speed * Timer::Instance().deltaTime();
-
-        /* Input Management */
-        CheckInput(direction);
 
         //Logic
 
@@ -72,13 +87,13 @@ void GameManager::play() {
 
         //Check if we died
         GameObject head(*(snake.getHead()));
-        isSlithering = !isOutOfBounds(head);
+        running = !isOutOfBounds(head);
         //		AutoCannibalismCheck (&snake);
 
         //Check if we found object
         if (CrashedWithObjectCheck(&head, &apple)) {
             score++;
-            speed += speedIncreaseRate;
+            speed += acceleration;
             cout << "Score: " << score << endl;
             //Grow body size
             snake.increaseLength();
@@ -98,7 +113,7 @@ void GameManager::play() {
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
             // Add bitmaps to renderer
-            background.draw();
+            background->draw();
             snake.drawSnake();
             apple.getImage()->draw();
             // Render window
@@ -109,10 +124,11 @@ void GameManager::play() {
         // Sleep to prevent CPU exthaustion (1ms == 1000 frames per second)
         SDL_Delay(1);
     }
+
 }
 
 //Checks input and sets direction
-void GameManager::CheckInput(Direction &direction) {
+void GameManager::updateDirection(Direction &direction) {
 
     // Left key
     if ((InputManager::Instance().KeyDown(SDL_SCANCODE_LEFT) ||
@@ -138,12 +154,6 @@ void GameManager::CheckInput(Direction &direction) {
         direction = Direction::DOWN;
     }
 
-    // Exit on [Esc], or window close (user X-ed out the window)
-    if (InputManager::Instance().hasExit() || InputManager::Instance().KeyDown(SDL_SCANCODE_ESCAPE)) {
-        isSlithering = false;
-    }
-
-
 }
 
 //Checks if player crashes with window borders
@@ -162,7 +172,7 @@ void GameManager::AutoCannibalismCheck(Snake *player) {
 
     for (auto i = 1; i <= player->getLength() - 3; i++) {
         if (CrashedWithObjectCheck(player->getHead(), player->getBodyPartAt(i)))
-            isSlithering = false;
+            running = false;
     }
 
 }
@@ -223,4 +233,5 @@ Point2D GameManager::getRandomPoint() {
             static_cast<float>(rand() % (board_height - node_diameter))
     );
 }
+
 

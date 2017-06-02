@@ -18,8 +18,10 @@ class SDLBmp
 public:
 	/* Loads the given file on construction */
 	SDLBmp(const std::string& file);
-	
-	/* Free's the memory consumed by the image data */
+
+    SDLBmp();
+
+    /* Free's the memory consumed by the image data */
 	~SDLBmp();
 
 	/* Adds the image to the master window */

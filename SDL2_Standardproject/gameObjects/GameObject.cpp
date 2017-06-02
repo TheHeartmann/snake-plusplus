@@ -1,10 +1,12 @@
+#include <bits/unique_ptr.h>
+#include <memory>
 #include "GameObject.h"
 
 
-GameObject::GameObject(Point2D newPosition, SDLBmp *newImage, Direction newRotation) {
+GameObject::GameObject(Point2D newPosition, std::shared_ptr<SDLBmp> newImage, Direction newRotation) {
 
     position = newPosition;
-    image = newImage;
+    image = newImage.get();
     direction = newRotation;
     turnX = position.getX();
     turnY = position.getY();

@@ -111,3 +111,5 @@ int SDLBmp::getHeight() const
 {
 	return m_rect.h;
 }
+
+SDLBmp::SDLBmp() {}

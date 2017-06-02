@@ -33,7 +33,7 @@ private:
     GameManager();                                // Hidden constructor
     GameManager(const GameManager &);            // Hidden copy constructor
     GameManager &operator=(const GameManager &); // Hidden assign operator
-    void CheckInput(Direction &direction);
+    void updateDirection(Direction &direction);
 
     bool isOutOfBounds(GameObject &player);
 
@@ -49,15 +49,22 @@ private:
     void loadAssets();
 
 
-    bool isSlithering = true;
+    bool running = true;
     unsigned int m_window; // pointer to main window
     float m_lastRender; // Time in seconds since last render
     const int board_width = Specs.BOARD_WIDTH;
     const int board_height = Specs.BOARD_HEIGHT;
     const int node_radius = Specs.NODE_RADIUS;
     const int node_diameter = Specs.NODE_DIAMETER;
+    const float acceleration = Specs.SNAKE_ACCELERATION;
 
+    float speed = Specs.SNAKE_SPEED;
 
+    std::unique_ptr<SDLBmp> background;
+
+    std::shared_ptr<SDLBmp> playerHeadImage;
+    std::shared_ptr<SDLBmp> playerBodyImage;
+    std::shared_ptr<SDLBmp> appleImage;
 };
 
 #endif

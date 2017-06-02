@@ -6,6 +6,8 @@
 #ifndef SNAKE_PLUSPLUS_SPECIFICATIONS_H
 #define SNAKE_PLUSPLUS_SPECIFICATIONS_H
 
+#include <gameObjects/GameObject.h>
+
 static struct Specs {
 
     const int WINDOW_WIDTH = 600;
@@ -17,6 +19,9 @@ static struct Specs {
     const int NODE_RADIUS = NODE_DIAMETER/2;
 
     const int SNAKE_INITIAL_LENGTH = 4;
+    const float SNAKE_SPEED = 150.0f;
+    const int SNAKE_ACCELERATION = 10;
+    const Direction SNAKE_HEAD_STARTDIR= Direction::RIGHT;
 } Specs;
 
 
