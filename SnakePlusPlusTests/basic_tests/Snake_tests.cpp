@@ -4,7 +4,7 @@
 
 //#include <gtest/gtest.h>
 #include "gtest/gtest.h"
-#include <Snake/Snake_new.h>
+#include <snake/Snake_new.h>
 
 class Snake_tests : public ::testing::Test {
 protected:
