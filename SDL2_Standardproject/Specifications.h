@@ -10,16 +10,20 @@
 
 static struct Specs {
 
+
     const int WINDOW_WIDTH = 600;
     const int WINDOW_HEIGHT = 400;
 
-    const int BOARD_WIDTH = 600;
-    const int BOARD_HEIGHT = 400;
-    const int NODE_DIAMETER = 20;
-    const int NODE_RADIUS = NODE_DIAMETER/2;
+    const int BOARD_RENDER_WIDTH_PX = 600;
+    const int BOARD_RENDER_HEIGHT_PX = 400;
+
+    const int BOARD_COLUMNS = 30;
+    const int BOARD_ROWS = 20;
+    const int NODE_DIAMETER_PX = 20;
+    const int NODE_RADIUS_PX = NODE_DIAMETER_PX/2;
 
     const int SNAKE_INITIAL_LENGTH = 4;
-    const float SNAKE_SPEED = 150.0f;
+    const double SNAKE_SPEED = 150.0;
     const int SNAKE_ACCELERATION = 10;
     const Direction SNAKE_HEAD_STARTDIR= Direction::RIGHT;
 } Specs;

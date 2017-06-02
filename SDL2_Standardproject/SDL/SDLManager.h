@@ -47,7 +47,7 @@ public:
 	);
 
 	/* Returns the renderer to the specified window */
-	SDL_Renderer* const getRenderer(const unsigned int& windowIndex = NULL) const;
+	SDL_Renderer* const getRenderer(const unsigned int& windowIndex = 0) const;
 	
 	/* Returns the index of the main/master window */
 	const unsigned int* const getMainWindow() const;

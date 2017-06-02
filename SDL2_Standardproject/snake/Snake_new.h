@@ -15,6 +15,7 @@ using namespace std;
 class Snake_new {
 public:
     Snake_new(initializer_list<Node> _body);
+    Snake_new(list<Node> _body);
 
     ~Snake_new();
 
@@ -22,14 +23,14 @@ public:
 
     Node getTail() const;
 
-    inline ulong getLength() const { return body->size(); }
+    inline ulong getLength() const { return body.size(); }
 
     void move(Node newHeadPosition);
 
     void grow(Node newHeadPosition);
 
 private:
-    list<Node> *body;
+    list<Node> body{};
 };
 
 #endif //SNAKE_PLUSPLUS_SNAKE_NEW_H

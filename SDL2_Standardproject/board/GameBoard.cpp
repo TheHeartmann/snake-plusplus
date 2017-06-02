@@ -26,3 +26,8 @@ GameBoard::~GameBoard() {
     delete[] board;
 }
 
+Node GameBoard::getNode(int column, int row) {
+    Node node = board[column][row];
+    return node;
+}
+

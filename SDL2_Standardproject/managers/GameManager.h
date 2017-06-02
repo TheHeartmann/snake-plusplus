@@ -9,6 +9,8 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
+#include <board/GameBoard.h>
+#include <snake/Snake_new.h>
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
@@ -42,7 +44,7 @@ private:
     /*Point2D getRandomPoint(GameObject* image, int boardWidth, int boardHeight);*/
     Point2D getRandomPoint();
 
-    static bool CrashedWithObjectCheck(GameObject *player, GameObject *object);
+    static bool hitObject(GameObject *player, GameObject *object);
 
     void init();
 
@@ -52,19 +54,25 @@ private:
     bool running = true;
     unsigned int m_window; // pointer to main window
     float m_lastRender; // Time in seconds since last render
-    const int board_width = Specs.BOARD_WIDTH;
-    const int board_height = Specs.BOARD_HEIGHT;
-    const int node_radius = Specs.NODE_RADIUS;
-    const int node_diameter = Specs.NODE_DIAMETER;
-    const float acceleration = Specs.SNAKE_ACCELERATION;
+    const int board_width = Specs.BOARD_RENDER_WIDTH_PX;
+    const int board_height = Specs.BOARD_RENDER_HEIGHT_PX;
+    const int board_columns = Specs.BOARD_COLUMNS;
+    const int board_rows = Specs.BOARD_ROWS;
+    const int node_radius = Specs.NODE_RADIUS_PX;
+    const int node_diameter = Specs.NODE_DIAMETER_PX;
+    const double acceleration = Specs.SNAKE_ACCELERATION;
 
-    float speed = Specs.SNAKE_SPEED;
+    double velocity = Specs.SNAKE_SPEED;
+
+    shared_ptr<GameBoard> gameboard;
+    shared_ptr<Snake_new> snake_new;
 
     std::unique_ptr<SDLBmp> background;
 
     std::shared_ptr<SDLBmp> playerHeadImage;
     std::shared_ptr<SDLBmp> playerBodyImage;
     std::shared_ptr<SDLBmp> appleImage;
+
 };
 
 #endif

@@ -14,7 +14,7 @@
 
 SDLManager::SDLManager()
 {
-	m_mainWindow = NULL;
+	m_mainWindow = 0;
 }
 
 /* Initializes SDL with the given flags */
@@ -88,7 +88,7 @@ int SDLManager::createWindow(const std::string& title,
 	);
 
 	// Set main window if not already set or asked to
-	if (mainWindow || (m_mainWindow == NULL))
+	if (mainWindow || (m_mainWindow == 0))
 	{
 		m_mainWindow = index;
 	}

@@ -315,7 +315,7 @@ to the compiler flags.
 
 Note: while the above steps aren't technically necessary today when
 using some compilers (e.g. GCC), they may become necessary in the
-future, if we decide to improve the speed of loading the library (see
+future, if we decide to improve the velocity of loading the library (see
 <http://gcc.gnu.org/wiki/Visibility> for details).  Therefore you are
 recommended to always add the above flags when using Google Test as a
 shared library.  Otherwise a future release of Google Test may break

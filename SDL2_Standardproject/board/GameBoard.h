@@ -15,9 +15,12 @@ class GameBoard {
 public:
     GameBoard() : GameBoard{5, 15} {}
 
-    GameBoard(int c, int r);
+    GameBoard(int columns, int rows);
 
     Node **getBoard();
+
+    Node getNode(int column, int row);
+
 
     ~GameBoard();
 

@@ -19,8 +19,17 @@ GameManager::GameManager() {
 }
 
 void GameManager::init() {
-    // Load bitmaps
+    // set up game
 
+    gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
+
+    // get 4 joint nodes from the board
+    Node head = gameboard->getNode(3,2);
+    Node body1 = gameboard->getNode(3,1);
+    Node body2 = gameboard->getNode(3,0);
+    list<Node> snakeBody{head, body1,body2};
+
+    snake_new =  std::make_shared<Snake_new>(snakeBody);
 
 }
 
@@ -34,10 +43,9 @@ void GameManager::loadAssets() {
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
-    /*int startingLength = 3;
-    float speed = 150.0f;
-    int speedIncreaseRate = 10;*/
+
     loadAssets();
+    init();
 
     Direction direction = Specs.SNAKE_HEAD_STARTDIR;
     int score = 0;
@@ -45,15 +53,17 @@ void GameManager::play() {
     srand(time(nullptr));
 
 
+
+
     Point2D playerStartingPosition((board_width / 2 - node_radius),
                                    (board_height / 2 - node_radius));
     Point2D applePosition = getRandomPoint();
-
     GameObject playerHead(playerStartingPosition, playerHeadImage, Direction::UP);
     GameObject playerBody(playerStartingPosition, playerBodyImage, Direction::UP);
     GameObject apple(applePosition, appleImage, Direction::UP);
-
     Snake snake(&playerHead, &playerBody, Specs.SNAKE_INITIAL_LENGTH);
+
+
 
 
 
@@ -75,35 +85,28 @@ void GameManager::play() {
             // Input Management
             updateDirection(direction);
 
-
         Timer::Instance().update();
 
+
+
+
         // Calculate displacement based on deltatime
-        auto displacement = speed * Timer::Instance().deltaTime();
-
-        //Logic
-
+        auto displacement = velocity * Timer::Instance().deltaTime();
         snake.updatePosition(direction, displacement);
-
         //Check if we died
         GameObject head(*(snake.getHead()));
         running = !isOutOfBounds(head);
         //		AutoCannibalismCheck (&snake);
 
         //Check if we found object
-        if (CrashedWithObjectCheck(&head, &apple)) {
+        if (hitObject(&head, &apple)) {
             score++;
-            speed += acceleration;
+            velocity += acceleration;
             cout << "Score: " << score << endl;
             //Grow body size
             snake.increaseLength();
             /*apple.setPosition(getRandomPoint(&apple, board_width, board_height));*/
             apple.setPosition(getRandomPoint());
-        }
-
-        //push earlier turn to turn queue
-        if (m_lastRender >= render_fps) {
-            snake.pushPreviousTurnPosition(snake.getHead()->getPosition());
         }
 
         //Render
@@ -113,6 +116,8 @@ void GameManager::play() {
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
             // Add bitmaps to renderer
+            snake.pushPreviousTurnPosition(snake.getHead()->getPosition());
+
             background->draw();
             snake.drawSnake();
             apple.getImage()->draw();
@@ -171,14 +176,14 @@ void GameManager::AutoCannibalismCheck(Snake *player) {
     //head can crash with closest 2 or 3 body parts without ending game to minimize unintended crashes?
 
     for (auto i = 1; i <= player->getLength() - 3; i++) {
-        if (CrashedWithObjectCheck(player->getHead(), player->getBodyPartAt(i)))
+        if (hitObject(player->getHead(), player->getBodyPartAt(i)))
             running = false;
     }
 
 }
 
 //Checks if player crashes with object
-bool GameManager::CrashedWithObjectCheck(GameObject *player, GameObject *object) {
+bool GameManager::hitObject(GameObject *player, GameObject *object) {
     //Make 4 points from corners of object
     //Make square from player head represented as if statement
     //Check if points are inside square
