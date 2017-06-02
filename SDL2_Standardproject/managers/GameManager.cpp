@@ -34,6 +34,8 @@ void GameManager::loadAssets() {
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
+	auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
+
     /*int startingLength = 3;
     float speed = 150.0f;
     int speedIncreaseRate = 10;*/
@@ -117,6 +119,7 @@ void GameManager::play() {
             snake.drawSnake();
             apple.getImage()->draw();
             // Render window
+            drawGrid()
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
         }
@@ -234,4 +237,17 @@ Point2D GameManager::getRandomPoint() {
     );
 }
 
+
+void GameManager::drawGrid(Node **grid, int x, int y, SDL_Renderer &renderer) {
+	auto diameter = Specs.NODE_DIAMETER;
+	for (int i = 0; i != x; i++) {
+		grid[i] = new Node[y];
+		for (int j = 0; j != y; j++) {
+			auto xPos = diameter*x;
+			auto yPos = diameter*y;
+			SDL_Rect node = {xPos, yPos, diameter, diameter};
+			SDL_RenderDrawRect(&renderer, &node);
+		}
+	}
+}
 

@@ -48,6 +48,8 @@ private:
 
     void loadAssets();
 
+    void drawGrid(Node **grid, int x, int y, SDL_Renderer &renderer);
+
 
     bool running = true;
     unsigned int m_window; // pointer to main window
