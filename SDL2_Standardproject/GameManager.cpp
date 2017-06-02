@@ -161,8 +161,6 @@ void GameManager::AutoCannibalismCheck(Snake *player) {
     //Add check for autocannibalism when snake has more body parts
     //head can crash with closest 2 or 3 body parts without ending game to minimize unintended crashes?
 
-
-
     for (auto i = 1; i <= player->getLength() - 3; i++) {
         if (CrashedWithObjectCheck(player->getHead(), player->getBodyPartAt(i)))
             isSlithering = false;

@@ -16,6 +16,7 @@ static struct Specs {
     const int NODE_DIAMETER = 20;
     const int NODE_RADIUS = NODE_DIAMETER/2;
 
+    const int SNAKE_INITIAL_LENGTH = 4;
 } Specs;
 
 
