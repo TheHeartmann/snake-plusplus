@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Node.h"
+#include "board/Node.h"
 
 class Node_tests : public ::testing::Test {
 protected:

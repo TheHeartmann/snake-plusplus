@@ -7,7 +7,7 @@
 
 #include <list>
 #include <memory>
-#include "Node.h"
+#include "board/Node.h"
 #include "Specifications.h"
 
 using namespace std;

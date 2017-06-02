@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "Point2D.h"
+#include "board/grid/Point2D.h"
 
 
 class Point2D_test : public ::testing::Test {

@@ -13,7 +13,7 @@
  */
 
 #include <iostream>
-#include "SDL2_Standardproject/GameManager.h"
+#include "managers/GameManager.h"
 
 int main(int argc, char* argv[])
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point2D.h"
+#include "board/grid/Point2D.h"
 #include "SDL/SDLBmp.h"
 
 

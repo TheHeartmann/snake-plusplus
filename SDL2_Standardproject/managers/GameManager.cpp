@@ -7,8 +7,8 @@
  */
 
 #include "GameManager.h"
-#include "Specifications.h"
 #include <iostream>
+#include "snake/Snake.h"
 
 using namespace std;
 
