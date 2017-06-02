@@ -12,9 +12,9 @@
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
-#include "Timer.h"
-#include "GameObject.h"
-#include "Snake/Snake.h"
+#include "resourceManagement/Timer.h"
+#include "gameObjects/GameObject.h"
+#include "snake/Snake.h"
 
 class GameManager {
 public:

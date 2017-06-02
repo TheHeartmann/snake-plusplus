@@ -7,7 +7,6 @@
  */
 
 #include "GameManager.h"
-#include "Specifications.h"
 #include <iostream>
 
 using namespace std;

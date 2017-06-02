@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "gameObjects/GameObject.h"
 #include <list>
 #include <queue>
 
