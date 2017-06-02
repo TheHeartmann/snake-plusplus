@@ -14,7 +14,7 @@
 #include "InputManager.h"
 #include "Timer.h"
 #include "GameObject.h"
-#include "Snake.h"
+#include "Snake/Snake.h"
 
 class GameManager {
 public:

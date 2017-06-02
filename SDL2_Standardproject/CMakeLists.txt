@@ -1,8 +1,8 @@
 project(SDL2_Standardproject)
 file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR})
 
-file(GLOB HEADER_FILES "*.h" "SDL/*.h")
-file(GLOB SOURCE_FILES "*.cpp" "SDL/*.cpp")
+file(GLOB HEADER_FILES "*.h" "SDL/*.h" "*/*.h")
+file(GLOB SOURCE_FILES "*.cpp" "SDL/*.cpp" "*/*.cpp")
 file(GLOB IMAGE_FILES "Assets/gfx/*.bmp")
 
 

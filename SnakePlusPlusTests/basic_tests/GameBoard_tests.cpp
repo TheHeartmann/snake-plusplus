@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <GameBoard.h>
+#include <Board/GameBoard.h>
 
 class GameBoard_tests : public ::testing::Test {
 protected:

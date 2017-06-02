@@ -3,12 +3,12 @@
 #include <list>
 #include <queue>
 
-class Snake_old : std::list<GameObject>
+class Snake : std::list<GameObject>
 {
 public:
-	Snake_old (GameObject* headPart, GameObject* bodyPart, int startingLength);
+	Snake (GameObject* headPart, GameObject* bodyPart, int startingLength);
 
-	Snake_old(int length);
+	Snake(int length);
 
 	void increaseLength ();
 	int getLength ();

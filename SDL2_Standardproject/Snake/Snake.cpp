@@ -1,8 +1,8 @@
-#include "Snake_old.h"
+#include "Snake.h"
 #include <iostream>
 
 
-Snake_old::Snake_old(GameObject *headPart, GameObject *bodyPart, int startingLength) {
+Snake::Snake(GameObject *headPart, GameObject *bodyPart, int startingLength) {
     length = 3;
     headObject = headPart;
     bodyObject = bodyPart;
@@ -30,28 +30,28 @@ Snake_old::Snake_old(GameObject *headPart, GameObject *bodyPart, int startingLen
 
 }
 
-void Snake_old::increaseLength() {
+void Snake::increaseLength() {
     length++;
     this->push_back(GameObject(*bodyObject));
 }
 
-int Snake_old::getLength() {
+int Snake::getLength() {
     return length;
 }
 
-GameObject *Snake_old::getHead() {
+GameObject *Snake::getHead() {
     return &this->front();
 }
 
 //pos -1 returns the head object.  
-GameObject *Snake_old::getBodyPartAt(int pos) {
+GameObject *Snake::getBodyPartAt(int pos) {
     auto snake_part = this->begin();
     std::advance(snake_part, pos + 1); //+1 to skip head
     return &*snake_part;
 }
 
 
-void Snake_old::updatePosition(Direction direction, float displacement) {
+void Snake::updatePosition(Direction direction, float displacement) {
     //	auto newHead = *getHead ();
     //
     //	auto lastMove = newHead.getPosition ();
@@ -127,7 +127,7 @@ void Snake_old::updatePosition(Direction direction, float displacement) {
 
 }
 
-void Snake_old::applyVelocity(GameObject *obj, float vel_x, float vel_y, Direction dir) {
+void Snake::applyVelocity(GameObject *obj, float vel_x, float vel_y, Direction dir) {
     auto oldPos = obj->getPosition();
     auto newX = oldPos.getX() + vel_x;
     auto newY = oldPos.getY() + vel_y;
@@ -139,17 +139,17 @@ void Snake_old::applyVelocity(GameObject *obj, float vel_x, float vel_y, Directi
     else obj->setTurnY(newY);
 }
 
-void Snake_old::pushPreviousTurnPosition(Point2D lastPosition) {
+void Snake::pushPreviousTurnPosition(Point2D lastPosition) {
     earlierTurns.push(lastPosition);
 }
 
-Point2D Snake_old::popPreviousTurnPosition() {
+Point2D Snake::popPreviousTurnPosition() {
     auto popped = earlierTurns.back();
     earlierTurns.pop();
     return popped;
 }
 
-void Snake_old::drawSnake() {
+void Snake::drawSnake() {
 
     //	getBodyPartAt(0)->getImage ()->draw (getBodyPartAt(0)->getDirection ());
 
@@ -164,6 +164,6 @@ void Snake_old::drawSnake() {
 
 }
 
-Snake_old::Snake(int snakeLength) {
+Snake::Snake(int snakeLength) {
     length = snakeLength;
 }
