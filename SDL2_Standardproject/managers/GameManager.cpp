@@ -123,7 +123,7 @@ void GameManager::play() {
             snake.drawSnake();
             apple.getImage()->draw();
             // Render window
-            drawGrid(gameboard->getBoard(), board_columns, board_rows, *renderer);
+            drawGrid(board_columns, board_rows, *renderer);
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
         }
@@ -242,9 +242,8 @@ Point2D GameManager::getRandomPoint() {
 }
 
 
-void GameManager::drawGrid(Node **grid, int x, int y, SDL_Renderer &renderer) {
+void GameManager::drawGrid(int x, int y, SDL_Renderer &renderer) {
 	for (int i = 0; i != x; i++) {
-		grid[i] = new Node[y];
 		for (int j = 0; j != y; j++) {
 			auto xPos = node_diameter*i;
 			auto yPos = node_diameter*j;

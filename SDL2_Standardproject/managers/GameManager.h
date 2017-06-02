@@ -50,7 +50,7 @@ private:
 
     void loadAssets();
 
-    void drawGrid(Node **grid, int x, int y, SDL_Renderer &renderer);
+    void drawGrid(int x, int y, SDL_Renderer &renderer);
 
 
     bool running = true;
