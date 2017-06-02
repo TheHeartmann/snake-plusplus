@@ -24,17 +24,17 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(3,2);
-    Node body1 = gameboard->getNode(3,1);
-    Node body2 = gameboard->getNode(3,0);
-    list<Node> snakeBody{head, body1,body2};
+    Node head = gameboard->getNode(3, 2);
+    Node body1 = gameboard->getNode(3, 1);
+    Node body2 = gameboard->getNode(3, 0);
+    list <Node> snakeBody{head, body1, body2};
 
-    snake_new =  std::make_shared<Snake_new>(snakeBody);
+    snake_new = std::make_shared<Snake_new>(snakeBody);
 
 }
 
 void GameManager::loadAssets() {
-    background =  std::make_unique<SDLBmp>("SDL2_Standardproject/Assets/gfx/sdl2.bmp");
+    background = std::make_unique<SDLBmp>("SDL2_Standardproject/Assets/gfx/sdl2.bmp");
     playerHeadImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeHead_v1.bmp");
     playerBodyImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeBody_v1.bmp");
     appleImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/Apple_v1.bmp");
@@ -43,7 +43,7 @@ void GameManager::loadAssets() {
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
-	auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
+    auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
 
     loadAssets();
     init();
@@ -54,10 +54,7 @@ void GameManager::play() {
     srand(time(nullptr));
 
 
-
-
-    Point2D playerStartingPosition((board_width / 2 - node_radius),
-                                   (board_height / 2 - node_radius));
+    Point2D playerStartingPosition(node_diameter * 10, node_diameter * 10);
     Point2D applePosition = getRandomPoint();
     GameObject playerHead(playerStartingPosition, playerHeadImage, Direction::UP);
     GameObject playerBody(playerStartingPosition, playerBodyImage, Direction::UP);
@@ -93,22 +90,22 @@ void GameManager::play() {
 
         // Calculate displacement based on deltatime
         auto displacement = velocity * Timer::Instance().deltaTime();
-        snake.updatePosition(direction, displacement);
+        // snake.updatePosition(direction, displacement);
         //Check if we died
         GameObject head(*(snake.getHead()));
         running = !isOutOfBounds(head);
         //		AutoCannibalismCheck (&snake);
 
         //Check if we found object
-        if (hitObject(&head, &apple)) {
-            score++;
-            velocity += acceleration;
-            cout << "Score: " << score << endl;
-            //Grow body size
-            snake.increaseLength();
-            /*apple.setPosition(getRandomPoint(&apple, board_width, board_height));*/
+        /* if (hitObject(&head, &apple)) {
+             score++;
+             velocity += acceleration;
+             cout << "Score: " << score << endl;
+             //Grow body size
+             snake.increaseLength();
+             *//*apple.setPosition(getRandomPoint(&apple, board_width, board_height));*//*
             apple.setPosition(getRandomPoint());
-        }
+        }*/
 
         //Render
         // Update time since last render
@@ -235,21 +232,20 @@ Point2D GameManager::getRandomPoint(GameObject *image, int boardWidth, int board
 }
 */
 Point2D GameManager::getRandomPoint() {
-    return Point2D(
-            static_cast<float>(rand() % (board_width - node_diameter)),
-            static_cast<float>(rand() % (board_height - node_diameter))
-    );
+    auto x = static_cast<float>((rand() % (board_columns - 1)) * node_diameter );
+    auto y = static_cast<float>((rand() % (board_rows - 1)) * node_diameter);
+    return Point2D(x, y);
 }
 
 
 void GameManager::drawGrid(int x, int y, SDL_Renderer &renderer) {
-	for (int i = 0; i != x; i++) {
-		for (int j = 0; j != y; j++) {
-			auto xPos = node_diameter*i;
-			auto yPos = node_diameter*j;
-			SDL_Rect node = {xPos, yPos, node_diameter, node_diameter};
-			SDL_RenderDrawRect(&renderer, &node);
-		}
-	}
+    for (int i = 0; i != x; i++) {
+        for (int j = 0; j != y; j++) {
+            auto xPos = node_diameter * i;
+            auto yPos = node_diameter * j;
+            SDL_Rect node = {xPos, yPos, node_diameter, node_diameter};
+            SDL_RenderDrawRect(&renderer, &node);
+        }
+    }
 }
 
