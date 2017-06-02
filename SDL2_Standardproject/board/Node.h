@@ -31,6 +31,8 @@ public:
 
     bool is(const NodeType &type) const;
 
+    bool hasSamePosition(const Node& rhs) const;
+
     //friend bool operator==(Node& rhs, Node& lhs);
     bool operator==(const Node& lhs) const;
 

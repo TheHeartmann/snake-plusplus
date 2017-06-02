@@ -51,8 +51,7 @@ bool operator!=(const Node& lhs, const Node& rhs) {
 */
 bool Node::operator==(const Node &rhs) const {
     return this->is(rhs.type) &&
-           this->grid_x == rhs.grid_x &&
-           this->grid_y == rhs.grid_y;
+           this->hasSamePosition(rhs);
 }
 
 bool Node::operator!=(const Node &rhs) const {
@@ -73,5 +72,10 @@ Node Node::operator+(Vector2D &rhs) {
     auto y = this->grid_y + rhs.getY();
 
     return Node{x, y};
+}
+
+bool Node::hasSamePosition(const Node &rhs) const {
+    return this->grid_x == rhs.grid_x &&
+           this->grid_y == rhs.grid_y;
 }
 

@@ -18,14 +18,17 @@ public:
     Snake_tests() : Test() {
         NodeType type = NodeType::snake;
 
-        Node tailNode{0,0,type};
-        Node bodyNode1{0,1, type};
-        Node bodyNode2{0,2, type};
-        Node headNode{0,3, type};
+        Node tail{0,0,type};
+        Node body1{0,1, type};
+        Node body2{0,2, type};
+        Node head{0,3, type};
 
-        auto bodyListTwo = {headNode, bodyNode1, bodyNode2, tailNode};
-
-        testSnake = new Snake_new(bodyListTwo);
+        auto bodyList = {head, body1, body2, tail};
+        
+        testSnake = new Snake_new(bodyList);
+        lengthOriginal = testSnake->getLength();
+        downVector = Vector2D{0,1};
+        resultNode = testSnake->getHead() + downVector;
     }
 
     virtual ~Snake_tests() {
@@ -33,17 +36,22 @@ public:
     }
 
     Snake_new *testSnake;
+
+    ulong lengthOriginal;
+    Vector2D downVector = Vector2D(0, 0);
+    Node resultNode;
 };
 
-TEST_F(Snake_tests, SnakeMove_test){
+TEST_F(Snake_tests, snakeMove_test){
+    testSnake->move(resultNode);
+    auto lengthAfterMove = testSnake->getLength();
+    EXPECT_EQ(lengthOriginal, lengthAfterMove);
+}
 
-    auto lengthBeforeMove = testSnake->getLength();
+TEST_F(Snake_tests, snakeGrow_tests){
+    testSnake->grow(resultNode);
+    auto lengthAfterGrow = testSnake->getLength();
 
-//  Get node: game manager's responsibility
-    auto down = Vector2D{0,1};
-    auto newHeadPosition = testSnake->getHead() + down;
-
-//  Move snake
-    testSnake->move(newHeadPosition);
-    EXPECT_EQ(lengthBeforeMove, testSnake->getLength());
+    EXPECT_NE(lengthOriginal, lengthAfterGrow);
+    EXPECT_EQ(lengthOriginal+1, lengthAfterGrow);
 }
