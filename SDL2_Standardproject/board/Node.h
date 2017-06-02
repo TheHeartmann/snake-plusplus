@@ -5,7 +5,7 @@
 #ifndef SNAKE_PLUSPLUS_NODE_H
 #define SNAKE_PLUSPLUS_NODE_H
 
-#include "Vector2D.h"
+#include "board/grid/Vector2D.h"
 
 enum class NodeType { space, apple, snake };
 
