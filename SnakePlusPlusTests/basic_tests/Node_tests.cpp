@@ -51,3 +51,9 @@ TEST_F(Node_tests, copyConstructor_Tests) {
     auto refNode1 = &node1;
     EXPECT_FALSE(refReceive == refNode1);
 }
+
+TEST_F(Node_tests, vectorArithmetics_Tests){
+    auto downVector = Vector2D{0,1};
+    auto newNode = node1+downVector;
+    EXPECT_TRUE(node3 == newNode);
+}
