@@ -36,19 +36,6 @@ Node &Node::operator=(Node &&node) {
     return *this;
 }
 
-/*
-bool operator==(const Node& lhs, const Node& rhs) {
-    return lhs.is(rhs.type) &&
-           lhs.grid_x == rhs.grid_x &&
-           lhs.grid_y == rhs.grid_y;
-}
-
-bool operator!=(const Node& lhs, const Node& rhs) {
-    return !lhs.is(rhs.type) ||
-           lhs.grid_x != rhs.grid_x ||
-           lhs.grid_y != rhs.grid_y;
-}
-*/
 bool Node::operator==(const Node &rhs) const {
     return this->is(rhs.type) &&
            this->hasSamePosition(rhs);

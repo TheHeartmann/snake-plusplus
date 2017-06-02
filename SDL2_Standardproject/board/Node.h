@@ -33,10 +33,8 @@ public:
 
     bool hasSamePosition(const Node& rhs) const;
 
-    //friend bool operator==(Node& rhs, Node& lhs);
     bool operator==(const Node& lhs) const;
 
-    //friend bool operator!=(Node& rhs, Node& lhs);
     bool operator!=(const Node& lhs) const;
 
     Node operator+(Vector2D& rhs);
