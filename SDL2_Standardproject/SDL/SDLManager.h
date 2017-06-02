@@ -15,6 +15,7 @@
 #include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <Specifications.h>
 #include "SDLError.h"
 #include "SDLWindow.h"
 
@@ -37,8 +38,8 @@ public:
 	/* Creates a SDL window, se SDL documentation for flag options. */
 	int createWindow(
 		const std::string& title,
-		const int& width = 550,
-		const int& height = 400,
+		const int& width = Specs.WINDOW_WIDTH,
+		const int& height = Specs.WINDOW_HEIGHT,
 		const int& x = SDL_WINDOWPOS_CENTERED,
 		const int& y = SDL_WINDOWPOS_CENTERED,
 		const Uint32& flags = SDL_WINDOW_SHOWN,

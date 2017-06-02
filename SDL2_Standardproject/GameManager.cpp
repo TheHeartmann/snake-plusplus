@@ -7,6 +7,7 @@
  */
 
 #include "GameManager.h"
+#include "Specifications.h"
 #include <iostream>
 
 using namespace std;
@@ -17,6 +18,7 @@ GameManager::GameManager() {
     m_window = SDLManager::Instance().createWindow("My Awesome SDL 2.0 Game");
     Timer::Instance().init();
 }
+
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
@@ -34,16 +36,14 @@ void GameManager::play() {
     SDLBmp playerBodyImage("SDL2_Standardproject/Assets/gfx/SnakeBody_v1.bmp");
     SDLBmp appleImage("SDL2_Standardproject/Assets/gfx/Apple_v1.bmp");
 
-    Point2D playerStartingPosition((background.getWidth() / 2 - playerHeadImage.getWidth() / 2),
-                                   (background.getHeight() / 2 - playerHeadImage.getHeight() / 2));
-    Point2D applePosition;
+
+    Point2D playerStartingPosition((board_width / 2 - node_radius),
+                                   (board_height / 2 - node_radius));
+    Point2D applePosition = getRandomPoint();
 
     GameObject playerHead(playerStartingPosition, &playerHeadImage, Direction::UP);
     GameObject playerBody(playerStartingPosition, &playerBodyImage, Direction::UP);
     GameObject apple(applePosition, &appleImage, Direction::UP);
-
-    applePosition = randomPlacement(&apple, background.getWidth(), background.getHeight());
-    apple.setPosition(applePosition);
 
     Snake snake(&playerHead, &playerBody, startingLength);
 
@@ -73,7 +73,7 @@ void GameManager::play() {
 
         //Check if we died
         GameObject head(*(snake.getHead()));
-        BorderCollideCheck(&head, &background);
+        isSlithering = !isOutOfBounds(head);
         //		AutoCannibalismCheck (&snake);
 
         //Check if we found object
@@ -83,7 +83,8 @@ void GameManager::play() {
             cout << "Score: " << score << endl;
             //Grow body size
             snake.increaseLength();
-            apple.setPosition(randomPlacement(&apple, background.getWidth(), background.getHeight()));
+            /*apple.setPosition(getRandomPoint(&apple, board_width, board_height));*/
+            apple.setPosition(getRandomPoint());
         }
 
         //push earlier turn to turn queue
@@ -112,7 +113,7 @@ void GameManager::play() {
 }
 
 //Checks input and sets direction
-void GameManager::CheckInput(Direction& direction) {
+void GameManager::CheckInput(Direction &direction) {
 
     // Left key
     if ((InputManager::Instance().KeyDown(SDL_SCANCODE_LEFT) ||
@@ -147,13 +148,12 @@ void GameManager::CheckInput(Direction& direction) {
 }
 
 //Checks if player crashes with window borders
-void GameManager::BorderCollideCheck(GameObject *player, SDLBmp *backround) {
+bool GameManager::isOutOfBounds(GameObject &player) {
     // Check if crash with borders
-    if (player->getPosition().getX() < 0
-        || player->getPosition().getY() < 0
-        || player->getPosition().getX() >= backround->getWidth() - player->getImage()->getWidth()
-        || player->getPosition().getY() >= backround->getHeight() - player->getImage()->getHeight())
-        isSlithering = false;
+
+    float x = player.getPosition().getX();
+    float y = player.getPosition().getY();
+    return (x < 0 || y < 0 || x >= board_width - node_diameter || y >= board_height - node_diameter);
 }
 
 //Checks is player crashes with self
@@ -214,8 +214,16 @@ bool GameManager::CrashedWithObjectCheck(GameObject *player, GameObject *object)
 }
 
 //Sets image position to random position between 0 and board width/height
-Point2D GameManager::randomPlacement(GameObject *image, int boardWidth, int boardHeight) {
+/*
+Point2D GameManager::getRandomPoint(GameObject *image, int boardWidth, int boardHeight) {
     return Point2D(static_cast<float>(rand() % (boardWidth - image->getImage()->getWidth())),
                    static_cast<float>(rand() % (boardHeight - image->getImage()->getHeight())));
+}
+*/
+Point2D GameManager::getRandomPoint() {
+    return Point2D(
+            static_cast<float>(rand() % (board_width - node_diameter)),
+            static_cast<float>(rand() % (board_height - node_diameter))
+    );
 }
 

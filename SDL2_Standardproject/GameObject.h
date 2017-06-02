@@ -1,41 +1,53 @@
 #pragma once
+
 #include "Point2D.h"
 #include "SDL/SDLBmp.h"
 
 
-enum class Direction
-{
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
+enum class Direction {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
 };
 
 
-class GameObject
-{
+class GameObject {
 public:
-	GameObject (Point2D newPosition, SDLBmp* newImage, Direction rotation);
-	Point2D getPosition ();
-	void setPosition (Point2D newPosition);
-	SDLBmp* getImage ();
-	void setImage (SDLBmp* newImage);
-	void rotate(Direction newDirection);
-	Direction getDirection();
-	Point2D getPreviousPosition();
-	void setPreviousPosition (Point2D position);
-	void follow(GameObject* bodyPart);
+    GameObject(Point2D newPosition, SDLBmp *newImage, Direction rotation);
 
-	float getTurnX();
-	float getTurnY();
-	void setTurnX(float newX);
-	void setTurnY(float newY);
+    Point2D getPosition();
+
+    void setPosition(Point2D newPosition);
+
+    SDLBmp *getImage();
+
+    void setImage(SDLBmp *newImage);
+
+    void rotate(Direction newDirection);
+
+    Direction getDirection();
+
+    Point2D getPreviousPosition();
+
+    void setPreviousPosition(Point2D position);
+
+    void follow(GameObject *bodyPart);
+
+    float getTurnX();
+
+    float getTurnY();
+
+    void setTurnX(float newX);
+
+    void setTurnY(float newY);
+
 private:
-	Point2D previousPosition;
-	Point2D position;
-	Direction direction; 
-	SDLBmp* image;
-	float turnX;
-	float turnY;
+    Point2D previousPosition;
+    Point2D position;
+    Direction direction;
+    SDLBmp *image;
+    float turnX;
+    float turnY;
 };
 

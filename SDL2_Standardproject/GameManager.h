@@ -16,31 +16,47 @@
 #include "GameObject.h"
 #include "Snake.h"
 
-class GameManager
-{
+class GameManager {
 public:
-	/* Meyer's singleton style instance call */
-	static GameManager& Instance()
-	{
-		static GameManager g;
-		return g;
-	}
+    /* Meyer's singleton style instance call */
+    static GameManager &Instance() {
+        static GameManager g;
+        return g;
+    }
 
-	/* Kicks off/is the the gameloop */
-	void play();
+    /* Kicks off/is the the gameloop */
+    void play();
+
+
 private:
-	GameManager();								// Hidden constructor
-	GameManager(const GameManager&);			// Hidden copy constructor
-	GameManager& operator=(const GameManager&); // Hidden assign operator
-	void CheckInput (Direction& direction);
-	void BorderCollideCheck(GameObject* player, SDLBmp* background);
-	void AutoCannibalismCheck (Snake* player);
-	Point2D randomPlacement(GameObject* image, int boardWidth, int boardHeight);
-	static bool CrashedWithObjectCheck (GameObject* player, GameObject* object);
 
-	bool isSlithering = true;
-	unsigned int m_window; // pointer to main window
-	float m_lastRender; // Time in seconds since last render
+    GameManager();                                // Hidden constructor
+    GameManager(const GameManager &);            // Hidden copy constructor
+    GameManager &operator=(const GameManager &); // Hidden assign operator
+    void CheckInput(Direction &direction);
+
+    bool isOutOfBounds(GameObject &player);
+
+    void AutoCannibalismCheck(Snake *player);
+
+    /*Point2D getRandomPoint(GameObject* image, int boardWidth, int boardHeight);*/
+    Point2D getRandomPoint();
+
+    static bool CrashedWithObjectCheck(GameObject *player, GameObject *object);
+
+    void init();
+
+    void loadAssets();
+
+
+    bool isSlithering = true;
+    unsigned int m_window; // pointer to main window
+    float m_lastRender; // Time in seconds since last render
+    const int board_width = Specs.BOARD_WIDTH;
+    const int board_height = Specs.BOARD_HEIGHT;
+    const int node_radius = Specs.NODE_RADIUS;
+    const int node_diameter = Specs.NODE_DIAMETER;
+
 
 };
 
