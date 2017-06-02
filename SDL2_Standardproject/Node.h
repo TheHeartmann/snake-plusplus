@@ -5,6 +5,8 @@
 #ifndef SNAKE_PLUSPLUS_NODE_H
 #define SNAKE_PLUSPLUS_NODE_H
 
+#include "Vector2D.h"
+
 enum class NodeType { space, apple, snake };
 
 class Node {
@@ -29,9 +31,11 @@ public:
 
     bool is(NodeType &type) const;
 
-    friend bool operator==(Node rhs, Node lhs);
+    friend bool operator==(Node& rhs, Node& lhs);
 
-    friend bool operator!=(Node rhs, Node lhs);
+    friend bool operator!=(Node& rhs, Node& lhs);
+
+    Node operator+(Vector2D& rhs);
 
     ~Node();
 };

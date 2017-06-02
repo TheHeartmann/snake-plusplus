@@ -29,17 +29,18 @@ Node &Node::operator=(Node &&node) {
     return *this;
 }
 
-bool operator==(Node lhs, Node rhs) {
+bool operator==(Node& lhs, Node& rhs) {
     return lhs.is(rhs.type) &&
            lhs.grid_x == rhs.grid_x &&
            lhs.grid_y == rhs.grid_y;
 }
 
-bool operator!=(Node lhs, Node rhs) {
+bool operator!=(Node& lhs, Node& rhs) {
     return !lhs.is(rhs.type) ||
            lhs.grid_x != rhs.grid_x ||
            lhs.grid_y != rhs.grid_y;
 }
+
 
 bool Node::is(NodeType &_type) const {
     return type == _type;
@@ -49,3 +50,9 @@ Node::~Node() {
 
 }
 
+Node Node::operator+(Vector2D &rhs) {
+    auto x = this->grid_x + rhs.getX();
+    auto y = this->grid_y + rhs.getY();
+
+    return Node{x,y};
+}
