@@ -41,7 +41,6 @@ public:
     }
 
     Snake_new *testSnake;
-
 };
 
 TEST_F(Snake_tests, SnakeMove_test){

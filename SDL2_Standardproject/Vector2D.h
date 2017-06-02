@@ -28,7 +28,10 @@ public:
                lhs._y == rhs._y;
     }
 
-    Vector2D &operator+(Vector2D &other);
+    Vector2D operator+(Vector2D &other);
+
+    template<typename T>
+    Vector2D operator*(T &scalar);
 
     ~Vector2D();
 

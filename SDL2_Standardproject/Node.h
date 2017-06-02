@@ -29,11 +29,13 @@ public:
 
     Node &operator=(Node &&node);
 
-    bool is(NodeType &type) const;
+    bool is(const NodeType &type) const;
 
-    friend bool operator==(Node& rhs, Node& lhs);
+    //friend bool operator==(Node& rhs, Node& lhs);
+    bool operator==(const Node& lhs) const;
 
-    friend bool operator!=(Node& rhs, Node& lhs);
+    //friend bool operator!=(Node& rhs, Node& lhs);
+    bool operator!=(const Node& lhs) const;
 
     Node operator+(Vector2D& rhs);
 
