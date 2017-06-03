@@ -16,22 +16,18 @@ protected:
 
 public:
     Snake_tests() : Test() {
-        NodeType type = NodeType::snake;
+        Node head (0,0);
+        Node body1 (0,1);
+        Node body2 (0,2);
+        Node tail (0,3);
 
-        shared_ptr<Node> head = make_shared<Node>(0,0,type);
-        shared_ptr<Node> body1 = make_shared<Node>(0,1,type);
-        shared_ptr<Node> body2 = make_shared<Node>(0,2,type);
-        shared_ptr<Node> tail = make_shared<Node>(0,3,type);
-
-        list<shared_ptr<Node>> bodyList = {head, body1, body2, tail};
+        list<Node> bodyList = {head, body1, body2, tail};
         
         testSnake = new Snake_new(bodyList);
 	    originalSnake = new Snake_new(bodyList);
         lengthOriginal = testSnake->getLength();
-        downVector = Vector2D{0,1};
-	    auto headPtr = testSnake->getHead().get();
-        resultNode = *headPtr + downVector;
-	    resultPointer = make_shared<Node>(resultNode.grid_x, resultNode.grid_y);
+//        downVector = Vector2D{0,1};
+	    auto resultNode = testSnake->getHead();
     }
 
     virtual ~Snake_tests() {
@@ -42,16 +38,15 @@ public:
 	Snake_new *originalSnake;
 
     ulong lengthOriginal;
-    Vector2D downVector = Vector2D(0, 0);
+    Vector2D downVector = Vector2D(0, 1);
     Node resultNode;
-	shared_ptr<Node> resultPointer;
 };
 
 TEST_F(Snake_tests, snakeMove_test){
 	EXPECT_TRUE(testSnake->getHead() == originalSnake->getHead());
 //	EXPECT_TRUE(testSnake == originalSnake);
 
-    testSnake->move(resultPointer);
+    testSnake->move(resultNode);
     auto lengthAfterMove = testSnake->getLength();
 
     EXPECT_EQ(lengthOriginal, lengthAfterMove);
@@ -63,7 +58,7 @@ TEST_F(Snake_tests, snakeGrow_tests){
 	EXPECT_TRUE(testSnake->getTail() == originalSnake->getTail());
 
 
-	testSnake->grow(resultPointer);
+	testSnake->grow(resultNode);
     auto lengthAfterGrow = testSnake->getLength();
 
     EXPECT_NE(lengthOriginal, lengthAfterGrow);
