@@ -11,6 +11,7 @@
 #include <sstream>
 #include "SDLPng.h"
 #include "SDLManager.h"
+#include <SDL2/SDL_image.h>
 
 /* Loads the given file on construction */
 SDLPng::SDLPng(const std::string &file) {
@@ -18,7 +19,7 @@ SDLPng::SDLPng(const std::string &file) {
     m_texture = NULL;
     IMG_Init(IMG_INIT_PNG);
 //    SDL_Surface *surface = SDL_LoadBMP(file.c_str());
-    SDL_Surface *surface = IMG_Load("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
+    SDL_Surface *surface = IMG_Load(file.c_str());
 
     // Check for errors
     if (surface == NULL) {
