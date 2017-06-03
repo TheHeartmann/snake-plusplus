@@ -10,11 +10,12 @@ Snake_new::Snake_new() {}
 
 Snake_new::~Snake_new() {}
 
-shared_ptr<Node> Snake_new::getHead() const {
-    return body.front();
+shared_ptr<const Node> Snake_new::getHead() const {
+	auto head = body.front();
+	return make_shared<Node>(head);
 }
 
-shared_ptr<Node> Snake_new::getTail() const {
+const Node& Snake_new::getTail() const {
     return body.back();
 }
 

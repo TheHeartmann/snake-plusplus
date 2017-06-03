@@ -6,12 +6,16 @@
 #ifndef SNAKE_PLUSPLUS_SPECIFICATIONS_H
 #define SNAKE_PLUSPLUS_SPECIFICATIONS_H
 
+#define BOARD_COLS_MAC 30
+#define BOARD_ROWS_MAC 20
+
 #include <gameObjects/GameObject.h>
 
-static struct Specs {
+static const struct Specs {
+	Specs() {}
 
 
-    const int WINDOW_WIDTH = 600;
+	const int WINDOW_WIDTH = 600;
     const int WINDOW_HEIGHT = 400;
 
     const int BOARD_RENDER_WIDTH_PX = 600;

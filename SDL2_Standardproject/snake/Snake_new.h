@@ -20,9 +20,9 @@ public:
 
     ~Snake_new();
 
-    shared_ptr<Node> getHead() const;
+	shared_ptr<const Node> getHead() const;
 
-    shared_ptr<Node> getTail() const;
+    const Node& getTail() const;
 
     inline unsigned long getLength() const { return body.size(); }
 
