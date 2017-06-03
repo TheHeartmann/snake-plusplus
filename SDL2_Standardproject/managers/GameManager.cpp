@@ -137,19 +137,23 @@ void GameManager::play() {
 
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
+	        auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
+
+
             // Add bitmaps to renderer
             snake.pushPreviousTurnPosition(snake.getHead()->getPosition());
 
             background->draw();
-            snake.drawSnake();
-            apple.getImage()->draw();
-            // Render window
             drawGrid(board_columns, board_rows, *renderer);
+//            snake.drawSnake();
+            apple.getImage()->draw();
+	        snakeRenderer.render(*snake_new);
+            // Render window
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
         }
 
-        // Sleep to prevent CPU exthaustion (1ms == 1000 frames per second)
+        // Sleep to prevent CPU exhaustion (1ms == 1000 frames per second)
         SDL_Delay(1);
     }
 

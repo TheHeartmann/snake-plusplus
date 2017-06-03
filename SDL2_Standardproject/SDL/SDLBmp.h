@@ -14,25 +14,33 @@
 #include <SDL2/SDL.h>
 #include <board/Node.h>
 
-class SDLBmp
-{
+class SDLBmp {
 public:
 	/* Loads the given file on construction */
-	SDLBmp(const std::string& file);
+	SDLBmp(const std::string &file);
 
-    SDLBmp();
+	SDLBmp();
 
-    /* Free's the memory consumed by the image data */
+	/* Free's the memory consumed by the image data */
 	~SDLBmp();
 
 	/* Adds the image to the master window */
 	void draw();
-	void draw (int rotation);
+	void draw(int rotation);
 
 	/* Getters for image height and width*/
-	int getWidth () const;
-	int getHeight () const;
+	int getWidth() const;
+	int getHeight() const;
 
+	inline void setPosition(int newX, int newY) {
+		x = newX;
+		y = newY;
+	}
+
+	inline void setPositionGridwise(int gridX, int gridY) {
+		x = gridX * 20;
+		y = gridY * 20;
+	}
 
 
 	/* "home brewed" float coordinates, SDL2 uses ints
@@ -40,8 +48,8 @@ public:
 	float x;
 	float y;
 private:
-	SDL_Texture* m_texture; // Pixel data (on GPU)
-	SDL_Renderer* m_renderer; // Pointer to window's renderer.
+	SDL_Texture *m_texture; // Pixel data (on GPU)
+	SDL_Renderer *m_renderer; // Pointer to window's renderer.
 	SDL_Rect m_rect; // Used for w/h, placement and cropping.
 };
 
