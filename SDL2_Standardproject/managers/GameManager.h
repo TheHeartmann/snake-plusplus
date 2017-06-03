@@ -11,6 +11,7 @@
 
 #include <board/GameBoard.h>
 #include <snake/Snake_new.h>
+#include <SDL/SDLPng.h>
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
@@ -69,7 +70,7 @@ private:
     shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
 
-    std::unique_ptr<SDLBmp> background;
+    std::unique_ptr<SDLPng> background;
 
     std::shared_ptr<SDLBmp> playerHeadImage;
     std::shared_ptr<SDLBmp> playerBodyImage;

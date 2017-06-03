@@ -34,7 +34,7 @@ void GameManager::init() {
 }
 
 void GameManager::loadAssets() {
-    background = std::make_unique<SDLBmp>("SDL2_Standardproject/Assets/gfx/sdl2.bmp");
+    background = std::make_unique<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
     playerHeadImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeHead_v1.bmp");
     playerBodyImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/SnakeBody_v1.bmp");
     appleImage = std::make_shared<SDLBmp>("SDL2_Standardproject/Assets/gfx/Apple_v1.bmp");

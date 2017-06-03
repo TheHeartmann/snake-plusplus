@@ -5,12 +5,12 @@ set(CMAKE_CXX_STANDARD 14)
 
 # includes cmake/FindSDL2.cmake
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -lSDL2_image")
 
 
 
-set(SOURCE_FILES Main.cpp SDL2_Standardproject/SDL/SDLPng.h SDL2_Standardproject/SDL/SDLPng.cpp)
-add_executable(snake-plusplus_run ${SOURCE_FILES} SDL2_Standardproject/SDL/SDLPng.cpp)
+set(SOURCE_FILES Main.cpp)
+add_executable(snake-plusplus_run ${SOURCE_FILES} )
 
 
 

@@ -16,13 +16,14 @@
 SDLPng::SDLPng(const std::string &file) {
     // Load image using a CPU surface
     m_texture = NULL;
+    IMG_Init(IMG_INIT_PNG);
 //    SDL_Surface *surface = SDL_LoadBMP(file.c_str());
-    SDL_Surface *surface = NULL;
+    SDL_Surface *surface = IMG_Load("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
 
     // Check for errors
     if (surface == NULL) {
         std::stringstream msg;
-        msg << "Failed to load bitmap: " << file
+        msg << "Failed to load png image: " << file
             << " | details: " << SDL_GetError();
 
         throw SDLError(msg.str());
@@ -55,12 +56,13 @@ SDLPng::SDLPng(const std::string &file) {
 }
 
 /* Free's the memory consumed by the image data */
-SDLBmp::~SDLBmp() {
+SDLPng::~SDLPng() {
     SDL_DestroyTexture(m_texture);
+    IMG_Quit();
 }
 
 /* Adds the image to the master window */
-void SDLBmp::draw() {
+void SDLPng::draw() {
     m_rect.x = static_cast<int>(x); // cast our floats to ints
     m_rect.y = static_cast<int>(y);
 
@@ -68,7 +70,7 @@ void SDLBmp::draw() {
     SDL_RenderCopy(m_renderer, m_texture, NULL, &m_rect);
 }
 
-void SDLBmp::draw(int rotation) {
+void SDLPng::draw(int rotation) {
     double angle;
 
     switch (rotation) {
@@ -97,12 +99,12 @@ void SDLBmp::draw(int rotation) {
     SDL_RenderCopyEx(m_renderer, m_texture, nullptr, &m_rect, angle, nullptr, SDL_FLIP_NONE);
 }
 
-int SDLBmp::getWidth() const {
+int SDLPng::getWidth() const {
     return m_rect.w;
 }
 
-int SDLBmp::getHeight() const {
+int SDLPng::getHeight() const {
     return m_rect.h;
 }
 
-SDLBmp::SDLBmp() {}
+SDLPng::SDLPng() {}
