@@ -11,4 +11,4 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR})
 
-add_library(SDL2_Standardproject STATIC ${SOURCE_FILES} ${HEADER_FILES} ${IMAGE_FILES})
+add_library(SDL2_Standardproject STATIC ${SOURCE_FILES} ${HEADER_FILES} ${IMAGE_FILES} SDL/SDLPng.h SDL/SDLPng.cpp)

@@ -9,8 +9,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall")
 
 
 
-set(SOURCE_FILES Main.cpp)
-add_executable(snake-plusplus_run ${SOURCE_FILES})
+set(SOURCE_FILES Main.cpp SDL2_Standardproject/SDL/SDLPng.h SDL2_Standardproject/SDL/SDLPng.cpp)
+add_executable(snake-plusplus_run ${SOURCE_FILES} SDL2_Standardproject/SDL/SDLPng.cpp)
 
 
 
