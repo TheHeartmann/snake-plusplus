@@ -6,8 +6,9 @@
 #define SNAKE_PLUSPLUS_NODE_H
 
 #include "board/grid/Vector2D.h"
+#include <memory>
 
-enum class NodeType { space, apple, snake };
+using namespace std;
 
 class Node {
 
@@ -15,11 +16,10 @@ public:
 
     int grid_x;
     int grid_y;
-    NodeType type;
 
     Node();
 
-    Node(int _grid_x, int _grid_y, NodeType type = NodeType::space);
+    Node(int _grid_x, int _grid_y);
 
     Node(const Node &node);
 
@@ -29,15 +29,14 @@ public:
 
     Node &operator=(Node &&node);
 
-    bool is(const NodeType &type) const;
 
-    bool hasSamePosition(const Node& rhs) const;
+    bool hasSamePosition(const Node &rhs) const;
 
     bool operator==(const Node& lhs) const;
 
     bool operator!=(const Node& lhs) const;
 
-    Node operator+(Vector2D& rhs);
+    Node operator+(Vector2D& rhs) const;
 
     ~Node();
 };

@@ -8,6 +8,7 @@
 
 #include "GameManager.h"
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -24,12 +25,18 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    auto head = gameboard->getNode(3, 2);
-    auto body1 = gameboard->getNode(3, 1);
-    auto body2 = gameboard->getNode(3, 0);
-    list <shared_ptr<Node>> snakeBody{head, body1, body2};
+    shared_ptr<Node> head = gameboard->getNode(3, 2);
+    shared_ptr<Node> body1 = gameboard->getNode(3, 1);
+    shared_ptr<Node> body2 = gameboard->getNode(3, 0);
 
-    snake_new = std::make_shared<Snake_new>(snakeBody);
+    list <shared_ptr<Node>> startBody{head, body1, body2};
+
+    velocityVec = getVelocityVector(Direction::DOWN);
+    snake_new = std::make_shared<Snake_new>(startBody);
+    appleNode = std::make_shared<Node>(29, 19);
+    //appleNode = std::make_shared<Node>(29, 19, NodeType::apple);
+    //Node appleNode{29,19,NodeType::apple};
+
 
 }
 
@@ -48,10 +55,9 @@ void GameManager::play() {
     loadAssets();
     init();
 
-    Direction direction = Specs.SNAKE_HEAD_STARTDIR;
     int score = 0;
 
-    srand(time(nullptr));
+    srand((unsigned int) time(nullptr));
 
 
     Point2D playerStartingPosition(node_diameter * 10, node_diameter * 10);
@@ -61,13 +67,25 @@ void GameManager::play() {
     GameObject apple(applePosition, appleImage, Direction::UP);
     Snake snake(&playerHead, &playerBody, Specs.SNAKE_INITIAL_LENGTH);
 
+    //System One = node based
+    //Snake _aSnake
+    //System two = grid based
+    //gameboard->placeApple(29,19);
+    // or
+    //gameboard->setNode(29,19, NodeType::apple);
 
 
+    /**gameboard->getNode(29,19) = appleNode;
+    Node appleNode = getRandomNode();
+*/
 
 
     // Calculate render frames per second (second / frames) (60)
     float render_fps = 1.f / 60.f;
     m_lastRender = render_fps; // set it to render immediately
+
+    float move_update = 30.f / 60.f;
+    m_lastMove = move_update;
 
     // Gameloop
     while (running) {
@@ -85,11 +103,16 @@ void GameManager::play() {
 
         Timer::Instance().update();
 
+        m_lastMove += Timer::Instance().deltaTime();
+
+        if (m_lastMove >= move_update)
+            updateBoard();
+
 
 
 
         // Calculate displacement based on deltatime
-        auto displacement = velocity * Timer::Instance().deltaTime();
+        //auto displacement = velocity * Timer::Instance().deltaTime();
         // snake.updatePosition(direction, displacement);
         //Check if we died
         GameObject head(*(snake.getHead()));
@@ -169,17 +192,13 @@ bool GameManager::isOutOfBounds(GameObject &player) {
     return (x < 0 || y < 0 || x >= board_width - node_diameter || y >= board_height - node_diameter);
 }
 
-//Checks is player crashes with self
-void GameManager::AutoCannibalismCheck(Snake *player) {
-    //Add check for autocannibalism when snake has more body parts
-    //head can crash with closest 2 or 3 body parts without ending game to minimize unintended crashes?
-
-    for (auto i = 1; i <= player->getLength() - 3; i++) {
-        if (hitObject(player->getHead(), player->getBodyPartAt(i)))
-            running = false;
-    }
-
+bool GameManager::isOutOfBounds(const Node &node) const {
+    // Check if crash with borders
+    float x = node.grid_x;
+    float y = node.grid_y;
+    return (x < 0 || y < 0 || x >= board_columns || y >= board_rows);
 }
+
 
 //Checks if player crashes with object
 bool GameManager::hitObject(GameObject *player, GameObject *object) {
@@ -247,5 +266,85 @@ void GameManager::drawGrid(int x, int y, SDL_Renderer &renderer) {
             SDL_RenderDrawRect(&renderer, &node);
         }
     }
+}
+
+Vector2D GameManager::getVelocityVector(Direction &direction) {
+    switch (direction) {
+        case Direction::LEFT:
+            return Vector2D{1, 0};
+        case Direction::RIGHT:
+            return Vector2D{-1, 0};
+        case Direction::UP:
+            return Vector2D{0, -1};
+        case Direction::DOWN:
+            return Vector2D{0, 1};
+    }
+
+}
+
+void GameManager::updateBoard() {
+    velocityVec = getVelocityVector(direction);
+    Node nextPos = *snake_new->getHead().get() + velocityVec;
+
+    if (isOutOfBounds(nextPos) || isObstacle(nextPos)) {
+        running = false;
+        return;
+    }
+
+    if (isApple(nextPos)) {
+        snake_new->grow(nextPos);
+        appleNode = getNewAppleNode();
+    } else {
+        snake_new->move(nextPos);
+    }
+
+    m_lastMove = 0.f;
+}
+
+bool GameManager::isApple(const shared_ptr<Node> nextPos) const {
+    return *nextPos == *appleNode;
+}
+
+bool GameManager::isObstacle(const shared_ptr<Node> node) {
+    if(obstacles.size() == 0)
+        return false;
+    return find(obstacles.begin(), obstacles.end(), node) != obstacles.end();
+}
+
+shared_ptr<Node> GameManager::getNewAppleNode() {
+    auto node = getRandomNode();
+    while (!isEmptyNode(node) || isOnSnakeTrajectory(node)) {
+        node = getRandomNode();
+    }
+    return node;
+}
+
+shared_ptr<Node> GameManager::getRandomNode() {
+    auto x = rand() % (board_columns - 1);
+    auto y = rand() % (board_rows - 1);
+    return gameboard->getNode(x, y);
+
+    /*
+    auto randomNode = make_shared<Node>(x,y);
+    return randomNode;
+     */
+
+}
+
+bool GameManager::isEmptyNode(shared_ptr<Node> node) {
+
+    return !isObstacle(node) &&
+            !isSnake(node) &&
+            !isApple(node);
+    /*
+    auto x = node.get()->grid_x;
+    auto y = node.get()->grid_y;
+    auto nodeOnBoard = gameboard->getNode(x,y);
+    return nodeOnBoard->is(NodeType::space);
+     */
+}
+
+bool GameManager::isSnake(shared_ptr<Node> shared_ptr) {
+    return false;
 }
 

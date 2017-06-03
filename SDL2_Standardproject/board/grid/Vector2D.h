@@ -13,6 +13,8 @@ public:
 
     int getY();
 
+    Vector2D():Vector2D(0,0){}
+
     Vector2D(int x, int y);
 
     Vector2D(const Vector2D &v);

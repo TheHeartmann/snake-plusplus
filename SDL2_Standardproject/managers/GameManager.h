@@ -56,6 +56,9 @@ private:
     bool running = true;
     unsigned int m_window; // pointer to main window
     float m_lastRender; // Time in seconds since last render
+    float m_lastMove; // Time in seconds since last position update
+
+    Direction direction = Specs.SNAKE_HEAD_STARTDIR;
     const int board_width = Specs.BOARD_RENDER_WIDTH_PX;
     const int board_height = Specs.BOARD_RENDER_HEIGHT_PX;
     const int board_columns = Specs.BOARD_COLUMNS;
@@ -65,9 +68,12 @@ private:
     const double acceleration = Specs.SNAKE_ACCELERATION;
 
     double velocity = Specs.SNAKE_SPEED;
+    Vector2D velocityVec{};
 
+    vector<shared_ptr<Node>> obstacles{};
     shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
+    shared_ptr<Node> appleNode;
 
     std::unique_ptr<SDLBmp> background;
 
@@ -75,6 +81,23 @@ private:
     std::shared_ptr<SDLBmp> playerBodyImage;
     std::shared_ptr<SDLBmp> appleImage;
 
+    Vector2D getVelocityVector(Direction &direction);
+
+    bool isOutOfBounds(const Node &node) const;
+
+    void updateBoard();
+
+    bool isObstacle(const shared_ptr<Node> node);
+
+    bool isApple(const shared_ptr<Node> nextPos) const;
+
+    shared_ptr<Node> getNewAppleNode();
+
+    shared_ptr<Node> getRandomNode();
+
+    bool isEmptyNode(shared_ptr<Node> shared_ptr);
+
+    bool isSnake(shared_ptr<Node> shared_ptr);
 };
 
 #endif
