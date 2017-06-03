@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(Point2D newPosition, std::shared_ptr<SDLBmp> newImage, Direction newRotation) {
+GameObject::GameObject(Point2D newPosition, std::shared_ptr<SDLPng> newImage, Direction newRotation) {
 
     position = newPosition;
     image = newImage.get();
@@ -20,13 +20,13 @@ void GameObject::setPosition(Point2D newPosition) {
     position = newPosition;
 }
 
-SDLBmp *GameObject::getImage() {
+SDLPng * GameObject::getImage() {
     image->x = this->getPosition().getX();
     image->y = this->getPosition().getY();
     return image;
 }
 
-void GameObject::setImage(SDLBmp *newImage) {
+void GameObject::setImage(SDLPng *newImage) {
     image = newImage;
 }
 

@@ -3,6 +3,7 @@
 #include "board/grid/Point2D.h"
 #include "SDL/SDLBmp.h"
 #include <memory>
+#include <SDL/SDLPng.h>
 
 enum class Direction {
     LEFT,
@@ -14,15 +15,15 @@ enum class Direction {
 
 class GameObject {
 public:
-    GameObject(Point2D newPosition, std::shared_ptr<SDLBmp> newImage, Direction rotation);
+    GameObject(Point2D newPosition, std::shared_ptr<SDLPng> newImage, Direction rotation);
 
     Point2D getPosition();
 
     void setPosition(Point2D newPosition);
 
-    SDLBmp *getImage();
+    SDLPng *getImage();
 
-    void setImage(SDLBmp *newImage);
+    void setImage(SDLPng *newImage);
 
     void rotate(Direction newDirection);
 
@@ -46,7 +47,7 @@ private:
     Point2D previousPosition;
     Point2D position;
     Direction direction;
-    SDLBmp *image;
+    SDLPng *image;
     float turnX;
     float turnY;
 };

@@ -72,9 +72,9 @@ private:
 
     std::unique_ptr<SDLPng> background;
 
-    std::shared_ptr<SDLBmp> playerHeadImage;
-    std::shared_ptr<SDLBmp> playerBodyImage;
-    std::shared_ptr<SDLBmp> appleImage;
+    std::shared_ptr<SDLPng> playerHeadImage;
+    std::shared_ptr<SDLPng> playerBodyImage;
+    std::shared_ptr<SDLPng> appleImage;
 
 };
 
