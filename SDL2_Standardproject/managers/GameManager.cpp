@@ -25,15 +25,16 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    shared_ptr<Node> head = gameboard->getNode(3, 2);
-    shared_ptr<Node> body1 = gameboard->getNode(3, 1);
-    shared_ptr<Node> body2 = gameboard->getNode(3, 0);
+    Node head = gameboard->getNode(3, 2);
+    Node body1 = gameboard->getNode(3, 1);
+    Node body2 = gameboard->getNode(3, 0);
 
-    list <shared_ptr<Node>> startBody{head, body1, body2};
+    list <Node> startBody{head, body1, body2};
 
-    velocityVec = getVelocityVector(Direction::DOWN);
+    Direction startVel = Direction::DOWN;
+    velocityVec = getVelocityVector(startVel);
     snake_new = std::make_shared<Snake_new>(startBody);
-    appleNode = std::make_shared<Node>(29, 19);
+    appleNode = Node{29,19};
     //appleNode = std::make_shared<Node>(29, 19, NodeType::apple);
     //Node appleNode{29,19,NodeType::apple};
 
@@ -284,7 +285,9 @@ Vector2D GameManager::getVelocityVector(Direction &direction) {
 
 void GameManager::updateBoard() {
     velocityVec = getVelocityVector(direction);
-    Node nextPos = *snake_new->getHead().get() + velocityVec;
+    auto snakeHead = snake_new->getHead();
+    Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
+
 
     if (isOutOfBounds(nextPos) || isObstacle(nextPos)) {
         running = false;
@@ -293,7 +296,7 @@ void GameManager::updateBoard() {
 
     if (isApple(nextPos)) {
         snake_new->grow(nextPos);
-        appleNode = getNewAppleNode();
+        getNewAppleNode(appleNode);
     } else {
         snake_new->move(nextPos);
     }
@@ -301,67 +304,56 @@ void GameManager::updateBoard() {
     m_lastMove = 0.f;
 }
 
-bool GameManager::isApple(const shared_ptr<Node> nextPos) const {
-    return *nextPos == *appleNode;
-}
 
-bool GameManager::isObstacle(const shared_ptr<Node> node) {
-    if(obstacles.size() == 0)
-        return false;
-
-    for(auto it = obstacles.begin(); it != obstacles.end(); it++)
-        if (*(it->get())== *node)
-            return true;
-
-    return false;
-}
-
-shared_ptr<Node> GameManager::getNewAppleNode() {
-    auto node = getRandomNode();
-    while (!isEmptyNode(node) || isOnSnakeTrajectory(node)) {
-        node = getRandomNode();
+void GameManager::getNewAppleNode(Node& apple) {
+    auto newPos = getRandomNode();
+    while (!isEmptyNode(newPos) || isOnSnakeTrajectory(newPos) || newPos == apple) {
+        newPos = getRandomNode();
     }
-    return node;
+    apple = newPos;
 }
 
-shared_ptr<Node> GameManager::getRandomNode() {
+Node GameManager::getRandomNode() {
     auto x = rand() % (board_columns - 1);
     auto y = rand() % (board_rows - 1);
     return gameboard->getNode(x, y);
 
-    /*
-    auto randomNode = make_shared<Node>(x,y);
-    return randomNode;
-     */
-
 }
 
-bool GameManager::isEmptyNode(shared_ptr<Node> node) {
+bool GameManager::isEmptyNode(const Node &node) const {
 
     return !isObstacle(node) &&
-            !isSnake(node) &&
-            !isApple(node);
-    /*
-    auto x = node.get()->grid_x;
-    auto y = node.get()->grid_y;
-    auto nodeOnBoard = gameboard->getNode(x,y);
-    return nodeOnBoard->is(NodeType::space);
-     */
+           !isSnake(node) &&
+           !isApple(node);
 }
 
-bool GameManager::isSnake(shared_ptr<Node> node) {
+Node GameManager::getSnakeHeadNextPos(Node &head, Vector2D &vel) {
+    return head + vel;
+}
+
+bool GameManager::isSnake(const Node &node) const {
     auto body = snake_new->getBody();
-    return contains<list>(body, node);
+    return find(body.begin(), body.end(), node) != body.end();
 }
 
-template <typename Container>
-bool GameManager::contains(Container<shared_ptr<Node>> list, const shared_ptr<Node> elem)
-{
-    if(list.size() == 0)
+bool GameManager::isApple(const Node &nextPos) const {
+    return nextPos == appleNode;
+}
+
+bool GameManager::isObstacle(const Node &node) const {
+    if (obstacles.size() == 0)
         return false;
 
-    for(auto it = list.begin(); it != list.end(); it++)
-        if (*(it->get())== *elem)
-            return true;
+    return find(obstacles.begin(), obstacles.end(), node) != obstacles.end();
+}
+
+// check if the node is directly ahead of the snake
+bool GameManager::isOnSnakeTrajectory(const Node &node) const {
+    Vector2D distanceVec{
+            snake_new->getHead().grid_x - node.grid_x,
+            snake_new->getHead().grid_y - node.grid_y
+    };
+
+    if(node.grid_x == snake_new->getHead().grid_x)
     return false;
 }

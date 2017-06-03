@@ -18,7 +18,7 @@ public:
 
     GameBoard(int columns, int rows);
 
-    shared_ptr<Node> getNode(int column, int row);
+    Node getNode(int column, int row);
 
 
     ~GameBoard();
@@ -26,7 +26,7 @@ public:
 private:
     const int columns = Specs.BOARD_COLUMNS;
     const int rows = Specs.BOARD_ROWS;
-    shared_ptr<Node> board[BOARD_COLS_MAC][BOARD_ROWS_MAC];
+    Node board[BOARD_COLS_MAC][BOARD_ROWS_MAC];
 
 };
 

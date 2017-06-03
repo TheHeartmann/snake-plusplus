@@ -15,29 +15,29 @@ using namespace std;
 class Snake_new {
 public:
     Snake_new();
-    Snake_new(initializer_list<shared_ptr<Node>> _body);
-    Snake_new(list<shared_ptr<Node>> _body);
+    Snake_new(initializer_list<Node> _body);
+    Snake_new(list<Node> _body);
 
     ~Snake_new();
 
-	shared_ptr<Node> getHead() const;
+	Node getHead() const;
 
-	shared_ptr<Node> getTail() const;
+	Node getTail() const;
 
-	list<shared_ptr<Node>> getBody() const;
+	list<Node> getBody() const;
 
     inline unsigned long getLength() const { return body.size(); }
 
-    void move(shared_ptr<Node> newHeadPosition);
+    void move(Node& newHeadPosition);
 
-    void grow(shared_ptr<Node> newHeadPosition);
+    void grow(Node& newHeadPosition);
 
 //	bool operator==(const Snake_new& rhs) const;
 //
 //	bool operator!=(const Snake_new& rhs) const;
 
 private:
-    list<shared_ptr<Node>> body{};
+    list<Node> body{};
 };
 
 #endif //SNAKE_PLUSPLUS_SNAKE_NEW_H

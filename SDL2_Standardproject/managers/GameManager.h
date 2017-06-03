@@ -30,7 +30,7 @@ public:
     void play();
 
     template<typename Container>
-    bool contains(Container list, const shared_ptr<Node> elem);
+    bool contains(Container list, const Node& elem);
 
 
 private:
@@ -73,10 +73,10 @@ private:
     double velocity = Specs.SNAKE_SPEED;
     Vector2D velocityVec{};
 
-    vector<shared_ptr<Node>> obstacles{};
+    vector<Node> obstacles{};
     shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
-    shared_ptr<Node> appleNode;
+    Node appleNode{};
 
     std::unique_ptr<SDLBmp> background;
 
@@ -90,19 +90,21 @@ private:
 
     void updateBoard();
 
-    bool isObstacle(const shared_ptr<Node> node);
+    bool isObstacle(const Node &node) const;
 
-    bool isApple(const shared_ptr<Node> nextPos) const;
+    bool isApple(const Node &nextPos) const;
 
-    shared_ptr<Node> getNewAppleNode();
+    void getNewAppleNode(Node& ptr);
 
-    shared_ptr<Node> getRandomNode();
+    Node getRandomNode();
 
-    bool isEmptyNode(shared_ptr<Node> shared_ptr);
+    bool isEmptyNode(const Node &node) const;
 
-    bool isSnake(shared_ptr<Node> shared_ptr);
+    bool isSnake(const Node &node) const;
 
+    Node getSnakeHeadNextPos(Node &head, Vector2D &velocity);
 
+    bool isOnSnakeTrajectory(const Node &node) const;
 };
 
 #endif
