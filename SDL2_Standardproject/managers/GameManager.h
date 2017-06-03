@@ -39,7 +39,7 @@ private:
     GameManager();                                // Hidden constructor
     GameManager(const GameManager &);            // Hidden copy constructor
     GameManager &operator=(const GameManager &); // Hidden assign operator
-    void updateDirection(Direction &direction);
+    void updateDirection(Direction &currentDirection, Direction &nextDirection);
 
     bool isOutOfBounds(GameObject &player);
 
@@ -71,6 +71,7 @@ private:
     const int node_diameter = Specs.NODE_DIAMETER_PX;
     const double acceleration = Specs.SNAKE_ACCELERATION;
 
+    int score = 0;
     double velocity = Specs.SNAKE_SPEED;
     Vector2D velocityVec{};
 
@@ -85,7 +86,7 @@ private:
     std::shared_ptr<SDLBmp> playerBodyImage;
     std::shared_ptr<SDLBmp> appleImage;
 
-    Vector2D getVelocityVector(Direction &direction);
+    Vector2D getVelocityVector(Direction direction);
 
     bool isOutOfBounds(const Node &node) const;
 
@@ -95,7 +96,7 @@ private:
 
     bool isApple(const Node &nextPos) const;
 
-    void getNewAppleNode(Node& ptr);
+    void getValidPosition(Node &obj);
 
     Node getRandomNode();
 
@@ -105,7 +106,12 @@ private:
 
     Node getSnakeHeadNextPos(Node &head, Vector2D &velocity);
 
-    bool isOnSnakeTrajectory(const Node &node) const;
+    bool isTooCloseToSnake(const Node &node) const;
+
+    int scoreDelta = 0;
+
+    void playAppleSound();
+    Direction getNextDirection(Direction &currentDirection);
 };
 
 #endif
