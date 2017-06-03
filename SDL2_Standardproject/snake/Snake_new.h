@@ -20,15 +20,21 @@ public:
 
     ~Snake_new();
 
-	shared_ptr<const Node> getHead() const;
+	shared_ptr<Node> getHead() const;
 
-    const Node& getTail() const;
+	shared_ptr<Node> getTail() const;
+
+	list<shared_ptr<Node>> getBody() const;
 
     inline unsigned long getLength() const { return body.size(); }
 
     void move(shared_ptr<Node> newHeadPosition);
 
     void grow(shared_ptr<Node> newHeadPosition);
+
+//	bool operator==(const Snake_new& rhs) const;
+//
+//	bool operator!=(const Snake_new& rhs) const;
 
 private:
     list<shared_ptr<Node>> body{};
