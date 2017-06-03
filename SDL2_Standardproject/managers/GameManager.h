@@ -29,6 +29,9 @@ public:
     /* Kicks off/is the the gameloop */
     void play();
 
+    template<typename Container>
+    bool contains(Container list, const shared_ptr<Node> elem);
+
 
 private:
 
@@ -98,6 +101,8 @@ private:
     bool isEmptyNode(shared_ptr<Node> shared_ptr);
 
     bool isSnake(shared_ptr<Node> shared_ptr);
+
+
 };
 
 #endif

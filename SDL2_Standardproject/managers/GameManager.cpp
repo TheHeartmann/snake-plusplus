@@ -308,7 +308,12 @@ bool GameManager::isApple(const shared_ptr<Node> nextPos) const {
 bool GameManager::isObstacle(const shared_ptr<Node> node) {
     if(obstacles.size() == 0)
         return false;
-    return find(obstacles.begin(), obstacles.end(), node) != obstacles.end();
+
+    for(auto it = obstacles.begin(); it != obstacles.end(); it++)
+        if (*(it->get())== *node)
+            return true;
+
+    return false;
 }
 
 shared_ptr<Node> GameManager::getNewAppleNode() {
@@ -344,7 +349,19 @@ bool GameManager::isEmptyNode(shared_ptr<Node> node) {
      */
 }
 
-bool GameManager::isSnake(shared_ptr<Node> shared_ptr) {
-    return false;
+bool GameManager::isSnake(shared_ptr<Node> node) {
+    auto body = snake_new->getBody();
+    return contains<list>(body, node);
 }
 
+template <typename Container>
+bool GameManager::contains(Container<shared_ptr<Node>> list, const shared_ptr<Node> elem)
+{
+    if(list.size() == 0)
+        return false;
+
+    for(auto it = list.begin(); it != list.end(); it++)
+        if (*(it->get())== *elem)
+            return true;
+    return false;
+}
