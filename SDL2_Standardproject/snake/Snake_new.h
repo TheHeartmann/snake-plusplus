@@ -14,23 +14,24 @@ using namespace std;
 
 class Snake_new {
 public:
-    Snake_new(initializer_list<Node> _body);
-    Snake_new(list<Node> _body);
+    Snake_new();
+    Snake_new(initializer_list<shared_ptr<Node>> _body);
+    Snake_new(list<shared_ptr<Node>> _body);
 
     ~Snake_new();
 
-    Node getHead() const;
+    shared_ptr<Node> getHead() const;
 
-    Node getTail() const;
+    shared_ptr<Node> getTail() const;
 
-    inline ulong getLength() const { return body.size(); }
+    inline unsigned long getLength() const { return body.size(); }
 
-    void move(Node newHeadPosition);
+    void move(shared_ptr<Node> newHeadPosition);
 
-    void grow(Node newHeadPosition);
+    void grow(shared_ptr<Node> newHeadPosition);
 
 private:
-    list<Node> body{};
+    list<shared_ptr<Node>> body{};
 };
 
 #endif //SNAKE_PLUSPLUS_SNAKE_NEW_H

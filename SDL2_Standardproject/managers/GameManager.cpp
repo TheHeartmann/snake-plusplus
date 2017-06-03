@@ -24,10 +24,10 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(3, 2);
-    Node body1 = gameboard->getNode(3, 1);
-    Node body2 = gameboard->getNode(3, 0);
-    list <Node> snakeBody{head, body1, body2};
+    auto head = gameboard->getNode(3, 2);
+    auto body1 = gameboard->getNode(3, 1);
+    auto body2 = gameboard->getNode(3, 0);
+    list <shared_ptr<Node>> snakeBody{head, body1, body2};
 
     snake_new = std::make_shared<Snake_new>(snakeBody);
 

@@ -26,8 +26,10 @@ GameBoard::~GameBoard() {
     delete[] board;
 }
 
-Node GameBoard::getNode(int column, int row) {
-    Node node = board[column][row];
+//Node GameBoard::getNode(int column, int row) {
+shared_ptr<Node> GameBoard::getNode(int column, int row) {
+    //Node node = board[column][row];
+    shared_ptr<Node> node = &board[column][row];
     return node;
 }
 

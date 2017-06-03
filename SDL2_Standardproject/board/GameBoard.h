@@ -19,7 +19,7 @@ public:
 
     Node **getBoard();
 
-    Node getNode(int column, int row);
+    shared_ptr<Node> getNode(int column, int row);
 
 
     ~GameBoard();
