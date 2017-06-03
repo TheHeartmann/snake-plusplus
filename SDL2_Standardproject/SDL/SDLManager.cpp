@@ -10,6 +10,7 @@
  */
 
 #include <sstream>
+#include <SDL2/SDL_mixer.h>
 #include "SDLManager.h"
 
 SDLManager::SDLManager()
@@ -32,6 +33,8 @@ void SDLManager::init(Uint32 flags)
 /* Quits SDL, windows close when they go out of scope */
 SDLManager::~SDLManager()
 {
+    Mix_Quit();
+    IMG_Quit();
 	SDL_Quit();
 }
 

@@ -34,11 +34,17 @@ void GameManager::init() {
 }
 
 void GameManager::loadAssets() {
+    // Load images
     background = std::make_unique<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
     playerHeadImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeHead.png");
     playerBodyImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBody.png");
     appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
-}
+
+    // Load sounds
+    gameMusic = std::make_unique<SDLSound>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
+    eatingSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
+    gruntSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/grunt.wav");
+    bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");}
 
 
 /* Kicks off/is the the gameloop */

@@ -12,6 +12,7 @@
 #include <board/GameBoard.h>
 #include <snake/Snake_new.h>
 #include <SDL/SDLPng.h>
+#include <SDL/SDLSound.h>
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
@@ -75,6 +76,11 @@ private:
     std::shared_ptr<SDLPng> playerHeadImage;
     std::shared_ptr<SDLPng> playerBodyImage;
     std::shared_ptr<SDLPng> appleImage;
+
+    std::shared_ptr<SDLSound> gameMusic;
+    std::shared_ptr<SDLSound> eatingSound;
+    std::shared_ptr<SDLSound> bonusSound;
+    std::shared_ptr<SDLSound> gruntSound;
 
 };
 

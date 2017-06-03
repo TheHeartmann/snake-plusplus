@@ -2,6 +2,8 @@
  * @file: SDLManager.h
  * @author: Stig M. Halvorsen <halsti@nith.no>
  * @version: 1.0.0 <11.02.2013>
+ * @author: Torstein Alvern <alvtor15@student.westerdals.no>
+ * @version: 1.0.1 <03.06.2017>
  *
  * @description: Singleton class to be used for SDL initialization,
  *				 window management, and rendering (blit'ing).
@@ -33,7 +35,7 @@ public:
 	}
 
 	/* Initializes SDL with the given flags */
-	void init(Uint32 flags = SDL_INIT_VIDEO);
+	void init(Uint32 flags = SDL_INIT_EVERYTHING);
 
 	/* Creates a SDL window, se SDL documentation for flag options. */
 	int createWindow(
