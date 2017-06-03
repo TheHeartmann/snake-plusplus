@@ -18,17 +18,20 @@ public:
     Snake_tests() : Test() {
         NodeType type = NodeType::snake;
 
-        Node tail{0,0,type};
-        Node body1{0,1, type};
-        Node body2{0,2, type};
-        Node head{0,3, type};
+        shared_ptr<Node> head = make_shared<Node>(0,0,type);
+        shared_ptr<Node> body1 = make_shared<Node>(0,1,type);
+        shared_ptr<Node> body2 = make_shared<Node>(0,2,type);
+        shared_ptr<Node> tail = make_shared<Node>(0,3,type);
 
-        auto bodyList = {head, body1, body2, tail};
+        list<shared_ptr<Node>> bodyList = {head, body1, body2, tail};
         
         testSnake = new Snake_new(bodyList);
+	    originalSnake = new Snake_new(bodyList);
         lengthOriginal = testSnake->getLength();
         downVector = Vector2D{0,1};
-        resultNode = testSnake->getHead() + downVector;
+	    auto headPtr = testSnake->getHead().get();
+        resultNode = *headPtr + downVector;
+	    resultPointer = make_shared<Node>(resultNode.grid_x, resultNode.grid_y);
     }
 
     virtual ~Snake_tests() {
@@ -36,22 +39,36 @@ public:
     }
 
     Snake_new *testSnake;
+	Snake_new *originalSnake;
 
     ulong lengthOriginal;
     Vector2D downVector = Vector2D(0, 0);
     Node resultNode;
+	shared_ptr<Node> resultPointer;
 };
 
 TEST_F(Snake_tests, snakeMove_test){
-    testSnake->move(resultNode);
+	EXPECT_TRUE(testSnake->getHead() == originalSnake->getHead());
+//	EXPECT_TRUE(testSnake == originalSnake);
+
+    testSnake->move(resultPointer);
     auto lengthAfterMove = testSnake->getLength();
+
     EXPECT_EQ(lengthOriginal, lengthAfterMove);
+	EXPECT_FALSE(testSnake->getHead() == originalSnake->getHead());
 }
 
 TEST_F(Snake_tests, snakeGrow_tests){
-    testSnake->grow(resultNode);
+	EXPECT_TRUE(testSnake->getHead() == originalSnake->getHead());
+	EXPECT_TRUE(testSnake->getTail() == originalSnake->getTail());
+
+
+	testSnake->grow(resultPointer);
     auto lengthAfterGrow = testSnake->getLength();
 
     EXPECT_NE(lengthOriginal, lengthAfterGrow);
     EXPECT_EQ(lengthOriginal+1, lengthAfterGrow);
+	EXPECT_FALSE(testSnake == originalSnake);
+	EXPECT_FALSE(testSnake->getHead() == originalSnake->getHead());
+	EXPECT_TRUE(testSnake->getTail() == originalSnake->getTail());
 }
