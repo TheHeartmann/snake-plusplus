@@ -17,7 +17,7 @@
 #include "resourceManagement/Timer.h"
 #include "gameObjects/GameObject.h"
 #include "snake/Snake.h"
-#include <snake/SnakeRenderer.h>
+#include <renderers/SnakeRenderer.h>
 
 class GameManager {
 public:

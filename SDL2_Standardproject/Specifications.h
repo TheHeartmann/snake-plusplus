@@ -8,6 +8,7 @@
 
 #define BOARD_COLS_MAC 30
 #define BOARD_ROWS_MAC 20
+#define NODE_DIAMETER_PIXELS 20
 
 #include <gameObjects/GameObject.h>
 

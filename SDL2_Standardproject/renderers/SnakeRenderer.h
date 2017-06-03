@@ -7,7 +7,7 @@
 
 
 #include <SDL/SDLBmp.h>
-#include "Snake_new.h"
+#include "snake/Snake_new.h"
 #include <memory>
 
 class SnakeRenderer {
@@ -18,8 +18,8 @@ public:
 private:
 	std::shared_ptr<SDLBmp> head;
 	std::shared_ptr<SDLBmp> body;
-	void drawHead(const Node &head) const;
-	void renderBody(list <Node> &positions) const;
+	void renderHead(const Node &head) const;
+	void renderBody(list <Node> &bodyList) const;
 };
 
 

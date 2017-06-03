@@ -9,6 +9,7 @@
 #include "GameManager.h"
 #include <iostream>
 #include <algorithm>
+#include <renderers/AppleRenderer.h>
 
 using namespace std;
 
@@ -33,9 +34,9 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(15, 2);
-    Node body1 = gameboard->getNode(15, 1);
-    Node body2 = gameboard->getNode(15, 0);
+    Node head = gameboard->getNode(15, 4);
+    Node body1 = gameboard->getNode(15, 3);
+    Node body2 = gameboard->getNode(15, 2);
 
     list <Node> startBody{head, body1, body2};
 
@@ -50,8 +51,12 @@ void GameManager::init() {
 void GameManager::play() {
     //auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
 
-    loadAssets();
-    init();
+
+	loadAssets();
+	init();
+	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
+	auto appleRenderer = AppleRenderer{appleImage};
+//	auto obstacleRenderer = ObstacleRenderer{};
 
     srand((unsigned int) time(nullptr));
 
@@ -59,11 +64,11 @@ void GameManager::play() {
     float render_fps = 1.f / 60.f;
     m_lastRender = render_fps; // set it to render immediately
 
-    float move_update = 15.f / 60.f;
+    float move_update = 10.f / 60.f;
     m_lastMove = move_update;
 
 	Direction nextDirection;
-
+	
     // Gameloop
     while (running) {
 
@@ -97,12 +102,10 @@ void GameManager::play() {
 
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
-	        auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
-
-
             // Add bitmaps to renderer
             background->draw();
 	        snakeRenderer.render(*snake_new);
+	        appleRenderer.renderApple(appleNode);
             // Render window
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
