@@ -42,7 +42,7 @@ void GameManager::loadAssets() {
 
     // Load sounds
     gameMusic = std::make_unique<SDLSound>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
-    eatingSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
+    appleSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
     gruntSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/grunt.wav");
     bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");}
 
@@ -66,8 +66,6 @@ void GameManager::play() {
     GameObject playerBody(playerStartingPosition, playerBodyImage, Direction::UP);
     GameObject apple(applePosition, appleImage, Direction::UP);
     Snake snake(&playerHead, &playerBody, Specs.SNAKE_INITIAL_LENGTH);
-
-
 
 
 

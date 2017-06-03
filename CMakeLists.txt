@@ -26,4 +26,4 @@ add_subdirectory(SDL2_Standardproject)
 add_subdirectory(SnakePlusPlusTests)
 
 target_link_libraries(snake-plusplus_run SDL2_Standardproject )
-target_link_libraries(snake-plusplus_run ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARIES})
+target_link_libraries(snake-plusplus_run ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARY})

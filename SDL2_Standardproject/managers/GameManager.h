@@ -78,7 +78,7 @@ private:
     std::shared_ptr<SDLPng> appleImage;
 
     std::shared_ptr<SDLSound> gameMusic;
-    std::shared_ptr<SDLSound> eatingSound;
+    std::shared_ptr<SDLSound> appleSound;
     std::shared_ptr<SDLSound> bonusSound;
     std::shared_ptr<SDLSound> gruntSound;
 

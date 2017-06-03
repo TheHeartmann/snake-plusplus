@@ -6,7 +6,7 @@
 #define SNAKE_PLUSPLUS_SDLMUSIC_H
 
 #include <string>
-#include <SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 
 class SDLMusic {
 public:
