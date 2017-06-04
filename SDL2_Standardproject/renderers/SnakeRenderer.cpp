@@ -7,7 +7,7 @@
 void SnakeRenderer::render(const Snake_new &snake, const Direction direction) {
 	renderHead(snake.getHead(), direction);
 	renderBody(snake.getBody(), direction);
-//	renderTail(snake.getTail());
+	renderTail(snake.getTail(), direction);
 }
 
 void SnakeRenderer::renderBody(const list <Node> &bodyList, Direction heading) const {
@@ -20,8 +20,8 @@ void SnakeRenderer::renderHead(const Node &headNode, const Direction direction) 
 	setPosAndRender(headNode, *head, direction);
 }
 
-void SnakeRenderer::renderTail(const Node &tailNode) const {
-	setPosAndRender(tailNode, *tail);
+void SnakeRenderer::renderTail(const Node &tailNode, Direction direction) const {
+	setPosAndRender(tailNode, *tail, direction);
 }
 
 void SnakeRenderer::render() {

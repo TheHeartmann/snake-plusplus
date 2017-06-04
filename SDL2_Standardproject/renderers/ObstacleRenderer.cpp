@@ -5,9 +5,8 @@
 #include "ObstacleRenderer.h"
 
 void ObstacleRenderer::renderObstacles(const vector<Node> nodeList) {
-	for (auto &&node :nodeList) {
-		setPosAndRender(node, *obstacle);
-	}
+	if (nodeList.size() == 0) return;
+	renderList(nodeList, *obstacle);
 }
 
 void ObstacleRenderer::render() {

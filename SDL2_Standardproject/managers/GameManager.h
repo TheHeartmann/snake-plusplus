@@ -68,7 +68,7 @@ private:
     double velocity = Specs.SNAKE_SPEED;
     Vector2D velocityVec{0,0};
 
-    vector<Node> obstacles{};
+    vector<Node> obstaclesVector{};
     shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
     Node appleNode{};
@@ -77,7 +77,11 @@ private:
 
     std::shared_ptr<SDLPng> playerHeadImage;
     std::shared_ptr<SDLPng> playerBodyImage;
+    std::shared_ptr<SDLPng> playerTailImage;
     std::shared_ptr<SDLPng> appleImage;
+
+	std::shared_ptr<SDLPng> obstacleImage;
+
 
     std::shared_ptr<SDLSound> gameMusic;
     std::shared_ptr<SDLSound> appleSound;

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <algorithm>
 #include <renderers/AppleRenderer.h>
+#include <renderers/ObstacleRenderer.h>
 
 using namespace std;
 
@@ -26,7 +27,9 @@ void GameManager::loadAssets() {
     background = std::make_unique<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
     playerHeadImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeHead.png");
     playerBodyImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBody.png");
+    playerTailImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeTail.png");
     appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
+	obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
 
     // Load sounds
     gameMusic = std::make_unique<SDLSound>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
@@ -61,9 +64,9 @@ void GameManager::play() {
 
 	loadAssets();
 	init();
-	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
+	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage, playerTailImage};
 	auto appleRenderer = AppleRenderer{appleImage};
-//	auto obstacleRenderer = ObstacleRenderer{};
+	auto obstacleRenderer = ObstacleRenderer{obstacleImage};
 
     srand((unsigned int) time(nullptr));
 
@@ -113,6 +116,7 @@ void GameManager::play() {
             background->draw();
 	        snakeRenderer.render(*snake_new, direction);
 	        appleRenderer.renderApple(appleNode);
+	        obstacleRenderer.renderObstacles(obstaclesVector);
             // Render window
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
@@ -145,7 +149,7 @@ void GameManager::updateBoard() {
         snake_new->move(nextPos);
     }
 
-    if (snake_new->getLength() >= (board_columns * board_rows - obstacles.size())) {
+    if (snake_new->getLength() >= (board_columns * board_rows - obstaclesVector.size())) {
         running = false;
         return;
     }
@@ -154,7 +158,7 @@ void GameManager::updateBoard() {
     if (scoreDelta >= 10) {
         Node newObstacle;
         getValidPosition(newObstacle);
-        obstacles.push_back(newObstacle);
+        obstaclesVector.push_back(newObstacle);
 
         //increase speed between game updates
         m_lastMove *= 4.f / 5.f;
@@ -264,10 +268,10 @@ bool GameManager::isApple(const Node &nextPos) const {
 }
 
 bool GameManager::isObstacle(const Node &node) const {
-    if (obstacles.size() == 0)
+    if (obstaclesVector.size() == 0)
         return false;
 
-    return find(obstacles.begin(), obstacles.end(), node) != obstacles.end();
+    return find(obstaclesVector.begin(), obstaclesVector.end(), node) != obstaclesVector.end();
 }
 
 // check if the node is directly ahead of the snake
