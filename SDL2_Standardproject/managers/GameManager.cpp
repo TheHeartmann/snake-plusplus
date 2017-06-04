@@ -13,6 +13,7 @@
 #include <renderers/AppleRenderer.h>
 #include <renderers/ObjectListRenderer.h>
 #include <renderers/BackgroundRenderer.h>
+#include <AssetPaths.h>
 
 using namespace std;
 
@@ -26,10 +27,10 @@ GameManager::GameManager() {
 
 void GameManager::loadAssets() {
 	// Load sounds
-	gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
-	appleSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
-	gruntSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/grunt.wav");
-	bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");
+	gameMusic = std::make_unique<SDLMusic>(audio.level);
+	appleSound = std::make_shared<SDLSound>(audio.crunch);
+	gruntSound = std::make_shared<SDLSound>(audio.grunt);
+	bonusSound = std::make_shared<SDLSound>(audio.wormhole);
 }
 
 void GameManager::init() {
@@ -52,18 +53,15 @@ void GameManager::init() {
 }
 
 void GameManager::InitRendererManager() {
-	auto bg = make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
+	auto bg = make_shared<SDLPng>(images.background);
 	auto bgRenderer = BackgroundRenderer{bg};
-	auto appleRenderer = make_shared<AppleRenderer>("SDL2_Standardproject/Assets/gfx/Apple.png", appleNode);
+	auto appleRenderer = make_shared<AppleRenderer>(images.apple, appleNode);
 	auto snakeRenderer = make_shared<SnakeRenderer>(
-			"SDL2_Standardproject/Assets/gfx/SnakeHead.png",
-			"SDL2_Standardproject/Assets/gfx/SnakeBody.png",
-			"SDL2_Standardproject/Assets/gfx/SnakeTail.png",
-			*snake_new,
-			direction
+			images.snakeHead, images.snakeBody, images.snakeTail,
+			*snake_new, direction
 	);
-	auto obstacle = make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
-	auto teleporter =make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Hole.png");
+	auto obstacle = make_shared<SDLPng>(images.obstacle);
+	auto teleporter =make_shared<SDLPng>(images.wormhole);
 	auto obstacleRenderer = make_shared<ObjectListRenderer>(obstacle, obstaclesVector);
     auto teleporterRenderer = make_shared<ObjectListRenderer>(teleporter, teleporterVector);
 	auto objectRenderers = vector<shared_ptr<Renderer>>{appleRenderer, obstacleRenderer, teleporterRenderer, snakeRenderer};
