@@ -36,7 +36,15 @@ public:
     int getWidth () const;
     int getHeight () const;
 
+    inline void setPosition(int newX, int newY) {
+        x = newX;
+        y = newY;
+    }
 
+    inline void setPositionGridwise(int gridX, int gridY) {
+        x = gridX * 20;
+        y = gridY * 20;
+    }
 
     /* "home brewed" float coordinates, SDL2 uses ints
         which is a bit too unpresice. */

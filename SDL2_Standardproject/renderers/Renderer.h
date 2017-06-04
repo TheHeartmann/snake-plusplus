@@ -7,25 +7,25 @@
 
 
 #include <board/Node.h>
-#include <SDL/SDLBmp.h>
+#include <SDL/SDLPng.h>
 
 class Renderer {
 public:
 	virtual void render()= 0;
 protected:
-	void setPosition(const Node &node, SDLBmp& image) const;
-	void render(SDLBmp& image) const;
-	void render(SDLBmp &image, const Direction direction) const;
-	void setPosAndRender(const Node &node, SDLBmp& image) const;
-	void setPosAndRender(const Node &node, SDLBmp &image, const Direction direction) const;
+	void setPosition(const Node &node, SDLPng& image) const;
+	void render(SDLPng& image) const;
+	void render(SDLPng &image, const Direction direction) const;
+	void setPosAndRender(const Node &node, SDLPng& image) const;
+	void setPosAndRender(const Node &node, SDLPng &image, const Direction direction) const;
 	template <typename C>
-	void renderList(C&& nodes, SDLBmp& image) const;
+	void renderList(C&& nodes, SDLPng& image) const;
 	template <typename C>
-	void renderListLinked(C &&nodes, SDLBmp &image, Direction firstDirection) const;
+	void renderListLinked(C &&nodes, SDLPng &image, Direction firstDirection) const;
 };
 
 template<typename C>
-void Renderer::renderList(C &&nodes, SDLBmp &image) const {
+void Renderer::renderList(C &&nodes, SDLPng &image) const {
 	for (auto &node :nodes) {
 		setPosAndRender(node, image);
 	}
@@ -33,7 +33,7 @@ void Renderer::renderList(C &&nodes, SDLBmp &image) const {
 
 
 template<typename C>
-void Renderer::renderListLinked(C &&nodes, SDLBmp &image, Direction firstDirection) const {
+void Renderer::renderListLinked(C &&nodes, SDLPng &image, Direction firstDirection) const {
 	Node currentNode, previousNode;
 	auto directionVec = Vector2D{firstDirection}; //set first direction
 

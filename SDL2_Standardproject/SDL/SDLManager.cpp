@@ -10,6 +10,7 @@
  */
 
 #include <sstream>
+#include <SDL_image.h>
 #include "SDLManager.h"
 
 SDLManager::SDLManager()
