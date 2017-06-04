@@ -326,12 +326,12 @@ bool GameManager::isTeleporter(const Node &node) const {
 }
 
 void GameManager::instantiateTeleporters() {
-    Node Teleporter1;
-    Node Teleporter2;
-    getValidPosition(Teleporter1);
-    getValidPosition(Teleporter2);
-    teleporterVector.push_back(Teleporter1);
-    teleporterVector.push_back(Teleporter2);
+    Node teleporter1;
+    Node teleporter2;
+    getValidPosition(teleporter1);
+    getValidPosition(teleporter2);
+    teleporterVector.push_back(teleporter1);
+    teleporterVector.push_back(teleporter2);
     cout << "Wormholes now on the board!" << endl;
 }
 

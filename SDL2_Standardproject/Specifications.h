@@ -27,7 +27,7 @@ static const struct Specs {
     const Direction SNAKE_HEAD_STARTDIR = Direction::RIGHT;
     double MINIMUM_SPAWN_RADIUS = 5.d;
 
-    const int OBSTACLE_SPAWN_RATE = 3;
+    const int OBSTACLE_SPAWN_RATE = 6;
 
     // time range between in seconds
     const int MIN_APPLE_RESPAWN_TIME = 5;
