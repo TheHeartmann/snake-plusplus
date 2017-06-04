@@ -33,10 +33,6 @@ public:
     /* Kicks off/is the the gameloop */
     void play();
 
-    template<typename Container>
-    bool contains(Container list, const Node& elem);
-
-
 private:
 
     GameManager();                                // Hidden constructor
@@ -48,8 +44,6 @@ private:
 
     void loadAssets();
 
-    void drawGrid(int x, int y, SDL_Renderer &renderer);
-
 
     bool running = true;
     unsigned int m_window; // pointer to main window
@@ -57,20 +51,22 @@ private:
     float m_lastMove; // Time in seconds since last position update
 
     Direction direction = Specs.SNAKE_HEAD_STARTDIR;
-    const int board_width = Specs.BOARD_RENDER_WIDTH_PX;
-    const int board_height = Specs.BOARD_RENDER_HEIGHT_PX;
     const int board_columns = Specs.BOARD_COLUMNS;
     const int board_rows = Specs.BOARD_ROWS;
-    const int node_radius = Specs.NODE_RADIUS_PX;
     const int node_diameter = Specs.NODE_DIAMETER_PX;
-    const double acceleration = Specs.SNAKE_ACCELERATION;
+    float move_update_rate = Specs.MAX_MOVE_INTERVAL;
+    float min_move_interval = Specs.MIN_MOVE_INTERVAL;
 
+    float apple_spawn_time_delta = 0.f + Specs.MIN_APPLE_RESPAWN_TIME;
     int score = 0;
-    double velocity = Specs.SNAKE_SPEED;
-    Vector2D velocityVec{0,0};
+    int scoreDelta = 0;
+    float m_time_delta = 0.f;
+
+    float apple_spawn_time = 0;
+    Vector2D velocityVec{0, 0};
 
     vector<Node> obstaclesVector{};
-    shared_ptr<GameBoard> gameboard;
+    //shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
     Node appleNode{};
 
@@ -81,10 +77,10 @@ private:
     std::shared_ptr<SDLPng> playerTailImage;
     std::shared_ptr<SDLPng> appleImage;
 
-	std::shared_ptr<SDLPng> obstacleImage;
+    std::shared_ptr<SDLPng> obstacleImage;
 
 
-	std::shared_ptr<SDLMusic> gameMusic;
+    std::shared_ptr<SDLMusic> gameMusic;
     std::shared_ptr<SDLSound> appleSound;
     std::shared_ptr<SDLSound> bonusSound;
     std::shared_ptr<SDLSound> gruntSound;
@@ -93,7 +89,7 @@ private:
 
     bool isOutOfBounds(const Node &node) const;
 
-    void updateBoard();
+    void update_game_state();
 
     bool isObstacle(const Node &node) const;
 
@@ -111,10 +107,17 @@ private:
 
     bool isTooCloseToSnake(const Node &node) const;
 
-    int scoreDelta = 0;
+
+    void respawnApple();
 
     void playAppleSound();
-    Direction getNextDirection(Direction &currentDirection);
+
+    bool snakeCrashesWith(Node &node);
+
+    void increaseSpeed(float &currentInterval);
+
+
+
 };
 
 #endif

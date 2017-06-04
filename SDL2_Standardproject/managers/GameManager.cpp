@@ -29,31 +29,30 @@ void GameManager::loadAssets() {
     playerBodyImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBody.png");
     playerTailImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeTail.png");
     appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
-	obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
+    obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
 
     // Load sounds
     gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
     appleSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
     gruntSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/grunt.wav");
-    bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");}
+    bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");
+}
 
 void GameManager::init() {
     // set up game
 
-    gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
-
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(15, 12);
-    Node body1 = gameboard->getNode(15, 11);
-    Node body2 = gameboard->getNode(15, 10);
-    Node body3 = gameboard->getNode(15, 9);
-    Node body4 = gameboard->getNode(15, 8);
+    Node head{15, 12};
+    Node body1{15, 11};
+    Node body2{15, 10};
+    Node body3{15, 9};
+    Node body4{15, 8};
 
     list <Node> startBody{head, body1, body2, body3, body4};
 
     velocityVec = getVelocityVector(Direction::DOWN);
     snake_new = std::make_shared<Snake_new>(startBody);
-    appleNode = Node{29, 19};
+    getValidPosition(appleNode);
 
     gameMusic->playMusic();
 }
@@ -61,24 +60,20 @@ void GameManager::init() {
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
-    //auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
 
-	loadAssets();
-	init();
-	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage, playerTailImage};
-	auto appleRenderer = AppleRenderer{appleImage};
-	auto obstacleRenderer = ObstacleRenderer{obstacleImage};
-
-    srand((unsigned int) time(nullptr));
+    loadAssets();
+    init();
+    auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage, playerTailImage};
+    auto appleRenderer = AppleRenderer{appleImage};
+    auto obstacleRenderer = ObstacleRenderer{obstacleImage};
 
     // Calculate render frames per second (second / frames) (60)
     float render_fps = 1.f / 60.f;
     m_lastRender = render_fps; // set it to render immediately
 
-    float move_update = 10.f / 60.f;
-    m_lastMove = move_update;
+    m_lastMove = move_update_rate;
 
-	Direction nextDirection = direction;
+    Direction nextDirection = direction;
 
     // Gameloop
     while (running) {
@@ -91,33 +86,37 @@ void GameManager::play() {
         if (InputManager::Instance().hasExit() || InputManager::Instance().KeyDown(SDL_SCANCODE_ESCAPE)) {
             running = false;
             break;
-        } else
+        } else {
             // Input Management
             updateDirection(direction, nextDirection);
+        }
 
 
         Timer::Instance().update();
+        m_time_delta = Timer::Instance().deltaTime();
 
         //the logic frames
-        m_lastMove += Timer::Instance().deltaTime();
-        if (m_lastMove >= move_update) {
-	        direction = nextDirection;
-	        updateBoard();
+        m_lastMove += m_time_delta;
+        apple_spawn_time += m_time_delta;
+
+        if (m_lastMove >= move_update_rate) {
+            direction = nextDirection;
+            update_game_state();
             m_lastMove = 0.f;
         }
 
 
         //Render
         // Update time since last render
-        m_lastRender += Timer::Instance().deltaTime();
+        m_lastRender += m_time_delta;
 
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
             // Add bitmaps to renderer
             background->draw();
-	        snakeRenderer.render(*snake_new, direction);
-	        appleRenderer.renderApple(appleNode);
-	        obstacleRenderer.renderObstacles(obstaclesVector);
+            snakeRenderer.render(*snake_new, direction);
+            appleRenderer.renderApple(appleNode);
+            obstacleRenderer.renderObstacles(obstaclesVector);
             // Render window
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
@@ -129,26 +128,33 @@ void GameManager::play() {
 
 }
 
-void GameManager::updateBoard() {
-	velocityVec = getVelocityVector(direction);
+void GameManager::update_game_state() {
+    velocityVec = getVelocityVector(direction);
     auto snakeHead = snake_new->getHead();
     Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
-    if (isOutOfBounds(nextPos) || isObstacle(nextPos) || isSnake(nextPos)) {
+    if (isOutOfBounds(nextPos) || snakeCrashesWith(nextPos)) {
         running = false;
         return;
     }
 
+
     if (isApple(nextPos)) {
         snake_new->grow(nextPos);
-        getValidPosition(appleNode);
+        respawnApple();
+
+        increaseSpeed(move_update_rate);
         playAppleSound();
         score++;
         scoreDelta++;
-
     } else {
         snake_new->move(nextPos);
     }
+
+    if (apple_spawn_time >= apple_spawn_time_delta) {
+        respawnApple();
+    }
+
 
     if (snake_new->getLength() >= (board_columns * board_rows - obstaclesVector.size())) {
         running = false;
@@ -156,17 +162,21 @@ void GameManager::updateBoard() {
     }
 
     //create a new obstacle
-    if (scoreDelta >= 10) {
+    if (scoreDelta >= Specs.OBSTACLE_SPAWN_RATE) {
         Node newObstacle;
         getValidPosition(newObstacle);
         obstaclesVector.push_back(newObstacle);
 
-        //increase speed between game updates
-        m_lastMove *= 4.f / 5.f;
 
         scoreDelta = 0;
     }
 
+}
+
+void GameManager::respawnApple() {
+    getValidPosition(appleNode);
+    apple_spawn_time_delta = Specs.MIN_APPLE_RESPAWN_TIME + rand() % Specs.APPLESPAWN_TIME_DELTA;
+    apple_spawn_time = 0;
 }
 
 
@@ -208,17 +218,6 @@ bool GameManager::isOutOfBounds(const Node &node) const {
 }
 
 
-void GameManager::drawGrid(int x, int y, SDL_Renderer &renderer) {
-    for (int i = 0; i != x; i++) {
-        for (int j = 0; j != y; j++) {
-            auto xPos = node_diameter * i;
-            auto yPos = node_diameter * j;
-            SDL_Rect node = {xPos, yPos, node_diameter, node_diameter};
-            SDL_RenderDrawRect(&renderer, &node);
-        }
-    }
-}
-
 Vector2D GameManager::getVelocityVector(Direction direction) {
     switch (direction) {
         case Direction::LEFT:
@@ -244,8 +243,7 @@ void GameManager::getValidPosition(Node &obj) {
 Node GameManager::getRandomNode() {
     auto x = rand() % (board_columns - 1);
     auto y = rand() % (board_rows - 1);
-    return gameboard->getNode(x, y);
-
+    return Node{x, y};
 }
 
 bool GameManager::isEmptyNode(const Node &node) const {
@@ -285,4 +283,20 @@ bool GameManager::isTooCloseToSnake(const Node &node) const {
 
 void GameManager::playAppleSound() {
     appleSound->playSoundEffect();
+}
+
+bool GameManager::snakeCrashesWith(Node &node) {
+    return (isSnake(node) && node != snake_new->getTail()) ||
+           isObstacle(node);
+
+}
+
+void GameManager::increaseSpeed(float &currentInterval) {
+    if (currentInterval < min_move_interval) {
+        //guard for excessive speeds;
+        currentInterval = min_move_interval;
+    } else {
+        float speedUpdateStep = (move_update_rate - min_move_interval) / (board_rows * board_columns);
+        currentInterval -= speedUpdateStep;
+    }
 }

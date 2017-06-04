@@ -18,6 +18,8 @@
 int main(int argc, char* argv[])
 {
 	// Try to fire off the "game", catch potential failures.
+	srand((unsigned int) time(nullptr));
+
 	try
 	{
 		GameManager::Instance().play();
