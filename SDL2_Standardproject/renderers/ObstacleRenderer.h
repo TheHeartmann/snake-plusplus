@@ -6,32 +6,30 @@
 #define SNAKE_PLUSPLUS_OBSTACLERENDERER_H
 
 
-#include <memory>
 #include <vector>
 #include "Renderer.h"
 
 class ObstacleRenderer : public Renderer {
 public:
 	ObstacleRenderer(const string path, vector<Node> &obstacleList)
-			: obstacle{SDLPng(path)}, obstacleList(obstacleList) {}
+			: obstacle(make_shared<SDLPng>(path)), obstacleList(obstacleList) {}
 
-	ObstacleRenderer(SDLPng &obstacle, vector<Node> &obstacleList)
+	ObstacleRenderer(shared_ptr<SDLPng> &obstacle, vector<Node> &obstacleList)
 			: obstacle(obstacle), obstacleList(obstacleList) {}
 
-	template<typename C>
-	void renderObstacles(const C &nodeList) const;
+	template <typename C>
+	void renderObstacles(C && nodeList) const;
+
 	virtual void render() override;
 private:
-	SDLPng obstacle;
+	shared_ptr<SDLPng> obstacle;
 	vector<Node> &obstacleList;
 };
 
 template<typename C>
-void ObstacleRenderer::renderObstacles(const C &nodeList) const {
+void ObstacleRenderer::renderObstacles(C &&nodeList) const {
 	if (nodeList.size() == 0) return;
-	auto obstacleCopy = obstacle;
-	renderList(nodeList, obstacleCopy);
+	renderList(nodeList, *obstacle);
 }
-
 
 #endif //SNAKE_PLUSPLUS_OBSTACLERENDERER_H

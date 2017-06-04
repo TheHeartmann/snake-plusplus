@@ -32,6 +32,7 @@ void GameManager::loadAssets() {
 	playerTailImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeTail.png");
 	appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
 	obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
+	teleporterImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Hole.png");
 
 	// Load sounds
 	gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
@@ -43,20 +44,18 @@ void GameManager::loadAssets() {
 void GameManager::init() {
 	// set up game
 
-	gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
-
-	// get 4 joint nodes from the board
-	Node head = gameboard->getNode(15, 12);
-	Node body1 = gameboard->getNode(15, 11);
-	Node body2 = gameboard->getNode(15, 10);
-	Node body3 = gameboard->getNode(15, 9);
-	Node body4 = gameboard->getNode(15, 8);
+    // get 4 joint nodes from the board
+    Node head{15, 12};
+    Node body1{15, 11};
+    Node body2{15, 10};
+    Node body3{15, 9};
+    Node body4{15, 8};
 
 	list <Node> startBody{head, body1, body2, body3, body4};
 
-	velocityVec = getVelocityVector(Direction::DOWN);
-	snake_new = std::make_shared<Snake_new>(startBody);
-	appleNode = Node{29, 19};
+    velocityVec = getVelocityVector(Direction::DOWN);
+    snake_new = std::make_shared<Snake_new>(startBody);
+    getValidPosition(appleNode );
 
 	gameMusic->playMusic();
 }
@@ -72,8 +71,11 @@ void GameManager::InitRendererManager() {
 			*snake_new,
 			direction
 	);
-	auto obstacleRenderer = make_shared<ObstacleRenderer>("SDL2_Standardproject/Assets/gfx/Obstacle.png", obstaclesVector);
-	auto objectRenderers = vector<shared_ptr<Renderer>>{appleRenderer, obstacleRenderer, snakeRenderer};
+	auto obstacle = make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
+	auto teleporter =make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Hole.png");
+	auto obstacleRenderer = make_shared<ObstacleRenderer>(obstacle, obstaclesVector);
+    auto teleporterRenderer = make_shared<ObstacleRenderer>(teleporter, teleporterVector);
+	auto objectRenderers = vector<shared_ptr<Renderer>>{appleRenderer, obstacleRenderer, teleporterRenderer, snakeRenderer};
 
 	rendererManager = RendererManager{bgRenderer, objectRenderers};
 }
@@ -88,14 +90,13 @@ void GameManager::play() {
 
 	srand((unsigned int) time(nullptr));
 
-	// Calculate render frames per second (second / frames) (60)
-	float render_fps = 1.f / 60.f;
-	m_lastRender = render_fps; // set it to render immediately
+    // Calculate render frames per second (second / frames) (60)
+    float render_fps = 1.f / 60.f;
+    m_lastRender = render_fps; // set it to render immediately
 
-	float move_update = 10.f / 60.f;
-	m_lastMove = move_update;
+    m_lastMove = move_update_rate;
 
-	Direction nextDirection = direction;
+    Direction nextDirection = direction;
 
 	// Gameloop
 	while (running) {
@@ -108,31 +109,35 @@ void GameManager::play() {
 		if (InputManager::Instance().hasExit() || InputManager::Instance().KeyDown(SDL_SCANCODE_ESCAPE)) {
 			running = false;
 			break;
-		} else
+		} else {
 			// Input Management
 			updateDirection(direction, nextDirection);
+        }
 
 
 		Timer::Instance().update();
+        m_time_delta = Timer::Instance().deltaTime();
 
-		//the logic frames
-		m_lastMove += Timer::Instance().deltaTime();
-		if (m_lastMove >= move_update) {
-			direction = nextDirection;
-			updateBoard();
-			m_lastMove = 0.f;
-		}
+        //the logic frames
+        m_lastMove += m_time_delta;
+        apple_spawn_time += m_time_delta;
+        if (m_lastMove >= move_update_rate) {
+	        direction = nextDirection;
+	        update_game_state();
+            m_lastMove = 0.f;
+        }
 
 
 		//Render
 		// Update time since last render
-		m_lastRender += Timer::Instance().deltaTime();
+		m_lastRender += m_time_delta;
 
 		// Check if it's time to render
 		if (m_lastRender >= render_fps) {
+
 			//render graphics to screen
 			rendererManager.renderAll();
-//			SDLPng{"SDL2_Standardproject/Assets/gfx/SnakeBoard.png"}.draw();
+
 			// Render window
 			SDLManager::Instance().renderWindow(m_window);
 			m_lastRender = 0.f;
@@ -144,45 +149,71 @@ void GameManager::play() {
 
 }
 
-void GameManager::updateBoard() {
-	velocityVec = getVelocityVector(direction);
+void GameManager::update_game_state() {
+    velocityVec = getVelocityVector(direction);
 	auto snakeHead = snake_new->getHead();
 	Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
-	if (isOutOfBounds(nextPos) || isObstacle(nextPos) || isSnake(nextPos)) {
+	if (isOutOfBounds(nextPos) || snakeCrashesWith(nextPos)) {
 		gruntSound->playSoundEffect();
 		running = false;
 		return;
 	}
 
-	if (isApple(nextPos)) {
-		snake_new->grow(nextPos);
-		getValidPosition(appleNode);
-		appleSound->playSoundEffect();
-		score++;
-		scoreDelta++;
 
-	} else {
-		snake_new->move(nextPos);
-	}
+    if (isTeleporter(nextPos)){
+        if ((snakeHead + velocityVec).hasSamePosition(teleporterVector.at(0))){
+            nextPos = getSnakeHeadNextPos(teleporterVector.at(1), velocityVec);
+        } else {
+            nextPos = getSnakeHeadNextPos(teleporterVector.at(0), velocityVec);
+        }
+    }
+
+    if (isApple(nextPos)) {
+        snake_new->grow(nextPos);
+        respawnApple();
+
+        increaseSpeed(move_update_rate);
+        appleSound->playSoundEffect();
+        score++;
+        scoreDelta++;
+
+    } else {
+        snake_new->move(nextPos);
+    }
+
+    if (apple_spawn_time >= apple_spawn_time_delta) {
+        respawnApple();
+    }
 
 	if (snake_new->getLength() >= (board_columns * board_rows - obstaclesVector.size())) {
-		running = false;
-		return;
-	}
+        running = false;
+        return;
+    }
 
-	//create a new obstacle
-	if (scoreDelta >= 1) {
-		Node newObstacle;
-		getValidPosition(newObstacle);
-		obstaclesVector.push_back(newObstacle);
 
-		//increase speed between game updates
-		m_lastMove *= 4.f / 5.f;
+    if (score == 2 && !isTeleportersInstantiated){
+        instantiateTeleporters();
+        isTeleportersInstantiated = true;
+    }
+
+    //create a new obstacle
+	//TODO: uncomment
+    if (scoreDelta >= 1/*Specs.OBSTACLE_SPAWN_RATE*/) {
+        Node newObstacle;
+        getValidPosition(newObstacle);
+        obstaclesVector.push_back(newObstacle);
+
 
 		scoreDelta = 0;
-	}
+    }
 
+}
+
+void GameManager::respawnApple() {
+    getValidPosition(appleNode);
+    apple_spawn_time_delta = Specs.MIN_APPLE_RESPAWN_TIME + rand() % Specs.APPLESPAWN_TIME_DELTA;
+    apple_spawn_time = 0;
 }
 
 
@@ -224,17 +255,6 @@ bool GameManager::isOutOfBounds(const Node &node) const {
 }
 
 
-void GameManager::drawGrid(int x, int y, SDL_Renderer &renderer) {
-	for (int i = 0; i != x; i++) {
-		for (int j = 0; j != y; j++) {
-			auto xPos = node_diameter * i;
-			auto yPos = node_diameter * j;
-			SDL_Rect node = {xPos, yPos, node_diameter, node_diameter};
-			SDL_RenderDrawRect(&renderer, &node);
-		}
-	}
-}
-
 Vector2D GameManager::getVelocityVector(Direction direction) {
 	switch (direction) {
 		case Direction::LEFT:
@@ -244,10 +264,11 @@ Vector2D GameManager::getVelocityVector(Direction direction) {
 		case Direction::UP:
 			return Vector2D{0, -1};
 		case Direction::DOWN:
+		default:
 			return Vector2D{0, 1};
 	}
 
-	return Direction::DOWN; // to avoid compilation warnings and as a safety net
+
 }
 
 void GameManager::getValidPosition(Node &obj) {
@@ -261,14 +282,14 @@ void GameManager::getValidPosition(Node &obj) {
 Node GameManager::getRandomNode() {
 	auto x = rand() % (board_columns - 1);
 	auto y = rand() % (board_rows - 1);
-	return gameboard->getNode(x, y);
-
+	return Node{x, y};
 }
 
 bool GameManager::isEmptyNode(const Node &node) const {
 
 	return !isObstacle(node) &&
 	       !isSnake(node) &&
+	       !isTeleporter(node) &&
 	       !isApple(node);
 }
 
@@ -292,10 +313,41 @@ bool GameManager::isObstacle(const Node &node) const {
 	return find(obstaclesVector.begin(), obstaclesVector.end(), node) != obstaclesVector.end();
 }
 
+bool GameManager::isTeleporter(const Node &node) const {
+    if (teleporterVector.size() == 0)
+        return false;
+
+    return find(teleporterVector.begin(), teleporterVector.end(), node) != teleporterVector.end();
+}
+void GameManager::instantiateTeleporters() {
+    Node Teleporter1;
+    Node Teleporter2;
+    getValidPosition(Teleporter1);
+    getValidPosition(Teleporter2);
+    teleporterVector.push_back(Teleporter1);
+    teleporterVector.push_back(Teleporter2);
+}
+
 // check if the node is directly ahead of the snake
 bool GameManager::isTooCloseToSnake(const Node &node) const {
 	auto radius = sqrt(
 			pow(node.grid_x - snake_new->getHead().grid_x, 2) +
 			pow(node.grid_y - snake_new->getHead().grid_y, 2));
 	return radius <= Specs.MINIMUM_SPAWN_RADIUS;
+}
+
+bool GameManager::snakeCrashesWith(Node &node) {
+    return (isSnake(node) && node != snake_new->getTail()) ||
+           isObstacle(node);
+
+}
+
+void GameManager::increaseSpeed(float &currentInterval) {
+    if (currentInterval < min_move_interval) {
+        //guard for excessive speeds;
+        currentInterval = min_move_interval;
+    } else {
+        float speedUpdateStep = (move_update_rate - min_move_interval) / (board_rows * board_columns);
+        currentInterval -= speedUpdateStep;
+    }
 }

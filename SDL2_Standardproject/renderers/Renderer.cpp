@@ -2,6 +2,7 @@
 // Created by thomas on 04.06.17.
 //
 
+#include <iostream>
 #include "Renderer.h"
 
 void Renderer::setPosition(const Node &node, SDLPng &image) const {

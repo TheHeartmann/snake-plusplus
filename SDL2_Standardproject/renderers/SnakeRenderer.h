@@ -8,7 +8,6 @@
 
 #include "snake/Snake_new.h"
 #include "Renderer.h"
-#include <memory>
 
 class SnakeRenderer : public Renderer {
 public:
@@ -20,7 +19,7 @@ public:
 
 	SnakeRenderer(SDLPng &head, SDLPng &body, SDLPng &tail,
 	              Snake_new &snake, Direction &heading)
-			: head(head), body(body), tail{tail}, snake(snake), heading(heading) {}
+			: head(head), body(body), tail(tail), snake(snake), heading(heading) {}
 
 	void render(const Snake_new &snake, const Direction heading);
 private:

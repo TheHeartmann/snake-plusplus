@@ -7,4 +7,3 @@
 void ObstacleRenderer::render() {
 	renderObstacles(obstacleList);
 }
-

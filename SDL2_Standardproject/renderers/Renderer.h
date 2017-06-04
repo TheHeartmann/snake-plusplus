@@ -26,7 +26,7 @@ protected:
 
 template<typename C>
 void Renderer::renderList(C &&nodes, SDLPng& image) const {
-	for (auto &node :nodes) {
+	for (auto &&node :nodes) {
 		setPosAndRender(node, image);
 	}
 }
