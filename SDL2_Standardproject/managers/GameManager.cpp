@@ -198,8 +198,7 @@ void GameManager::update_game_state() {
     }
 
     //create a new obstacle
-	//TODO: uncomment
-    if (scoreDelta >= 1/*Specs.OBSTACLE_SPAWN_RATE*/) {
+    if (scoreDelta >= Specs.OBSTACLE_SPAWN_RATE) {
         Node newObstacle;
         getValidPosition(newObstacle);
         obstaclesVector.push_back(newObstacle);
