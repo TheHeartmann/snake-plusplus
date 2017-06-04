@@ -14,20 +14,27 @@ using namespace std;
 
 class Snake_new {
 public:
+    Snake_new();
     Snake_new(initializer_list<Node> _body);
     Snake_new(list<Node> _body);
 
     ~Snake_new();
 
-    Node getHead() const;
+	Node getHead() const;
 
-    Node getTail() const;
+	Node getTail() const;
 
-    inline ulong getLength() const { return body.size(); }
+	list<Node> getBody() const;
 
-    void move(Node newHeadPosition);
+    inline unsigned long getLength() const { return body.size(); }
 
-    void grow(Node newHeadPosition);
+    void move(Node& newHeadPosition);
+
+    void grow(Node& newHeadPosition);
+
+//	bool operator==(const Snake_new& rhs) const;
+//
+//	bool operator!=(const Snake_new& rhs) const;
 
 private:
     list<Node> body{};

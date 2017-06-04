@@ -14,10 +14,9 @@ protected:
     }
 
 public:
-    Node node1{1, 2, NodeType::apple};
-    Node node2{1, 2, NodeType::apple};
-    Node node3{2, 2, NodeType::apple};
-    Node node4{1, 2, NodeType::snake};
+    Node node1{1, 2};
+    Node node2{1, 2};
+    Node node3{2, 2};
 
 
     Node_tests() : Test() {
@@ -33,15 +32,6 @@ TEST_F(Node_tests, OverLoadedEqualOperator_test) {
 
     EXPECT_EQ(node1, node2);
     EXPECT_NE(node1, node3);
-    EXPECT_NE(node1, node4);
-}
-
-TEST_F(Node_tests, NodeIsOfNodeType_test) {
-
-    EXPECT_TRUE(node1.is(node2.type));
-    EXPECT_TRUE(node1.is(node3.type));
-    EXPECT_FALSE(node1.is(node4.type));
-
 }
 
 TEST_F(Node_tests, copyConstructor_Tests) {

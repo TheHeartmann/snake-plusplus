@@ -19,6 +19,7 @@
 #include "resourceManagement/Timer.h"
 #include "gameObjects/GameObject.h"
 #include "snake/Snake.h"
+#include <snake/SnakeRenderer.h>
 
 class GameManager {
 public:
@@ -31,13 +32,16 @@ public:
     /* Kicks off/is the the gameloop */
     void play();
 
+    template<typename Container>
+    bool contains(Container list, const Node& elem);
+
 
 private:
 
     GameManager();                                // Hidden constructor
     GameManager(const GameManager &);            // Hidden copy constructor
     GameManager &operator=(const GameManager &); // Hidden assign operator
-    void updateDirection(Direction &direction);
+    void updateDirection(Direction &currentDirection, Direction &nextDirection);
 
     bool isOutOfBounds(GameObject &player);
 
@@ -58,6 +62,9 @@ private:
     bool running = true;
     unsigned int m_window; // pointer to main window
     float m_lastRender; // Time in seconds since last render
+    float m_lastMove; // Time in seconds since last position update
+
+    Direction direction = Specs.SNAKE_HEAD_STARTDIR;
     const int board_width = Specs.BOARD_RENDER_WIDTH_PX;
     const int board_height = Specs.BOARD_RENDER_HEIGHT_PX;
     const int board_columns = Specs.BOARD_COLUMNS;
@@ -66,10 +73,14 @@ private:
     const int node_diameter = Specs.NODE_DIAMETER_PX;
     const double acceleration = Specs.SNAKE_ACCELERATION;
 
+    int score = 0;
     double velocity = Specs.SNAKE_SPEED;
+    Vector2D velocityVec{};
 
+    vector<Node> obstacles{};
     shared_ptr<GameBoard> gameboard;
     shared_ptr<Snake_new> snake_new;
+    Node appleNode{};
 
     std::unique_ptr<SDLPng> background;
 
@@ -82,6 +93,32 @@ private:
     std::shared_ptr<SDLSound> bonusSound;
     std::shared_ptr<SDLSound> gruntSound;
 
+    Vector2D getVelocityVector(Direction direction);
+
+    bool isOutOfBounds(const Node &node) const;
+
+    void updateBoard();
+
+    bool isObstacle(const Node &node) const;
+
+    bool isApple(const Node &nextPos) const;
+
+    void getValidPosition(Node &obj);
+
+    Node getRandomNode();
+
+    bool isEmptyNode(const Node &node) const;
+
+    bool isSnake(const Node &node) const;
+
+    Node getSnakeHeadNextPos(Node &head, Vector2D &velocity);
+
+    bool isTooCloseToSnake(const Node &node) const;
+
+    int scoreDelta = 0;
+
+    void playAppleSound();
+    Direction getNextDirection(Direction &currentDirection);
 };
 
 #endif
