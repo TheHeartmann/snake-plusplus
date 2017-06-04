@@ -9,6 +9,7 @@
 #include "GameManager.h"
 #include <iostream>
 #include <algorithm>
+#include <renderers/AppleRenderer.h>
 
 using namespace std;
 
@@ -39,11 +40,13 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(15, 2);
-    Node body1 = gameboard->getNode(15, 1);
-    Node body2 = gameboard->getNode(15, 0);
+    Node head = gameboard->getNode(15, 12);
+    Node body1 = gameboard->getNode(15, 11);
+    Node body2 = gameboard->getNode(15, 10);
+    Node body3 = gameboard->getNode(15, 9);
+    Node body4 = gameboard->getNode(15, 8);
 
-    list <Node> startBody{head, body1, body2};
+    list <Node> startBody{head, body1, body2, body3, body4};
 
     velocityVec = getVelocityVector(Direction::DOWN);
     snake_new = std::make_shared<Snake_new>(startBody);
@@ -56,8 +59,11 @@ void GameManager::init() {
 void GameManager::play() {
     //auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
 
-    loadAssets();
-    init();
+	loadAssets();
+	init();
+	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
+	auto appleRenderer = AppleRenderer{appleImage};
+//	auto obstacleRenderer = ObstacleRenderer{};
 
     srand((unsigned int) time(nullptr));
 
@@ -65,10 +71,10 @@ void GameManager::play() {
     float render_fps = 1.f / 60.f;
     m_lastRender = render_fps; // set it to render immediately
 
-    float move_update = 15.f / 60.f;
+    float move_update = 10.f / 60.f;
     m_lastMove = move_update;
 
-	Direction nextDirection;
+	Direction nextDirection = direction;
 
     // Gameloop
     while (running) {
@@ -103,12 +109,10 @@ void GameManager::play() {
 
         // Check if it's time to render
         if (m_lastRender >= render_fps) {
-	        auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage};
-
-
             // Add bitmaps to renderer
             background->draw();
-	        snakeRenderer.render(*snake_new);
+	        snakeRenderer.render(*snake_new, direction);
+	        appleRenderer.renderApple(appleNode);
             // Render window
             SDLManager::Instance().renderWindow(m_window);
             m_lastRender = 0.f;
@@ -121,7 +125,7 @@ void GameManager::play() {
 }
 
 void GameManager::updateBoard() {
-    velocityVec = getVelocityVector(direction);
+	velocityVec = getVelocityVector(direction);
     auto snakeHead = snake_new->getHead();
     Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
@@ -193,9 +197,9 @@ void GameManager::updateDirection(Direction &currentDirection, Direction &nextDi
 
 bool GameManager::isOutOfBounds(const Node &node) const {
     // Check if crash with borders
-    float x = node.grid_x;
-    float y = node.grid_y;
-    return (x < 0 || y < 0 || x >= board_columns || y >= board_rows);
+    int xPos = node.grid_x;
+    int yPos = node.grid_y;
+    return (xPos < 0 || yPos < 0 || xPos >= board_columns || yPos >= board_rows);
 }
 
 
@@ -272,72 +276,6 @@ bool GameManager::isTooCloseToSnake(const Node &node) const {
             pow(node.grid_x - snake_new->getHead().grid_x, 2) +
             pow(node.grid_y - snake_new->getHead().grid_y, 2));
     return radius <= Specs.MINIMUM_SPAWN_RADIUS;
-}
-
-
-//Checks if player crashes with window borders
-bool GameManager::isOutOfBounds(GameObject &player) {
-    // Check if crash with borders
-
-    float x = player.getPosition().getX();
-    float y = player.getPosition().getY();
-    return (x < 0 || y < 0 || x >= board_width - node_diameter || y >= board_height - node_diameter);
-}
-
-//Checks if player crashes with object
-bool GameManager::hitObject(GameObject *player, GameObject *object) {
-    //Make 4 points from corners of object
-    //Make square from player head represented as if statement
-    //Check if points are inside square
-
-    // Checks the upper left corner of object
-    if (player->getPosition().isInsideSquare(object->getPosition().getX(),
-                                             object->getPosition().getY(),
-                                             object->getImage()->getWidth(),
-                                             object->getImage()->getHeight()))
-        return true;
-
-    // Checks the upper right corner of object
-    if (Point2D(player->getPosition().getX() + player->getImage()->getWidth(),
-                player->getPosition().getY()
-    ).isInsideSquare(object->getPosition().getX(),
-                     object->getPosition().getY(),
-                     object->getImage()->getWidth(),
-                     object->getImage()->getHeight()))
-        return true;
-
-    // Checks the lower left corner of object
-    if (Point2D(player->getPosition().getX(),
-                player->getPosition().getY() + player->getImage()->getHeight()
-    ).isInsideSquare(object->getPosition().getX(),
-                     object->getPosition().getY(),
-                     object->getImage()->getWidth(),
-                     object->getImage()->getHeight()))
-        return true;
-
-    // Checks the lower right corner of object
-    if (Point2D(player->getPosition().getX() + player->getImage()->getWidth(),
-                player->getPosition().getY() + player->getImage()->getHeight()
-    ).isInsideSquare(object->getPosition().getX(),
-                     object->getPosition().getY(),
-                     object->getImage()->getWidth(),
-                     object->getImage()->getHeight()))
-        return true;
-
-    return false;
-}
-
-//Sets image position to random position between 0 and board width/height
-/*
-Point2D GameManager::getRandomPoint(GameObject *image, int boardWidth, int boardHeight) {
-    return Point2D(static_cast<float>(rand() % (boardWidth - image->getImage()->getWidth())),
-                   static_cast<float>(rand() % (boardHeight - image->getImage()->getHeight())));
-}
-*/
-Point2D GameManager::getRandomPoint() {
-    auto x = static_cast<float>((rand() % (board_columns - 1)) * node_diameter );
-    auto y = static_cast<float>((rand() % (board_rows - 1)) * node_diameter);
-    return Point2D(x, y);
 }
 
 void GameManager::playAppleSound() {

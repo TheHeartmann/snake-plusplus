@@ -17,9 +17,9 @@
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
 #include "resourceManagement/Timer.h"
-#include "gameObjects/GameObject.h"
 #include "snake/Snake.h"
-#include <snake/SnakeRenderer.h>
+#include <renderers/SnakeRenderer.h>
+#include "Direction.h"
 
 class GameManager {
 public:
@@ -42,15 +42,6 @@ private:
     GameManager(const GameManager &);            // Hidden copy constructor
     GameManager &operator=(const GameManager &); // Hidden assign operator
     void updateDirection(Direction &currentDirection, Direction &nextDirection);
-
-    bool isOutOfBounds(GameObject &player);
-
-    void AutoCannibalismCheck(Snake *player);
-
-    /*Point2D getRandomPoint(GameObject* image, int boardWidth, int boardHeight);*/
-    Point2D getRandomPoint();
-
-    static bool hitObject(GameObject *player, GameObject *object);
 
     void init();
 
@@ -75,7 +66,7 @@ private:
 
     int score = 0;
     double velocity = Specs.SNAKE_SPEED;
-    Vector2D velocityVec{};
+    Vector2D velocityVec{0,0};
 
     vector<Node> obstacles{};
     shared_ptr<GameBoard> gameboard;

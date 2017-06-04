@@ -5,6 +5,8 @@
 #ifndef SNAKE_PLUSPLUS_VECTOR2D_H
 #define SNAKE_PLUSPLUS_VECTOR2D_H
 
+#include <Direction.h>
+
 class Vector2D {
 
 public:
@@ -12,6 +14,10 @@ public:
     int getX();
 
     int getY();
+
+	Direction getDirection() const;
+
+	bool isZeroVector() const;
 
     Vector2D():Vector2D(0,0){}
 
@@ -22,6 +28,8 @@ public:
     Vector2D &operator=(const Vector2D &v);
 
     Vector2D(Vector2D &&v);
+
+    Vector2D(Direction direction);
 
     Vector2D &operator=(Vector2D &&v);
 
