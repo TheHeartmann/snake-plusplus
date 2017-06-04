@@ -280,5 +280,5 @@ bool GameManager::isTooCloseToSnake(const Node &node) const {
 }
 
 void GameManager::playAppleSound() {
-    cerr << "Apple Sound should be playing" << endl;
+    appleSound->playSoundEffect();
 }
