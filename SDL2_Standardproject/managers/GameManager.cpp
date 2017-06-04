@@ -11,7 +11,7 @@
 #include <iostream>
 #include <algorithm>
 #include <renderers/AppleRenderer.h>
-#include <renderers/ObstacleRenderer.h>
+#include <renderers/ObjectListRenderer.h>
 #include <renderers/BackgroundRenderer.h>
 
 using namespace std;
@@ -64,8 +64,8 @@ void GameManager::InitRendererManager() {
 	);
 	auto obstacle = make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
 	auto teleporter =make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Hole.png");
-	auto obstacleRenderer = make_shared<ObstacleRenderer>(obstacle, obstaclesVector);
-    auto teleporterRenderer = make_shared<ObstacleRenderer>(teleporter, teleporterVector);
+	auto obstacleRenderer = make_shared<ObjectListRenderer>(obstacle, obstaclesVector);
+    auto teleporterRenderer = make_shared<ObjectListRenderer>(teleporter, teleporterVector);
 	auto objectRenderers = vector<shared_ptr<Renderer>>{appleRenderer, obstacleRenderer, teleporterRenderer, snakeRenderer};
 
 	rendererManager = RendererManager{bgRenderer, objectRenderers};
