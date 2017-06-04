@@ -17,7 +17,7 @@ using namespace std;
 /* Initializes SDL, creates the game window and fires off the timer. */
 GameManager::GameManager() {
     SDLManager::Instance().init();
-    m_window = SDLManager::Instance().createWindow("My Awesome SDL 2.0 Game");
+    m_window = SDLManager::Instance().createWindow("SnakePlusPlus by Hartmann, Alvern, and Marescaux");
     Timer::Instance().init();
 }
 
@@ -135,6 +135,7 @@ void GameManager::updateBoard() {
     Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
     if (isOutOfBounds(nextPos) || isObstacle(nextPos) || isSnake(nextPos)) {
+        gruntSound->playSoundEffect();
         running = false;
         return;
     }
@@ -142,7 +143,7 @@ void GameManager::updateBoard() {
     if (isApple(nextPos)) {
         snake_new->grow(nextPos);
         getValidPosition(appleNode);
-        playAppleSound();
+        appleSound->playSoundEffect();
         score++;
         scoreDelta++;
 
@@ -281,8 +282,4 @@ bool GameManager::isTooCloseToSnake(const Node &node) const {
             pow(node.grid_x - snake_new->getHead().grid_x, 2) +
             pow(node.grid_y - snake_new->getHead().grid_y, 2));
     return radius <= Specs.MINIMUM_SPAWN_RADIUS;
-}
-
-void GameManager::playAppleSound() {
-    appleSound->playSoundEffect();
 }

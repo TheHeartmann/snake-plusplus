@@ -113,7 +113,6 @@ private:
 
     int scoreDelta = 0;
 
-    void playAppleSound();
     Direction getNextDirection(Direction &currentDirection);
 };
 
