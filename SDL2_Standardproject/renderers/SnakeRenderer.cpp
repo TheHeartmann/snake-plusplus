@@ -4,7 +4,7 @@
 
 #include "SnakeRenderer.h"
 
-void SnakeRenderer::render(const Snake_new &snake, const Direction direction) {
+void SnakeRenderer::render(const Snake_new &snake, const Direction direction) const {
 	auto body = snake.getBody();
 
 	renderHead(snake.getHead(), direction);
@@ -19,17 +19,18 @@ void SnakeRenderer::render(const Snake_new &snake, const Direction direction) {
 void SnakeRenderer::renderBody(const list <Node> &bodyList, Direction heading) const {
 	auto snakeBody = bodyList;
 	snakeBody.pop_back(); snakeBody.pop_front(); // remove head and tail
-	renderListLinked(snakeBody, *body, heading);
+	renderListLinked(snakeBody, body, heading);
 }
 
 void SnakeRenderer::renderHead(const Node &headNode, const Direction direction) const {
-	setPosAndRender(headNode, *head, direction);
+	setPosAndRender(headNode, head, direction);
 }
 
 void SnakeRenderer::renderTail(const Node &tailNode, Direction direction) const {
-	setPosAndRender(tailNode, *tail, direction);
+	setPosAndRender(tailNode, tail, direction);
 }
 
-void SnakeRenderer::render() {
 
+void SnakeRenderer::render() const {
+	render(snake, heading);
 }

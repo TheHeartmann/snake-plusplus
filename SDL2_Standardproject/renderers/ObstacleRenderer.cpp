@@ -4,11 +4,7 @@
 
 #include "ObstacleRenderer.h"
 
-void ObstacleRenderer::renderObstacles(const vector<Node> nodeList) {
-	if (nodeList.size() == 0) return;
-	renderList(nodeList, *obstacle);
+void ObstacleRenderer::render() const {
+	renderObstacles(obstacleList);
 }
 
-void ObstacleRenderer::render() {
-
-}
