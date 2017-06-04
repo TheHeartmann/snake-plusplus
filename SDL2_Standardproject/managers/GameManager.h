@@ -73,17 +73,6 @@ private:
     shared_ptr<Snake> snake_new;
     Node appleNode{};
 
-    std::unique_ptr<SDLPng> background;
-
-    std::shared_ptr<SDLPng> playerHeadImage;
-    std::shared_ptr<SDLPng> playerBodyImage;
-    std::shared_ptr<SDLPng> playerTailImage;
-    std::shared_ptr<SDLPng> appleImage;
-
-    std::shared_ptr<SDLPng> obstacleImage;
-	std::shared_ptr<SDLPng> teleporterImage;
-
-
     std::shared_ptr<SDLMusic> gameMusic;
     std::shared_ptr<SDLSound> appleSound;
     std::shared_ptr<SDLSound> bonusSound;
