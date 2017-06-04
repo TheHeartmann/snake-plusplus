@@ -7,6 +7,7 @@
  */
 
 #include "GameManager.h"
+#include "RendererManager.h"
 #include <iostream>
 #include <algorithm>
 #include <renderers/AppleRenderer.h>
@@ -72,7 +73,7 @@ void GameManager::play() {
 	auto obstacleRenderer = ObstacleRenderer{obstacleImage, obstaclesVector};
 	auto backgroundRenderer = BackgroundRenderer{*background};
 	auto objectRenderers = vector<Renderer*>{ &backgroundRenderer, &snakeRenderer, &appleRenderer, &obstacleRenderer};
-
+	auto rendererManager = RendererManager{backgroundRenderer, objectRenderers};
 	srand((unsigned int) time(nullptr));
 
 	// Calculate render frames per second (second / frames) (60)
@@ -117,9 +118,8 @@ void GameManager::play() {
 
 		// Check if it's time to render
 		if (m_lastRender >= render_fps) {
-			for (auto &&renderer : objectRenderers) {
-				renderer->render();
-			}
+			//render graphics to screen
+			rendererManager.renderAll();
 			// Render window
 			SDLManager::Instance().renderWindow(m_window);
 			m_lastRender = 0.f;
