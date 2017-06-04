@@ -7,8 +7,3 @@ Authors:
 - Thomas Hartmann (Gnome)
 - Clement Marescaux (Ubuntu)
 
-## Tests
-
-## Travis
-
-## Design choices
