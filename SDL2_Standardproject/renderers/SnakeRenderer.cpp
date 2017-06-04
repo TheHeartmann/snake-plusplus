@@ -4,7 +4,7 @@
 
 #include "SnakeRenderer.h"
 
-void SnakeRenderer::render(const Snake_new &snake, const Direction direction) const {
+void SnakeRenderer::render(const Snake &snake, const Direction direction) const {
 	auto body = snake.getBody();
 
 	renderHead(snake.getHead(), direction);

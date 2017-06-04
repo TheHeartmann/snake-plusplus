@@ -9,15 +9,13 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include <board/GameBoard.h>
-#include <snake/Snake_new.h>
+#include <snake/Snake.h>
 #include <SDL/SDLPng.h>
 #include <SDL/SDLSound.h>
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
 #include "resourceManagement/Timer.h"
-#include "snake/Snake.h"
 #include <renderers/SnakeRenderer.h>
 #include "Direction.h"
 #include <SDL/SDLMusic.h>
@@ -71,7 +69,7 @@ private:
     vector<Node> obstaclesVector{};
     //shared_ptr<GameBoard> gameboard;
     vector<Node> teleporterVector{};
-    shared_ptr<Snake_new> snake_new;
+    shared_ptr<Snake> snake_new;
     Node appleNode{};
 
     std::unique_ptr<SDLPng> background;

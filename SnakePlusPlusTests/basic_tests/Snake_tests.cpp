@@ -4,7 +4,7 @@
 
 //#include <gtest/gtest.h>
 #include "gtest/gtest.h"
-#include <snake/Snake_new.h>
+#include <snake/Snake.h>
 
 class Snake_tests : public ::testing::Test {
 protected:
@@ -23,8 +23,8 @@ public:
 
         list<Node> bodyList = {head, body1, body2, tail};
         
-        testSnake = new Snake_new(bodyList);
-	    originalSnake = new Snake_new(bodyList);
+        testSnake = new Snake(bodyList);
+	    originalSnake = new Snake(bodyList);
         lengthOriginal = testSnake->getLength();
 //        downVector = Vector2D{0,1};
 	    auto resultNode = testSnake->getHead();
@@ -34,8 +34,8 @@ public:
 
     }
 
-    Snake_new *testSnake;
-	Snake_new *originalSnake;
+    Snake *testSnake;
+	Snake *originalSnake;
 
     ulong lengthOriginal;
     Vector2D downVector = Vector2D(0, 1);
