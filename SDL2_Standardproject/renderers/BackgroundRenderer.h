@@ -10,11 +10,17 @@
 
 class BackgroundRenderer : public Renderer {
 public:
-	BackgroundRenderer(SDLPng &background) : background(background) {}
+	BackgroundRenderer(shared_ptr<SDLPng> &background) : background(background) {}
 
-	virtual void render() const override;
+	BackgroundRenderer(const string path) : background(make_shared<SDLPng>(path)){}
+
+	BackgroundRenderer(){
+		background = make_shared<SDLPng>();
+	};
+
+	virtual void render() override;
 private:
-	SDLPng &background;
+	shared_ptr<SDLPng> background;
 };
 
 

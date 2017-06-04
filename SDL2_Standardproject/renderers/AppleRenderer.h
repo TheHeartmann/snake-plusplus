@@ -10,16 +10,15 @@
 
 class AppleRenderer : public Renderer {
 public:
-//	AppleRenderer(const shared_ptr<SDLPng> &apple)
-//			: apple(apple), appleNode() {}
+	AppleRenderer(const string path, Node &appleNode);
 
-	AppleRenderer(const shared_ptr<SDLPng> &apple, Node &appleNode)
+	AppleRenderer(SDLPng &apple, Node &appleNode)
 			: apple(apple), appleNode(appleNode) {}
 
-	void renderApple(Node &node) const;
-	virtual void render() const override;
+	void renderApple(Node &node);
+	virtual void render() override;
 private:
-	std::shared_ptr<SDLPng> apple;
+	SDLPng apple;
 	Node &appleNode;
 };
 

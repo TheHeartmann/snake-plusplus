@@ -12,13 +12,15 @@
 
 class RendererManager {
 public:
-	RendererManager(BackgroundRenderer backgroundRenderer, const vector<Renderer *> renderers)
+	RendererManager() {}
+
+	RendererManager(BackgroundRenderer &backgroundRenderer, const vector<shared_ptr<Renderer>> renderers)
 			: backgroundRenderer(backgroundRenderer), objectRenderers(renderers) {}
 
 	void renderAll();
 private:
 	BackgroundRenderer backgroundRenderer;
-	vector<Renderer*> objectRenderers;
+	vector<shared_ptr<Renderer>> objectRenderers{};
 };
 
 

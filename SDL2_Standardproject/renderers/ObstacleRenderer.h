@@ -12,24 +12,25 @@
 
 class ObstacleRenderer : public Renderer {
 public:
-//	ObstacleRenderer(const shared_ptr<SDLPng> &obstacle)
-//			: obstacle(obstacle), obstacleList() {}
+	ObstacleRenderer(const string path, vector<Node> &obstacleList)
+			: obstacle{SDLPng(path)}, obstacleList(obstacleList) {}
 
-	ObstacleRenderer(const shared_ptr<SDLPng> &obstacle, vector<Node> &obstacleList)
+	ObstacleRenderer(SDLPng &obstacle, vector<Node> &obstacleList)
 			: obstacle(obstacle), obstacleList(obstacleList) {}
 
 	template<typename C>
 	void renderObstacles(const C &nodeList) const;
-	virtual void render() const override;
+	virtual void render() override;
 private:
-	std::shared_ptr<SDLPng> obstacle;
+	SDLPng obstacle;
 	vector<Node> &obstacleList;
 };
 
 template<typename C>
 void ObstacleRenderer::renderObstacles(const C &nodeList) const {
 	if (nodeList.size() == 0) return;
-	renderList(nodeList, *obstacle);
+	auto obstacleCopy = obstacle;
+	renderList(nodeList, obstacleCopy);
 }
 
 

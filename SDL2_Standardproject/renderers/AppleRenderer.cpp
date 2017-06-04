@@ -4,10 +4,13 @@
 
 #include "AppleRenderer.h"
 
-void AppleRenderer::renderApple(Node &node) const {
-	setPosAndRender(node, *apple);
+void AppleRenderer::renderApple(Node &node) {
+	setPosAndRender(node, apple);
 }
 
-void AppleRenderer::render() const {
+void AppleRenderer::render() {
 	renderApple(appleNode);
 }
+
+AppleRenderer::AppleRenderer(const string path, Node &appleNode)
+		: apple(SDLPng(path)), appleNode(appleNode) {}

@@ -11,7 +11,7 @@
 
 class Renderer {
 public:
-	virtual void render() const = 0;
+	virtual void render() = 0;
 protected:
 	void setPosition(const Node &node, SDLPng& image) const;
 	void render(SDLPng& image) const;
@@ -25,7 +25,7 @@ protected:
 };
 
 template<typename C>
-void Renderer::renderList(C &&nodes, SDLPng &image) const {
+void Renderer::renderList(C &&nodes, SDLPng& image) const {
 	for (auto &node :nodes) {
 		setPosAndRender(node, image);
 	}

@@ -4,6 +4,6 @@
 
 #include "BackgroundRenderer.h"
 
-void BackgroundRenderer::render() const {
-	Renderer::render(background);
+void BackgroundRenderer::render() {
+	Renderer::render(*background);
 }

@@ -4,7 +4,7 @@
 
 #include "ObstacleRenderer.h"
 
-void ObstacleRenderer::render() const {
+void ObstacleRenderer::render() {
 	renderObstacles(obstacleList);
 }
 

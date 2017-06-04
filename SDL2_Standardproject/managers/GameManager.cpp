@@ -61,6 +61,22 @@ void GameManager::init() {
 	gameMusic->playMusic();
 }
 
+void GameManager::InitRendererManager() {
+	auto bg = make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeBoard.png");
+	auto bgRenderer = BackgroundRenderer{bg};
+	auto appleRenderer = make_shared<AppleRenderer>("SDL2_Standardproject/Assets/gfx/Apple.png", appleNode);
+	auto snakeRenderer = make_shared<SnakeRenderer>(
+			"SDL2_Standardproject/Assets/gfx/SnakeHead.png",
+			"SDL2_Standardproject/Assets/gfx/SnakeBody.png",
+			"SDL2_Standardproject/Assets/gfx/SnakeTail.png",
+			*snake_new,
+			direction
+	);
+	auto obstacleRenderer = make_shared<ObstacleRenderer>("SDL2_Standardproject/Assets/gfx/Obstacle.png", obstaclesVector);
+	auto objectRenderers = vector<shared_ptr<Renderer>>{appleRenderer, obstacleRenderer, snakeRenderer};
+
+	rendererManager = RendererManager{bgRenderer, objectRenderers};
+}
 
 /* Kicks off/is the the gameloop */
 void GameManager::play() {
@@ -68,12 +84,8 @@ void GameManager::play() {
 
 	loadAssets();
 	init();
-	auto snakeRenderer = SnakeRenderer{*playerHeadImage, *playerBodyImage, *playerTailImage, *snake_new, direction};
-	auto appleRenderer = AppleRenderer{appleImage, appleNode};
-	auto obstacleRenderer = ObstacleRenderer{obstacleImage, obstaclesVector};
-	auto backgroundRenderer = BackgroundRenderer{*background};
-	auto objectRenderers = vector<Renderer*>{ &backgroundRenderer, &snakeRenderer, &appleRenderer, &obstacleRenderer};
-	auto rendererManager = RendererManager{backgroundRenderer, objectRenderers};
+	InitRendererManager();
+
 	srand((unsigned int) time(nullptr));
 
 	// Calculate render frames per second (second / frames) (60)
@@ -120,6 +132,7 @@ void GameManager::play() {
 		if (m_lastRender >= render_fps) {
 			//render graphics to screen
 			rendererManager.renderAll();
+//			SDLPng{"SDL2_Standardproject/Assets/gfx/SnakeBoard.png"}.draw();
 			// Render window
 			SDLManager::Instance().renderWindow(m_window);
 			m_lastRender = 0.f;

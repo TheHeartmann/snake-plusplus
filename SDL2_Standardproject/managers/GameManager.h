@@ -20,6 +20,7 @@
 #include "snake/Snake.h"
 #include <renderers/SnakeRenderer.h>
 #include "Direction.h"
+#include "RendererManager.h"
 #include <SDL/SDLMusic.h>
 
 class GameManager {
@@ -113,7 +114,8 @@ private:
 
     int scoreDelta = 0;
 
-    Direction getNextDirection(Direction &currentDirection);
+	RendererManager rendererManager{};
+	void InitRendererManager();
 };
 
 #endif

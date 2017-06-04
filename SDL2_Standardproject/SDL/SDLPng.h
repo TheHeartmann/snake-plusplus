@@ -24,7 +24,7 @@ public:
     /* Loads the given file on construction */
     SDLPng(const std::string& file);
 
-    SDLPng();
+    SDLPng() {}
 
     /* Free's the memory consumed by the image data */
     ~SDLPng();
