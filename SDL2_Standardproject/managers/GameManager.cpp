@@ -30,6 +30,7 @@ void GameManager::loadAssets() {
     playerTailImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeTail.png");
     appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
 	obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
+	teleporterImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
 
     // Load sounds
     gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
@@ -68,6 +69,7 @@ void GameManager::play() {
 	auto snakeRenderer = SnakeRenderer{playerHeadImage, playerBodyImage, playerTailImage};
 	auto appleRenderer = AppleRenderer{appleImage};
 	auto obstacleRenderer = ObstacleRenderer{obstacleImage};
+    auto teleporterRenderer = ObstacleRenderer{teleporterImage};
 
     srand((unsigned int) time(nullptr));
 

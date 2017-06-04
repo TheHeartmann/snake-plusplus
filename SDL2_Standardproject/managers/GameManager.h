@@ -82,6 +82,7 @@ private:
     std::shared_ptr<SDLPng> appleImage;
 
 	std::shared_ptr<SDLPng> obstacleImage;
+	std::shared_ptr<SDLPng> teleporterImage;
 
 
 	std::shared_ptr<SDLMusic> gameMusic;
