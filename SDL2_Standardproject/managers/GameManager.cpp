@@ -29,7 +29,7 @@ void GameManager::loadAssets() {
     appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
 
     // Load sounds
-    gameMusic = std::make_unique<SDLSound>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
+    gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
     appleSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/eating.wav");
     gruntSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/grunt.wav");
     bonusSound = std::make_shared<SDLSound>("SDL2_Standardproject/Assets/sfx/bonus.wav");}
@@ -52,6 +52,7 @@ void GameManager::init() {
     snake_new = std::make_shared<Snake_new>(startBody);
     appleNode = Node{29, 19};
 
+    gameMusic->playMusic();
 }
 
 
