@@ -11,7 +11,7 @@
 
 class Renderer {
 public:
-	virtual void render()= 0;
+	virtual void render() const = 0;
 protected:
 	void setPosition(const Node &node, SDLPng& image) const;
 	void render(SDLPng& image) const;

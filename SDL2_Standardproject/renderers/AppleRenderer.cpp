@@ -4,10 +4,10 @@
 
 #include "AppleRenderer.h"
 
-void AppleRenderer::renderApple(Node &node) {
+void AppleRenderer::renderApple(Node &node) const {
 	setPosAndRender(node, *apple);
 }
 
-void AppleRenderer::render() {
-
+void AppleRenderer::render() const {
+	renderApple(appleNode);
 }

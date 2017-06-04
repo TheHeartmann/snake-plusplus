@@ -16,6 +16,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <board/Node.h>
+#include <Specifications.h>
 
 class SDLPng
 {
@@ -42,8 +43,8 @@ public:
     }
 
     inline void setPositionGridwise(int gridX, int gridY) {
-        x = gridX * 20;
-        y = gridY * 20;
+        x = gridX * NODE_DIAMETER_PIXELS;
+        y = gridY * NODE_DIAMETER_PIXELS;
     }
 
     /* "home brewed" float coordinates, SDL2 uses ints

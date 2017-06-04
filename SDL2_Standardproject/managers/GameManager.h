@@ -110,13 +110,9 @@ private:
 
     void respawnApple();
 
-    void playAppleSound();
-
     bool snakeCrashesWith(Node &node);
 
     void increaseSpeed(float &currentInterval);
-
-
 
 };
 

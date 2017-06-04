@@ -10,21 +10,26 @@
 #include "Renderer.h"
 #include <memory>
 
-class SnakeRenderer : Renderer {
+class SnakeRenderer : public Renderer {
 public:
-private:
-	virtual void render() override;
+	virtual void render() const override;
 public:
-	SnakeRenderer(const shared_ptr<SDLPng> &head, const shared_ptr<SDLPng> &body, const shared_ptr<SDLPng> &tail)
-			: head(head), body(body), tail{tail} {}
-	void render(const Snake_new &snake, const Direction direction);
+	SnakeRenderer(SDLPng &head, SDLPng &body, SDLPng &tail,
+	              Snake_new &snake, Direction &heading)
+			: head(head), body(body), tail{tail}, snake(snake), heading(heading) {}
+
+	void render(const Snake_new &snake, const Direction heading) const;
 private:
-	std::shared_ptr<SDLPng> head;
-	std::shared_ptr<SDLPng> body;
-	std::shared_ptr<SDLPng> tail;
-	void renderHead(const Node &headNode, const Direction direction) const;
+	SDLPng &head;
+	SDLPng &body;
+	SDLPng &tail;
+
+	Snake_new const &snake;
+	Direction const &heading;
+
+	void renderHead(const Node &headNode, const Direction heading) const;
 	void renderBody(const list <Node> &bodyList, Direction heading) const;
-	void renderTail(const Node &tailNode, Direction direction) const;
+	void renderTail(const Node &tailNode, Direction heading) const;
 };
 
 

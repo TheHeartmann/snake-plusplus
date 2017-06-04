@@ -15,13 +15,13 @@
 /* Initializes the key system. */
 InputManager::InputManager()
 {
-	m_keys = NULL;
-	m_oldKeys = NULL;
-	m_keyCount = NULL;
-	m_mouseButtons = NULL;
-	m_oldMouseButtons = NULL;
-	m_mouseX = NULL;
-	m_mouseY = NULL;
+	m_keys = 0;
+	m_oldKeys = 0;
+	m_keyCount = 0;
+	m_mouseButtons = 0;
+	m_oldMouseButtons = 0;
+	m_mouseX = 0;
+	m_mouseY = 0;
 
 	// Creating an array for the current state is taken care of by SDL, so we just get ourselves a 
 	// pointer to it. (Array will be deleted by SDL on app exit, so we can forget all about it.)
