@@ -20,6 +20,7 @@
 #include "snake/Snake.h"
 #include <renderers/SnakeRenderer.h>
 #include "Direction.h"
+#include <SDL/SDLMusic.h>
 
 class GameManager {
 public:
@@ -83,7 +84,7 @@ private:
 	std::shared_ptr<SDLPng> obstacleImage;
 
 
-    std::shared_ptr<SDLSound> gameMusic;
+	std::shared_ptr<SDLMusic> gameMusic;
     std::shared_ptr<SDLSound> appleSound;
     std::shared_ptr<SDLSound> bonusSound;
     std::shared_ptr<SDLSound> gruntSound;
