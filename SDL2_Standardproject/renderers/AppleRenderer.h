@@ -7,8 +7,9 @@
 
 
 #include <SDL/SDLBmp.h>
+#include "Renderer.h"
 
-class AppleRenderer {
+class AppleRenderer : Renderer {
 public:
 	AppleRenderer(const shared_ptr<SDLBmp> &apple) : apple(apple) {}
 	void renderApple(Node& node);

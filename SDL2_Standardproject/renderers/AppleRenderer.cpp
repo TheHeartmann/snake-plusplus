@@ -5,6 +5,5 @@
 #include "AppleRenderer.h"
 
 void AppleRenderer::renderApple(Node &node) {
-	apple->setPositionGridwise(node.grid_x, node.grid_y);
-	apple->draw();
+	setPosAndRender(node, *apple);
 }

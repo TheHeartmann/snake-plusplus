@@ -6,7 +6,6 @@
 
 void ObstacleRenderer::renderObstacles(const vector<Node> nodeList) {
 	for (auto &&node :nodeList) {
-		obstacle->setPositionGridwise(node.grid_x, node.grid_y);
-		obstacle->draw();
+		setPosAndRender(node, *obstacle);
 	}
 }

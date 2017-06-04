@@ -9,8 +9,9 @@
 #include <SDL/SDLBmp.h>
 #include <memory>
 #include <vector>
+#include "Renderer.h"
 
-class ObstacleRenderer {
+class ObstacleRenderer : public Renderer {
 public:
 	ObstacleRenderer(const shared_ptr<SDLBmp> &obstacle) : obstacle(obstacle) {}
 	void renderObstacles(const vector<Node> nodeList);
