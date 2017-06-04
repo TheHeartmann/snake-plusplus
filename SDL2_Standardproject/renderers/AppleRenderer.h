@@ -13,6 +13,7 @@ class AppleRenderer : Renderer {
 public:
 	AppleRenderer(const shared_ptr<SDLBmp> &apple) : apple(apple) {}
 	void renderApple(Node& node);
+	virtual void render() override;
 private:
 	std::shared_ptr<SDLBmp> apple;
 };

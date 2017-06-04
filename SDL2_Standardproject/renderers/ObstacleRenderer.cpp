@@ -9,3 +9,7 @@ void ObstacleRenderer::renderObstacles(const vector<Node> nodeList) {
 		setPosAndRender(node, *obstacle);
 	}
 }
+
+void ObstacleRenderer::render() {
+
+}

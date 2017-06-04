@@ -6,11 +6,12 @@
 #ifndef SNAKE_PLUSPLUS_SPECIFICATIONS_H
 #define SNAKE_PLUSPLUS_SPECIFICATIONS_H
 
+#include "Direction.h"
+
 #define BOARD_COLS_MAC 30
 #define BOARD_ROWS_MAC 20
 #define NODE_DIAMETER_PIXELS 20
 
-#include <gameObjects/GameObject.h>
 
 static const struct Specs {
     Specs() {}

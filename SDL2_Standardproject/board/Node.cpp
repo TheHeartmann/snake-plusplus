@@ -57,5 +57,9 @@ bool Node::hasSamePosition(const Node &rhs) const {
            this->grid_y == rhs.grid_y;
 }
 
+Vector2D Node::operator-(Node &target) const {
+	auto x = target.grid_x - this->grid_x;
+    auto y = target.grid_y - this->grid_y;
 
-
+	return Vector2D{x, y};
+}

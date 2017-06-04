@@ -15,6 +15,7 @@ class ObstacleRenderer : public Renderer {
 public:
 	ObstacleRenderer(const shared_ptr<SDLBmp> &obstacle) : obstacle(obstacle) {}
 	void renderObstacles(const vector<Node> nodeList);
+	virtual void render() override;
 private:
 	std::shared_ptr<SDLBmp> obstacle;
 };

@@ -4,14 +4,6 @@
 #include "SDL/SDLBmp.h"
 #include <memory>
 
-enum class Direction {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-};
-
-
 class GameObject {
 public:
     GameObject(Point2D newPosition, std::shared_ptr<SDLBmp> newImage, Direction rotation);

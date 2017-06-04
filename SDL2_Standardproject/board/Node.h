@@ -29,7 +29,6 @@ public:
 
     Node &operator=(Node &&node);
 
-
     bool hasSamePosition(const Node &rhs) const;
 
     bool operator==(const Node& lhs) const;
@@ -38,7 +37,13 @@ public:
 
     Node operator+(Vector2D& rhs) const;
 
-    ~Node();
+    Vector2D operator-(Node &target) const;
+
+	inline int getValue() const { return grid_x + grid_y; }
+
+	inline bool isInitialised() const { return getValue() >= 0; }
+
+	~Node();
 };
 
 

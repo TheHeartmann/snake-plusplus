@@ -7,3 +7,7 @@
 void AppleRenderer::renderApple(Node &node) {
 	setPosAndRender(node, *apple);
 }
+
+void AppleRenderer::render() {
+
+}
