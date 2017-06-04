@@ -68,7 +68,7 @@ void GameManager::play() {
     float move_update = 10.f / 60.f;
     m_lastMove = move_update;
 
-	Direction nextDirection;
+	Direction nextDirection = direction;
 
     // Gameloop
     while (running) {
@@ -119,15 +119,12 @@ void GameManager::play() {
 }
 
 void GameManager::updateBoard() {
-	cout << velocityVec.getX() << endl;
-
 	velocityVec = getVelocityVector(direction);
 	cout << velocityVec.getX() << endl;
     auto snakeHead = snake_new->getHead();
     Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
     if (isOutOfBounds(nextPos) || isObstacle(nextPos) || isSnake(nextPos)) {
-	    cout << "X and Y is " << nextPos.grid_x << "and" << nextPos.grid_y << endl;
         running = false;
         return;
     }
