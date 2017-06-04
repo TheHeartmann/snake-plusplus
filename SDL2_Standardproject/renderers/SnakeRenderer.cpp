@@ -4,9 +4,14 @@
 
 #include "SnakeRenderer.h"
 
-void SnakeRenderer::render(Snake_new &snake) {
+void SnakeRenderer::render(const Snake_new &snake) {
+	auto snakeBody = snake.getBody();
+	auto headNode = snake.getHead();
+	auto tailNode = snake.getTail();
+	snakeBody.pop_back(); snakeBody.pop_front();
 	renderHead(snake.getHead());
-	renderBody(snake.getBody());
+//	renderTail(snake.getTail());
+	renderList(snakeBody, *body);
 }
 
 void SnakeRenderer::renderBody(const list <Node> &bodyList) const {

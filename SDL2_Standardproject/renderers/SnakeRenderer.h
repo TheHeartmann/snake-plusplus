@@ -14,7 +14,7 @@
 class SnakeRenderer : Renderer {
 public:
 	SnakeRenderer(const shared_ptr<SDLBmp> &head, const shared_ptr<SDLBmp> &body) : head(head), body(body) {}
-	void render(Snake_new &snake);
+	void render(const Snake_new &snake);
 private:
 	std::shared_ptr<SDLBmp> head;
 	std::shared_ptr<SDLBmp> body;
