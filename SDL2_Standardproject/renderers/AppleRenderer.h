@@ -12,13 +12,13 @@ class AppleRenderer : public Renderer {
 public:
 	AppleRenderer(const string path, Node &appleNode);
 
-	AppleRenderer(SDLPng &apple, Node &appleNode)
+	AppleRenderer(shared_ptr<SDLPng> apple, Node &appleNode)
 			: apple(apple), appleNode(appleNode) {}
 
 	void renderApple(Node &node);
 	virtual void render() override;
 private:
-	SDLPng apple;
+	shared_ptr<SDLPng> apple;
 	Node &appleNode;
 };
 

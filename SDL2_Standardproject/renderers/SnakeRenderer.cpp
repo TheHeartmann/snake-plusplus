@@ -19,15 +19,15 @@ void SnakeRenderer::render(const Snake &snake, const Direction direction) {
 void SnakeRenderer::renderBody(const list <Node> &bodyList, Direction heading) {
 	auto snakeBody = bodyList;
 	snakeBody.pop_back(); snakeBody.pop_front(); // remove head and tail
-	renderListLinked(snakeBody, body, heading);
+	renderListLinked(snakeBody, *body, heading);
 }
 
 void SnakeRenderer::renderHead(const Node &headNode, const Direction direction) {
-	setPosAndRender(headNode, head, direction);
+	setPosAndRender(headNode, *head, direction);
 }
 
 void SnakeRenderer::renderTail(const Node &tailNode, Direction direction) {
-	setPosAndRender(tailNode, tail, direction);
+	setPosAndRender(tailNode, *tail, direction);
 }
 
 
@@ -38,5 +38,5 @@ void SnakeRenderer::render() {
 SnakeRenderer::SnakeRenderer(const string headPath, const string bodyPath,
                              const string tailPath, const Snake &snake,
                              const Direction &heading)
-		: head(SDLPng(headPath)), body(SDLPng(bodyPath)),
-		  tail(SDLPng(tailPath)), snake(snake), heading(heading) {}
+		: head(make_shared<SDLPng>(headPath)), body(make_shared<SDLPng>(bodyPath)),
+		  tail(make_shared<SDLPng>(tailPath)), snake(snake), heading(heading) {}

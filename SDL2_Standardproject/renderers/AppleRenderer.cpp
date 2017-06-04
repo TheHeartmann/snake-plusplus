@@ -5,7 +5,7 @@
 #include "AppleRenderer.h"
 
 void AppleRenderer::renderApple(Node &node) {
-	setPosAndRender(node, apple);
+	setPosAndRender(node, *apple);
 }
 
 void AppleRenderer::render() {
@@ -13,4 +13,4 @@ void AppleRenderer::render() {
 }
 
 AppleRenderer::AppleRenderer(const string path, Node &appleNode)
-		: apple(SDLPng(path)), appleNode(appleNode) {}
+		: apple(make_shared<SDLPng>(path)), appleNode(appleNode) {}

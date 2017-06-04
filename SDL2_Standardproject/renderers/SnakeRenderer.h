@@ -17,15 +17,15 @@ public:
 	              const string tailPath, const Snake &snake,
 	              const Direction &heading);
 
-	SnakeRenderer(SDLPng &head, SDLPng &body, SDLPng &tail,
+	SnakeRenderer(shared_ptr<SDLPng> head, shared_ptr<SDLPng> body, shared_ptr<SDLPng> tail,
 	              Snake &snake, Direction &heading)
 			: head(head), body(body), tail(tail), snake(snake), heading(heading) {}
 
 	void render(const Snake &snake, const Direction heading);
 private:
-	SDLPng head;
-	SDLPng body;
-	SDLPng tail;
+	shared_ptr<SDLPng> head;
+	shared_ptr<SDLPng> body;
+	shared_ptr<SDLPng> tail;
 
 	Snake const &snake;
 	Direction const &heading;
