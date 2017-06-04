@@ -232,6 +232,7 @@ Vector2D GameManager::getVelocityVector(Direction direction) {
             return Vector2D{0, 1};
     }
 
+	return Direction::DOWN; // to avoid compilation warnings and as a safety net
 }
 
 void GameManager::getValidPosition(Node &obj) {
