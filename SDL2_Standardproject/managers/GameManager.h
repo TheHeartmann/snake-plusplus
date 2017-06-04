@@ -62,6 +62,9 @@ private:
     int scoreDelta = 0;
     float m_time_delta = 0.f;
 
+    float teleporter_spawn_time_delta = 0.f + Specs.MIN_TELEPORTER_RESPAWN_TIME;
+    float teleporter_spawn_time = 0;
+
     float apple_spawn_time = 0;
     Vector2D velocityVec{0, 0};
 
@@ -96,8 +99,10 @@ private:
     bool isObstacle(const Node &node) const;
 
     bool isTeleporter(const Node &node) const;
-    bool isTeleportersInstantiated = false;
+    bool teleportersInstantiated = false;
+    bool teleporterInUse = false;
     void instantiateTeleporters();
+    void respawnTeleporter();
 
     bool isApple(const Node &nextPos) const;
 
