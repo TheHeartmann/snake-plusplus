@@ -5,9 +5,15 @@
 #include "SnakeRenderer.h"
 
 void SnakeRenderer::render(const Snake_new &snake, const Direction direction) {
+	auto body = snake.getBody();
+
 	renderHead(snake.getHead(), direction);
-	renderBody(snake.getBody(), direction);
-	renderTail(snake.getTail(), direction);
+
+	renderBody(body, direction);
+
+	auto it = body.end();
+	auto directionVec = *(std::prev(it, 1)) - *(std::prev(it, 2));
+	renderTail(snake.getTail(), directionVec.getDirection());
 }
 
 void SnakeRenderer::renderBody(const list <Node> &bodyList, Direction heading) const {
