@@ -6,7 +6,7 @@
 #define SNAKE_PLUSPLUS_SNAKERENDERER_H
 
 
-#include "snake/Snake_new.h"
+#include "snake/Snake.h"
 #include "Renderer.h"
 
 class SnakeRenderer : public Renderer {
@@ -14,20 +14,20 @@ public:
 	virtual void render() override;
 public:
 	SnakeRenderer(const string headPath, const string bodyPath,
-	              const string tailPath, const Snake_new &snake,
+	              const string tailPath, const Snake &snake,
 	              const Direction &heading);
 
 	SnakeRenderer(SDLPng &head, SDLPng &body, SDLPng &tail,
-	              Snake_new &snake, Direction &heading)
+	              Snake &snake, Direction &heading)
 			: head(head), body(body), tail(tail), snake(snake), heading(heading) {}
 
-	void render(const Snake_new &snake, const Direction heading);
+	void render(const Snake &snake, const Direction heading);
 private:
 	SDLPng head;
 	SDLPng body;
 	SDLPng tail;
 
-	Snake_new const &snake;
+	Snake const &snake;
 	Direction const &heading;
 
 	void renderHead(const Node &headNode, const Direction heading) ;

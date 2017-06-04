@@ -4,7 +4,7 @@
 
 #include "SnakeRenderer.h"
 
-void SnakeRenderer::render(const Snake_new &snake, const Direction direction) {
+void SnakeRenderer::render(const Snake &snake, const Direction direction) {
 	auto body = snake.getBody();
 
 	renderHead(snake.getHead(), direction);
@@ -36,7 +36,7 @@ void SnakeRenderer::render() {
 }
 
 SnakeRenderer::SnakeRenderer(const string headPath, const string bodyPath,
-                             const string tailPath, const Snake_new &snake,
+                             const string tailPath, const Snake &snake,
                              const Direction &heading)
 		: head(SDLPng(headPath)), body(SDLPng(bodyPath)),
 		  tail(SDLPng(tailPath)), snake(snake), heading(heading) {}

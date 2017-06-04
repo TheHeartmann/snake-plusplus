@@ -383,3 +383,4 @@ __pycache__/
 # cmake-build-debug/CMakeFiles/CMakeTmp/
 # cmake-build-debug/CMakeFiles/Progress/
 # cmake-build-debug/CMakeFiles/snake-plusplus.dir/SDL2_Standardproject/
+/CMakeFiles/

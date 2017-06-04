@@ -27,13 +27,17 @@ static const struct Specs {
     const Direction SNAKE_HEAD_STARTDIR = Direction::RIGHT;
     double MINIMUM_SPAWN_RADIUS = 5.d;
 
-    const int OBSTACLE_SPAWN_RATE = 10;
+    const int OBSTACLE_SPAWN_RATE = 3;
 
     // time range between in seconds
     const int MIN_APPLE_RESPAWN_TIME = 5;
     const int APPLESPAWN_TIME_DELTA = 3;
     const float MAX_MOVE_INTERVAL = 10.f/60.f;
     const float MIN_MOVE_INTERVAL = 3.f/60.f;
+
+    const int MIN_TELEPORTER_RESPAWN_TIME = 10;
+    const int TELEPORTER_TIME_DELTA = 15;
+    int TELEPORTER_INSTANTIATE_SCORE = 5;
 } Specs;
 
 

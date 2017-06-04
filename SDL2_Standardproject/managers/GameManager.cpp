@@ -54,7 +54,7 @@ void GameManager::init() {
 	list <Node> startBody{head, body1, body2, body3, body4};
 
     velocityVec = getVelocityVector(Direction::DOWN);
-    snake_new = std::make_shared<Snake_new>(startBody);
+    snake_new = std::make_shared<Snake>(startBody);
     getValidPosition(appleNode );
 
 	gameMusic->playMusic();
@@ -121,6 +121,7 @@ void GameManager::play() {
         //the logic frames
         m_lastMove += m_time_delta;
         apple_spawn_time += m_time_delta;
+        if (teleportersInstantiated && !teleporterInUse) teleporter_spawn_time += m_time_delta;
         if (m_lastMove >= move_update_rate) {
 	        direction = nextDirection;
 	        update_game_state();
@@ -154,20 +155,26 @@ void GameManager::update_game_state() {
 	auto snakeHead = snake_new->getHead();
 	Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
-	if (isOutOfBounds(nextPos) || snakeCrashesWith(nextPos)) {
-		gruntSound->playSoundEffect();
-		running = false;
-		return;
-	}
-
-
-    if (isTeleporter(nextPos)){
-        if ((snakeHead + velocityVec).hasSamePosition(teleporterVector.at(0))){
-            nextPos = getSnakeHeadNextPos(teleporterVector.at(1), velocityVec);
+    if (!teleporterInUse && isTeleporter(snakeHead)){
+        if (snakeHead.hasSamePosition(teleporterVector.at(0))){
+            nextPos = teleporterVector.at(1);
         } else {
-            nextPos = getSnakeHeadNextPos(teleporterVector.at(0), velocityVec);
+            nextPos = teleporterVector.at(0);
         }
+        bonusSound->playSoundEffect();
+        teleporterInUse = true;
+    } else if (isTeleporter(snake_new->getTail()) && teleporterInUse){
+        teleporterInUse = false;
     }
+
+
+    if (isOutOfBounds(nextPos) || snakeCrashesWith(nextPos)) {
+        cout << "Game over!" << endl;
+        gruntSound->playSoundEffect();
+        running = false;
+        return;
+    }
+
 
     if (isApple(nextPos)) {
         snake_new->grow(nextPos);
@@ -177,7 +184,7 @@ void GameManager::update_game_state() {
         appleSound->playSoundEffect();
         score++;
         scoreDelta++;
-
+        cout << "Score: " << score << endl;
     } else {
         snake_new->move(nextPos);
     }
@@ -191,10 +198,14 @@ void GameManager::update_game_state() {
         return;
     }
 
+    if (teleportersInstantiated && !teleporterInUse && teleporter_spawn_time >= teleporter_spawn_time_delta){
+        respawnTeleporter();
+    }
 
-    if (score == 2 && !isTeleportersInstantiated){
+
+    if (score == Specs.TELEPORTER_INSTANTIATE_SCORE && !teleportersInstantiated){
         instantiateTeleporters();
-        isTeleportersInstantiated = true;
+        teleportersInstantiated = true;
     }
 
     //create a new obstacle
@@ -202,7 +213,7 @@ void GameManager::update_game_state() {
         Node newObstacle;
         getValidPosition(newObstacle);
         obstaclesVector.push_back(newObstacle);
-
+        cout << "New obstacle on the board!"<< endl;
 
 		scoreDelta = 0;
     }
@@ -215,6 +226,15 @@ void GameManager::respawnApple() {
     apple_spawn_time = 0;
 }
 
+void GameManager::respawnTeleporter(){
+    if (rand() % 2 == 1){
+        getValidPosition(teleporterVector.at(0));
+    } else {
+        getValidPosition(teleporterVector.at(1));
+    }
+    teleporter_spawn_time_delta = Specs.MIN_TELEPORTER_RESPAWN_TIME + rand() % Specs.TELEPORTER_TIME_DELTA;
+    teleporter_spawn_time = 0;
+}
 
 //Checks input and sets direction
 void GameManager::updateDirection(Direction &currentDirection, Direction &nextDirection) {
@@ -245,14 +265,12 @@ void GameManager::updateDirection(Direction &currentDirection, Direction &nextDi
 
 }
 
-
 bool GameManager::isOutOfBounds(const Node &node) const {
 	// Check if crash with borders
 	int xPos = node.grid_x;
 	int yPos = node.grid_y;
 	return (xPos < 0 || yPos < 0 || xPos >= board_columns || yPos >= board_rows);
 }
-
 
 Vector2D GameManager::getVelocityVector(Direction direction) {
 	switch (direction) {
@@ -313,11 +331,11 @@ bool GameManager::isObstacle(const Node &node) const {
 }
 
 bool GameManager::isTeleporter(const Node &node) const {
-    if (teleporterVector.size() == 0)
-        return false;
-
-    return find(teleporterVector.begin(), teleporterVector.end(), node) != teleporterVector.end();
+    if (teleporterVector.size() == 0) return false;
+    if (node == teleporterVector.at(0)) return true;
+    else return node == teleporterVector.at(1);
 }
+
 void GameManager::instantiateTeleporters() {
     Node Teleporter1;
     Node Teleporter2;
@@ -325,6 +343,7 @@ void GameManager::instantiateTeleporters() {
     getValidPosition(Teleporter2);
     teleporterVector.push_back(Teleporter1);
     teleporterVector.push_back(Teleporter2);
+    cout << "Wormholes now on the board!" << endl;
 }
 
 // check if the node is directly ahead of the snake

@@ -9,15 +9,13 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include <board/GameBoard.h>
-#include <snake/Snake_new.h>
+#include <snake/Snake.h>
 #include <SDL/SDLPng.h>
 #include <SDL/SDLSound.h>
 #include "SDL/SDLManager.h"
 #include "SDL/SDLBmp.h"
 #include "InputManager.h"
 #include "resourceManagement/Timer.h"
-#include "snake/Snake.h"
 #include <renderers/SnakeRenderer.h>
 #include "Direction.h"
 #include "RendererManager.h"
@@ -63,13 +61,16 @@ private:
     int scoreDelta = 0;
     float m_time_delta = 0.f;
 
+    float teleporter_spawn_time_delta = 0.f + Specs.MIN_TELEPORTER_RESPAWN_TIME;
+    float teleporter_spawn_time = 0;
+
     float apple_spawn_time = 0;
     Vector2D velocityVec{0, 0};
 
     vector<Node> obstaclesVector{};
     //shared_ptr<GameBoard> gameboard;
     vector<Node> teleporterVector{};
-    shared_ptr<Snake_new> snake_new;
+    shared_ptr<Snake> snake_new;
     Node appleNode{};
 
     std::unique_ptr<SDLPng> background;
@@ -97,8 +98,10 @@ private:
     bool isObstacle(const Node &node) const;
 
     bool isTeleporter(const Node &node) const;
-    bool isTeleportersInstantiated = false;
+    bool teleportersInstantiated = false;
+    bool teleporterInUse = false;
     void instantiateTeleporters();
+    void respawnTeleporter();
 
     bool isApple(const Node &nextPos) const;
 
