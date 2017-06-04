@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <renderers/AppleRenderer.h>
 #include <renderers/ObstacleRenderer.h>
+#include <renderers/BackgroundRenderer.h>
 
 using namespace std;
 
@@ -69,7 +70,8 @@ void GameManager::play() {
 	auto snakeRenderer = SnakeRenderer{*playerHeadImage, *playerBodyImage, *playerTailImage, *snake_new, direction};
 	auto appleRenderer = AppleRenderer{appleImage, appleNode};
 	auto obstacleRenderer = ObstacleRenderer{obstacleImage, obstaclesVector};
-	auto renderers = vector<Renderer*>{&snakeRenderer, &appleRenderer, &obstacleRenderer};
+	auto backgroundRenderer = BackgroundRenderer{*background};
+	auto objectRenderers = vector<Renderer*>{ &backgroundRenderer, &snakeRenderer, &appleRenderer, &obstacleRenderer};
 
 	srand((unsigned int) time(nullptr));
 
@@ -115,13 +117,9 @@ void GameManager::play() {
 
 		// Check if it's time to render
 		if (m_lastRender >= render_fps) {
-			// Add bitmaps to renderer
-			background->draw();
-
-			for (auto &&renderer : renderers) {
+			for (auto &&renderer : objectRenderers) {
 				renderer->render();
 			}
-
 			// Render window
 			SDLManager::Instance().renderWindow(m_window);
 			m_lastRender = 0.f;
