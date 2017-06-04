@@ -1,31 +1,39 @@
-#pragma once
-#include "gameObjects/GameObject.h"
+//
+// Created by clement on 02/06/17.
+//
+
+#ifndef SNAKE_PLUSPLUS_SNAKE_NEW_H
+#define SNAKE_PLUSPLUS_SNAKE_NEW_H
+
 #include <list>
-#include <queue>
+#include <memory>
+#include "board/Node.h"
+#include "Specifications.h"
 
-class Snake : std::list<GameObject>
-{
+using namespace std;
+
+class Snake {
 public:
-	Snake (GameObject* headPart, GameObject* bodyPart, int startingLength);
+    Snake();
+    Snake(initializer_list<Node> _body);
+    Snake(list<Node> _body);
 
-	Snake(int length);
+    ~Snake();
 
-	void increaseLength ();
-	int getLength ();
-	GameObject* getHead ();
-	void applyVelocity(GameObject *obj, float vel_x, float vel_y, Direction dir);
-	void updatePosition (Direction direction, float displacement);
-	void pushPreviousTurnPosition (Point2D lastPosition);
-	Point2D popPreviousTurnPosition ();
-	void drawSnake ();
-	GameObject* getBodyPartAt (int pos);
+	Node getHead() const;
 
+	Node getTail() const;
+
+	list<Node> getBody() const;
+
+    inline unsigned long getLength() const { return body.size(); }
+
+    void move(Node& newHeadPosition);
+
+    void grow(Node& newHeadPosition);
 
 private:
-	int length;
-	std::queue<Point2D> earlierTurns;
-	GameObject* headObject;
-	GameObject* bodyObject;
-    //void applyVelocity(int x, int y);
-//	GameObject* tailObject;
+    list<Node> body{};
 };
+
+#endif //SNAKE_PLUSPLUS_SNAKE_NEW_H

@@ -53,7 +53,7 @@ void GameManager::init() {
 	list <Node> startBody{head, body1, body2, body3, body4};
 
     velocityVec = getVelocityVector(Direction::DOWN);
-    snake_new = std::make_shared<Snake_new>(startBody);
+    snake_new = std::make_shared<Snake>(startBody);
     getValidPosition(appleNode );
 
 	gameMusic->playMusic();
