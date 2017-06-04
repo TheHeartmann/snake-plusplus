@@ -354,7 +354,7 @@ void GameManager::increaseSpeed(float &currentInterval) {
         //guard for excessive speeds;
         currentInterval = min_move_interval;
     } else {
-        float speedUpdateStep = (move_update_rate - min_move_interval) / (board_rows * board_columns);
-        currentInterval -= speedUpdateStep;
+        float speedUpdateStep = (min_move_interval - currentInterval) / Specs.MAX_SPEED_CONSTANT;
+        currentInterval += speedUpdateStep;
     }
 }

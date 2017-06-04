@@ -34,6 +34,7 @@ static const struct Specs {
     const int APPLESPAWN_TIME_DELTA = 3;
     const float MAX_MOVE_INTERVAL = 10.f/60.f;
     const float MIN_MOVE_INTERVAL = 3.f/60.f;
+    const float MAX_SPEED_CONSTANT = 20;
 
     const int MIN_TELEPORTER_RESPAWN_TIME = 10;
     const int TELEPORTER_TIME_DELTA = 15;
