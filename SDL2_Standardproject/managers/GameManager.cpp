@@ -31,6 +31,7 @@ void GameManager::loadAssets() {
 	playerTailImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/SnakeTail.png");
 	appleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Apple.png");
 	obstacleImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Obstacle.png");
+	teleporterImage = std::make_shared<SDLPng>("SDL2_Standardproject/Assets/gfx/Hole.png");
 
 	// Load sounds
 	gameMusic = std::make_unique<SDLMusic>("SDL2_Standardproject/Assets/sfx/musicLoop.wav");
@@ -65,11 +66,12 @@ void GameManager::play() {
 
 	loadAssets();
 	init();
+    auto teleporterRenderer = ObstacleRenderer{teleporterImage, teleporterVector};
 	auto snakeRenderer = SnakeRenderer{*playerHeadImage, *playerBodyImage, *playerTailImage, *snake_new, direction};
 	auto appleRenderer = AppleRenderer{appleImage, appleNode};
 	auto obstacleRenderer = ObstacleRenderer{obstacleImage, obstaclesVector};
 	auto backgroundRenderer = BackgroundRenderer{*background};
-	auto objectRenderers = vector<Renderer*>{ &backgroundRenderer, &snakeRenderer, &appleRenderer, &obstacleRenderer};
+	auto objectRenderers = vector<Renderer*>{ &backgroundRenderer, &teleporterRenderer, &snakeRenderer, &appleRenderer, &obstacleRenderer};
 
     // Calculate render frames per second (second / frames) (60)
     float render_fps = 1.f / 60.f;
@@ -140,6 +142,15 @@ void GameManager::update_game_state() {
 		return;
 	}
 
+
+    if (isTeleporter(nextPos)){
+        if ((snakeHead + velocityVec).hasSamePosition(teleporterVector.at(0))){
+            nextPos = getSnakeHeadNextPos(teleporterVector.at(1), velocityVec);
+        } else {
+            nextPos = getSnakeHeadNextPos(teleporterVector.at(0), velocityVec);
+        }
+    }
+
     if (isApple(nextPos)) {
         snake_new->grow(nextPos);
         respawnApple();
@@ -162,6 +173,12 @@ void GameManager::update_game_state() {
         return;
     }
 
+
+    if (score == 2 && !isTeleportersInstantiated){
+        instantiateTeleporters();
+        isTeleportersInstantiated = true;
+    }
+
     //create a new obstacle
     if (scoreDelta >= Specs.OBSTACLE_SPAWN_RATE) {
         Node newObstacle;
@@ -170,7 +187,7 @@ void GameManager::update_game_state() {
 
 
 		scoreDelta = 0;
-	}
+    }
 
 }
 
@@ -253,6 +270,7 @@ bool GameManager::isEmptyNode(const Node &node) const {
 
 	return !isObstacle(node) &&
 	       !isSnake(node) &&
+	       !isTeleporter(node) &&
 	       !isApple(node);
 }
 
@@ -274,6 +292,21 @@ bool GameManager::isObstacle(const Node &node) const {
 		return false;
 
 	return find(obstaclesVector.begin(), obstaclesVector.end(), node) != obstaclesVector.end();
+}
+
+bool GameManager::isTeleporter(const Node &node) const {
+    if (teleporterVector.size() == 0)
+        return false;
+
+    return find(teleporterVector.begin(), teleporterVector.end(), node) != teleporterVector.end();
+}
+void GameManager::instantiateTeleporters() {
+    Node Teleporter1;
+    Node Teleporter2;
+    getValidPosition(Teleporter1);
+    getValidPosition(Teleporter2);
+    teleporterVector.push_back(Teleporter1);
+    teleporterVector.push_back(Teleporter2);
 }
 
 // check if the node is directly ahead of the snake

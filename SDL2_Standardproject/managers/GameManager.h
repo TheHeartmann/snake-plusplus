@@ -67,6 +67,7 @@ private:
 
     vector<Node> obstaclesVector{};
     //shared_ptr<GameBoard> gameboard;
+    vector<Node> teleporterVector{};
     shared_ptr<Snake_new> snake_new;
     Node appleNode{};
 
@@ -78,6 +79,7 @@ private:
     std::shared_ptr<SDLPng> appleImage;
 
     std::shared_ptr<SDLPng> obstacleImage;
+	std::shared_ptr<SDLPng> teleporterImage;
 
 
     std::shared_ptr<SDLMusic> gameMusic;
@@ -92,6 +94,10 @@ private:
     void update_game_state();
 
     bool isObstacle(const Node &node) const;
+
+    bool isTeleporter(const Node &node) const;
+    bool isTeleportersInstantiated = false;
+    void instantiateTeleporters();
 
     bool isApple(const Node &nextPos) const;
 
