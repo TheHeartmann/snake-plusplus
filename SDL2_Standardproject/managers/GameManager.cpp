@@ -34,9 +34,9 @@ void GameManager::init() {
     gameboard = std::make_shared<GameBoard>(board_columns, board_rows);
 
     // get 4 joint nodes from the board
-    Node head = gameboard->getNode(15, 4);
-    Node body1 = gameboard->getNode(15, 3);
-    Node body2 = gameboard->getNode(15, 2);
+    Node head = gameboard->getNode(15, 12);
+    Node body1 = gameboard->getNode(15, 11);
+    Node body2 = gameboard->getNode(15, 10);
 
     list <Node> startBody{head, body1, body2};
 
@@ -51,6 +51,7 @@ void GameManager::init() {
 void GameManager::play() {
     //auto renderer = SDLManager::Instance().getRenderer(*(SDLManager::Instance().getMainWindow()));
 
+	cout << velocityVec.getX() << endl;
 
 	loadAssets();
 	init();
@@ -68,7 +69,7 @@ void GameManager::play() {
     m_lastMove = move_update;
 
 	Direction nextDirection;
-	
+
     // Gameloop
     while (running) {
 
@@ -118,11 +119,15 @@ void GameManager::play() {
 }
 
 void GameManager::updateBoard() {
-    velocityVec = getVelocityVector(direction);
+	cout << velocityVec.getX() << endl;
+
+	velocityVec = getVelocityVector(direction);
+	cout << velocityVec.getX() << endl;
     auto snakeHead = snake_new->getHead();
     Node nextPos = getSnakeHeadNextPos(snakeHead, velocityVec);
 
     if (isOutOfBounds(nextPos) || isObstacle(nextPos) || isSnake(nextPos)) {
+	    cout << "X and Y is " << nextPos.grid_x << "and" << nextPos.grid_y << endl;
         running = false;
         return;
     }
@@ -190,9 +195,9 @@ void GameManager::updateDirection(Direction &currentDirection, Direction &nextDi
 
 bool GameManager::isOutOfBounds(const Node &node) const {
     // Check if crash with borders
-    float x = node.grid_x;
-    float y = node.grid_y;
-    return (x < 0 || y < 0 || x >= board_columns || y >= board_rows);
+    int xPos = node.grid_x;
+    int yPos = node.grid_y;
+    return (xPos < 0 || yPos < 0 || xPos >= board_columns || yPos >= board_rows);
 }
 
 
@@ -244,6 +249,7 @@ bool GameManager::isEmptyNode(const Node &node) const {
 }
 
 Node GameManager::getSnakeHeadNextPos(Node &head, Vector2D &vel) {
+	cout << vel.getX() << endl;
     return head + vel;
 }
 

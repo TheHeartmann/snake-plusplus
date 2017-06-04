@@ -73,7 +73,7 @@ private:
 
     int score = 0;
     double velocity = Specs.SNAKE_SPEED;
-    Vector2D velocityVec{};
+    Vector2D velocityVec{0,0};
 
     vector<Node> obstacles{};
     shared_ptr<GameBoard> gameboard;
