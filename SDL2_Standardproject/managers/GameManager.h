@@ -9,7 +9,6 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include <board/GameBoard.h>
 #include <snake/Snake.h>
 #include <SDL/SDLPng.h>
 #include <SDL/SDLSound.h>
