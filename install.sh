@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-sudo mkdir cmake-build-debug
+sudo apt-get install cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev
 
-# build to directory
-cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"
+#create the directory for
+sudo mkdir cmake-build-debug
 
 # build executable program
 cmake --build cmake-build-debug --target snake-plusplus_run
