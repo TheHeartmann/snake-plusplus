@@ -17,7 +17,7 @@ using namespace std;
 /* Initializes SDL, creates the game window and fires off the timer. */
 GameManager::GameManager() {
     SDLManager::Instance().init();
-    m_window = SDLManager::Instance().createWindow("My Awesome SDL 2.0 Game");
+    m_window = SDLManager::Instance().createWindow("SnakePlusPlus by Hartmann, Alvern, and Marescaux");
     Timer::Instance().init();
 }
 
