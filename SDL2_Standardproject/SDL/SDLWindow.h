@@ -11,7 +11,7 @@
 #ifndef SDL_WINDOW_H
 #define SDL_WINDOW_H
 
-#include <SDL2/SDL.h>
+#include "SDL2/include/SDL.h"
 
 class SDLWindow
 {

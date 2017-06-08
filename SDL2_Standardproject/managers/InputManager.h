@@ -14,7 +14,7 @@
 #define INPUT_MANAGER_H
 
 #include <memory>
-#include <SDL2/SDL.h>
+#include "SDL2/include/SDL.h"
 
 class InputManager
 {

@@ -11,7 +11,7 @@
 #include <sstream>
 #include "SDLPng.h"
 #include "SDLManager.h"
-#include <SDL2/SDL_image.h>
+#include "SDL2/include/SDL_image.h"
 
 /* Loads the given file on construction */
 SDLPng::SDLPng(const std::string &file) {

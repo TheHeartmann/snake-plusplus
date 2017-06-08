@@ -25,7 +25,7 @@ static const struct Specs {
     const int BOARD_ROWS = 20;
     const int NODE_DIAMETER_PX = 20;
     const Direction SNAKE_HEAD_STARTDIR = Direction::RIGHT;
-    double MINIMUM_SPAWN_RADIUS = 5.d;
+    double MINIMUM_SPAWN_RADIUS = 5.0;
 
     const int OBSTACLE_SPAWN_RATE = 6;
 
