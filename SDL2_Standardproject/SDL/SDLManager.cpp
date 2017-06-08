@@ -10,8 +10,9 @@
  */
 
 #include <sstream>
-#include "SDL2/include/SDL_image.h"
 #include "SDLManager.h"
+#include "SDL2/include/SDL_mixer.h"
+#include "SDL2/include/SDL_image.h"
 
 SDLManager::SDLManager()
 {

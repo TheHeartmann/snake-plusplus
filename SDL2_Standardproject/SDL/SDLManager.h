@@ -17,7 +17,7 @@
 #include <memory>
 #include <vector>
 #include "SDL2/include/SDL.h"
-#include "SDL2/include/SDL_mixer.h"
+
 #include <Specifications.h>
 #include "SDLError.h"
 #include "SDLWindow.h"
