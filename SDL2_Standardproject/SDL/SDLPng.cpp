@@ -58,7 +58,7 @@ SDLPng::SDLPng(const std::string &file) {
 
 /* Free's the memory consumed by the image data */
 SDLPng::~SDLPng() {
-    SDL_DestroyTexture(m_texture);
+    //SDL_DestroyTexture(m_texture);
 }
 
 /* Adds the image to the master window */
