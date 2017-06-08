@@ -19,9 +19,14 @@ add_executable(snake-plusplus_run ${SOURCE_FILES} )
 #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 #PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer)
 
-#find_package(SDL2 REQUIRED)
-#find_package(SDL2_image REQUIRED)
-#find_package(SDL2_mixer REQUIRED)
+SET(SDL2_INCLUDE_DIR SDL2_Standardproject/SDL2)
+SET(SDL2_IMAGE_INCLUDE_DIR SDL2_Standardproject/SDL2)
+SET(SDL2_MIXER_INCLUDE_DIR SDL2_Standardproject/SDL2)
+
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 #find_package(SDL2_ttf REQUIRED)
 
 
@@ -31,5 +36,4 @@ add_subdirectory(SDL2_Standardproject)
 add_subdirectory(SnakePlusPlusTests)
 
 target_link_libraries(snake-plusplus_run SDL2_Standardproject)
-target_link_libraries(snake-plusplus_run ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARY})
 target_link_libraries(snake-plusplus_run ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARIES} ${SDL2MIXER_LIBRARY})

@@ -11,13 +11,18 @@ file(GLOB MIXER_FILES "Assets/sfx/*.wav")
 #PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 #PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer)
 #
-#find_package(SDL2 REQUIRED)
-#find_package(SDL2_image REQUIRED)
-#find_package(SDL2_mixer REQUIRED)
+
+SET(SDL2_INCLUDE_DIR SDL2)
+SET(SDL2_IMAGE_INCLUDE_DIR SDL2)
+SET(SDL2_MIXER_INCLUDE_DIR SDL2)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 #find_package(SDL2_ttf REQUIRED)
 SET(SDL_ALL_DIR SDL2/include)
 
-include_directories(${SDL_ALL_DIR})
-#include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
+#include_directories(${SDL_ALL_DIR})
+include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 
 add_library(SDL2_Standardproject STATIC ${SOURCE_FILES} ${HEADER_FILES} ${IMAGE_FILES} ${MIXER_FILES} ${SDL_ALL_DIR})
